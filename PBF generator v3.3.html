@@ -606,7 +606,7 @@
   .ts-pet:hover:not(:disabled) { background: color-mix(in srgb, var(--fg) 5%, transparent); }
   .ts-pet:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
   .ts-pet:disabled { cursor: default; }
-  .ts-pet-portrait { width: 72px; height: 44px; flex: none; image-rendering: pixelated; }
+  .ts-pet-portrait { width: 108px; height: 66px; flex: none; image-rendering: pixelated; }
   .ts-pet:disabled .ts-pet-portrait { opacity: 0.35; }
   .ts-species { flex: none; }
 
@@ -1470,7 +1470,7 @@
       <!-- Companion: the pet itself opens its card; the switch picks the animal. -->
       <div class="ts-companion">
         <button type="button" class="ts-pet" id="pet-card-btn">
-          <canvas class="ts-pet-portrait" width="72" height="44" aria-hidden="true"></canvas>
+          <canvas class="ts-pet-portrait" width="108" height="66" aria-hidden="true"></canvas>
         </button>
         <div class="ts-seg ts-species" role="radiogroup" aria-label="Companion">
           <button type="button" role="radio" data-value="off">Off</button>
