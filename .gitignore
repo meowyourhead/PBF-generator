@@ -1,0 +1,12 @@
+# Source only: ignore everything, then allow what the build and tests need.
+/*
+!/.gitignore
+!/README.md
+!/owl.jpg
+!/PBF generator v3.3.html
+!/app/
+!/tests/
+
+# Build output
+/app/target/
+*.exe
