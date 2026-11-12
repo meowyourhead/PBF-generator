@@ -7,7 +7,8 @@
 //  - window.__pbfShell.refit() refits after the page changes its own size;
 //  - on first open the window is sized to fit the content down to Comment.
 (() => {
-  const BAR_H = 32;   // physical-ish (logical px at 100% scale)
+  const BAR_H = 28;   // physical-ish (logical px at 100% scale)
+  const BAR_GAP = 4;  // space between the bar and the first card
   const EDGE = 6;
   const ANIM_MS = 180; // matches the shell's window resize animation
   const send = (m) => window.ipc.postMessage(m);
@@ -172,7 +173,7 @@
     #pbf-titlebar .pbf-max .pbf-restore-ico { display: none; }
     #pbf-titlebar.is-max .pbf-max .pbf-max-ico { display: none; }
     #pbf-titlebar.is-max .pbf-max .pbf-restore-ico { display: block; }
-    html body { padding-top: calc(${BAR_H}px / var(--pbf-scale, 1) + 8px) !important; }
+    html body { padding-top: calc(${BAR_H}px / var(--pbf-scale, 1) + ${BAR_GAP}px) !important; }
     /* The window grows to fit the comment, so the comment box need not cap itself
        (its 25vh cap would shrink with the window it is trying to grow). */
     html .dock .output { max-height: none !important; }
@@ -185,7 +186,7 @@
       position: absolute; top: 0; bottom: auto; height: 100%; transform: none; margin: 0;
       left: calc(3 * 46px / var(--s)); right: calc(3 * 46px / var(--s));
       display: grid; place-items: center; gap: 0; pointer-events: none; }
-    /* A fixed pill height leaves equal gaps above and below (5px each in the 32px bar);
+    /* A fixed pill height leaves equal gaps above and below (3px each in the 28px bar);
        the text's line fills the pill inside its border, so the text centres too. */
     #pbf-titlebar .notif {
       grid-area: 1 / 1; max-width: 100%; max-height: none; box-sizing: border-box;
