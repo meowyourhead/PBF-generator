@@ -10,7 +10,7 @@
   const BAR_H = 28;   // physical-ish (logical px at 100% scale)
   const BAR_GAP = 4;  // space between the bar and the first card
   const EDGE = 6;
-  const ANIM_MS = 180; // matches the shell's window resize animation
+  const ANIM_MS = 240; // matches the shell's window resize animation
   const send = (m) => window.ipc.postMessage(m);
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
   const systemDpr = window.devicePixelRatio || 1;   // before any zoom is applied
@@ -89,6 +89,25 @@
     app.style.width = old;
     return { w, h };
   }
+  // While the window glides to a new size, hold the cards at the target width,
+  // left-anchored: newly shown chips never wrap at the old width for a frame, and
+  // nothing re-centres as the edge moves. Released once the window has arrived.
+  let pinned = false;
+  function pinApp(wCss) {
+    const app = document.querySelector('.app');
+    if (!app) return;
+    const cs = getComputedStyle(document.body);
+    const pad = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
+    app.style.width = Math.max(0, wCss - pad) + 'px';
+    app.style.marginLeft = '0';
+    pinned = true;
+  }
+  function unpinApp() {
+    if (!pinned) return;
+    const app = document.querySelector('.app');
+    if (app) { app.style.width = ''; app.style.marginLeft = ''; }
+    pinned = false;
+  }
   function screenAvail() {
     // Physical px. screen.* ignores page zoom, so convert with the monitor's own scale.
     const monitorDpr = window.devicePixelRatio / scale;
@@ -117,8 +136,10 @@
     }
 
     // One eased move to the measured size (the shell animates it).
+    pinApp(t.w);
     send(`fit:${w}:${h}:${avail.w}:${avail.h}:keep`);
     await wait(ANIM_MS + 120);
+    unpinApp();
     // Rare case (a breakpoint flipped at the new width): settle with one more small move.
     remeasurePage();
     const w2 = Math.min(Math.ceil(contentWidthCss() * dpr), avail.w);
@@ -135,7 +156,7 @@
     fitting = (fitting || Promise.resolve())
       .then(() => { root.classList.add('pbf-fitting'); return fitToContent(first); })
       .catch(() => {})
-      .then(() => { root.classList.remove('pbf-fitting'); });
+      .then(() => { unpinApp(); root.classList.remove('pbf-fitting'); });
     return fitting;
   }
 
@@ -150,7 +171,17 @@
     },
     // The page calls this after it changes its own size (e.g. Cell type "+N more").
     refit() {
-      if (initialFitDone) refit(false);
+      if (!initialFitDone) return;
+      // Pin right away, in the same frame as the page change (e.g. chips just shown),
+      // so the browser never paints them wrapped at the old window width.
+      if (!maximized) {
+        try {
+          const dpr = window.devicePixelRatio, avail = screenAvail();
+          pinApp(Math.min(contentWidthCss(), avail.w / dpr));
+          document.documentElement.classList.add('pbf-fitting');
+        } catch (e) { /* the queued fit still runs */ }
+      }
+      refit(false);
     }
   };
 

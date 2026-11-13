@@ -10,9 +10,20 @@ use tao::{
     window::{Icon, ResizeDirection, WindowBuilder},
 };
 use wry::{
-    WebContext, WebViewBuilder, WebViewBuilderExtWindows,
+    Rect, WebContext, WebView, WebViewBuilder, WebViewBuilderExtWindows, WebViewExtWindows,
     http::{Response, header::CONTENT_TYPE},
 };
+
+/// The webview is a child of the window whose size the shell sets itself. While the
+/// window glides to a new size the webview already sits at the larger of the two
+/// sizes (clipped by the window), so the page lays out once and the window edge
+/// simply reveals or covers it, with no per-frame re-layout.
+fn set_webview_size(webview: &WebView, size: PhysicalSize<u32>) {
+    let _ = webview.set_bounds(Rect {
+        position: wry::dpi::PhysicalPosition::new(0, 0).into(),
+        size: wry::dpi::PhysicalSize::new(size.width, size.height).into(),
+    });
+}
 
 static INDEX_HTML: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/index.html"));
 static ICON_RGBA: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/icon_256.rgba"));
@@ -69,7 +80,7 @@ struct Anim {
     start: Instant,
 }
 
-const ANIM_DURATION: Duration = Duration::from_millis(180);
+const ANIM_DURATION: Duration = Duration::from_millis(240);
 const FRAME: Duration = Duration::from_millis(8);
 
 impl Anim {
@@ -79,7 +90,8 @@ impl Anim {
         if t >= 1.0 {
             return (self.to_pos, self.to_size, true);
         }
-        let e = 1.0 - (1.0 - t).powi(3); // ease-out cubic
+        // ease-in-out cubic: starts and lands softly, so the edge never lurches
+        let e = if t < 0.5 { 4.0 * t * t * t } else { 1.0 - (-2.0 * t + 2.0).powi(3) / 2.0 };
         let lerp = |a: f64, b: f64| (a + (b - a) * e).round();
         (
             PhysicalPosition::new(
@@ -121,7 +133,12 @@ fn main() -> wry::Result<()> {
     // Persistent profile so localStorage (theme, history, settings) survives restarts.
     let mut context = WebContext::new(Some(data_dir()));
 
+    let start_size = window.inner_size();
     let webview = WebViewBuilder::new_with_web_context(&mut context)
+        .with_bounds(Rect {
+            position: wry::dpi::PhysicalPosition::new(0, 0).into(),
+            size: wry::dpi::PhysicalSize::new(start_size.width, start_size.height).into(),
+        })
         .with_https_scheme(true)
         .with_custom_protocol("pbf".into(), |_id, _req| {
             Response::builder()
@@ -155,7 +172,7 @@ fn main() -> wry::Result<()> {
         })
         .with_url("pbf://localhost/")
         .with_devtools(cfg!(debug_assertions))
-        .build(&window)?;
+        .build_as_child(&window)?;
 
     let mut was_maximized = false;
     let mut shown = false;
@@ -183,7 +200,9 @@ fn main() -> wry::Result<()> {
                     }
                     window.set_inner_size(size);
                     if done {
+                        let to = a.to_size;
                         anim = None;
+                        set_webview_size(&webview, to);
                         *control_flow = ControlFlow::Wait;
                     }
                 }
@@ -219,6 +238,12 @@ fn main() -> wry::Result<()> {
                         }
                     };
                     if place == Placement::Keep && shown {
+                        // Lay the page out once at its final size (or keep the larger
+                        // current one while shrinking), then glide the window over it.
+                        set_webview_size(
+                            &webview,
+                            PhysicalSize::new(inner.width.max(w), inner.height.max(h)),
+                        );
                         // Glide from wherever the window is now (even mid-animation).
                         anim = Some(Anim {
                             from_pos: cur,
@@ -247,6 +272,14 @@ fn main() -> wry::Result<()> {
             Event::UserEvent(UserEvent::Drag) => {
                 let _ = window.drag_window();
             }
+            // As a child webview it no longer hears these from the window itself.
+            Event::WindowEvent { event: WindowEvent::Focused(true), .. } => {
+                let _ = webview.focus();
+            }
+            Event::WindowEvent { event: WindowEvent::Moved(_), .. } => {
+                // Keeps dropdowns and tooltips anchored after the window moves.
+                let _ = unsafe { webview.controller().NotifyParentWindowPositionChanged() };
+            }
             Event::UserEvent(UserEvent::Minimize) => window.set_minimized(true),
             Event::UserEvent(UserEvent::ToggleMaximize) => {
                 window.set_maximized(!window.is_maximized())
@@ -254,8 +287,16 @@ fn main() -> wry::Result<()> {
             Event::UserEvent(UserEvent::Resize(dir)) => {
                 let _ = window.drag_resize_window(dir);
             }
-            Event::WindowEvent { event: WindowEvent::Resized(_), .. } => {
+            Event::WindowEvent { event: WindowEvent::Resized(size), .. } => {
                 let m = window.is_maximized();
+                if m {
+                    anim = None;
+                }
+                // During a glide the webview keeps its final size; otherwise it follows
+                // the window (user drags, maximise, first fit).
+                if anim.is_none() && size.width > 0 && size.height > 0 {
+                    set_webview_size(&webview, size);
+                }
                 if m != was_maximized {
                     was_maximized = m;
                     let _ = webview.evaluate_script(&format!(

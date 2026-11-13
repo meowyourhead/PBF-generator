@@ -1068,15 +1068,20 @@
           expect(m.querySelector('[role="radiogroup"] .ts-swatch[aria-checked="true"]').dataset.value === userTheme.palette, 'selected swatch matches the theme');
           sw.find(s => s.dataset.value === 'space').click();
           expect(userTheme.palette === 'space' && document.documentElement.dataset.palette === 'space', 'swatch click did not change theme');
-          expect(m.querySelector('.ts-palette-name').textContent === 'Space', 'theme name not shown');
+          // v3.5: each tile carries its theme's name and colours
+          expect(sw.every(s => s.querySelector('.ts-sw-name').textContent === palettes[s.dataset.value].name), 'tile names do not match the themes');
+          expect(sw.every(s => { const n = s.querySelector('.ts-sw-name'); return n.scrollWidth <= n.clientWidth; }), 'a tile name is clipped');
+          expect(sw.find(s => s.dataset.value === 'space').style.getPropertyValue('--sw-bg') === palettes.space.bg, 'tile does not use its theme background');
+          expect(new Set(sw.map(s => Math.round(s.getBoundingClientRect().top))).size >= 2, 'theme tiles do not span 2+ rows');
           sw.find(s => s.dataset.value === 'claude').click();
-          expect([...m.querySelectorAll('.ts-scale button')].map(b => b.dataset.value).join() === '80,100,120,140', 'display size stops are 80/100/120/140');
+          expect([...m.querySelectorAll('.ts-scale button')].map(b => b.dataset.value).join() === '90,100,120,140', 'display scale stops are 90/100/120/140');
+          expect(document.getElementById('ts-scale-label').textContent === 'Display scale', 'label reads Display scale');
           m.querySelector('.ts-scale [data-value="120"]').click();
           expect(userTheme.scale === 1.2 && m.querySelector('.ts-scale [data-value="120"]').getAttribute('aria-checked') === 'true', 'display size segment');
           // v3.3: no accent picker; the accent follows the theme; iOS is called Glass
           expect(!document.getElementById('theme-accent-btn') && !document.getElementById('color-dropdown'), 'accent picker still present');
           sw.find(s => s.dataset.value === 'ios').click();
-          expect(m.querySelector('.ts-palette-name').textContent === 'Glass' && getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() === palettes.ios[userTheme.mode].accent, 'Glass theme name/accent');
+          expect(sw.find(s => s.dataset.value === 'ios').textContent === 'Glass' && getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() === palettes.ios[userTheme.mode].accent, 'Glass theme name/accent');
           sw.find(s => s.dataset.value === 'claude').click();
           m.querySelector('.ts-scale [data-value="100"]').click();
           // the companion bar: one place for the animal and the pet card
