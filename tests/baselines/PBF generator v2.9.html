@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>PBF Comment Generator v3.3</title>
+<title>PBF Comment Generator v2.9</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@1,600;1,700;1,800&family=JetBrains+Mono:wght@400;500&family=Lato:wght@400;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Merriweather:wght@400;700&family=Open+Sans:wght@400;600&family=Playfair+Display:wght@400;600&family=Rajdhani:wght@500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
@@ -376,37 +376,6 @@
   .header-actions { display: flex; gap: 8px; align-items: center; position: static; margin: 0; }
   .button-row .brand, .button-row .center-btns, .button-row .header-actions { position: relative; z-index: 1; }
 
-  #pet-card-modal .modal { max-width: 440px; }
-  .pet-card-top { display: flex; gap: var(--space-3, 12px); align-items: flex-end; margin-bottom: 12px; }
-  .pet-card-portrait { width: 160px; height: 112px; image-rendering: pixelated; background: var(--bg-2); border: 1px solid var(--border); border-radius: 10px; flex: none; }
-  .pet-card-id { flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-  .pet-card-label { font-family: var(--font-ui); font-size: calc(var(--base-font) * 0.75); color: var(--muted); }
-  .pet-card-id input { width: 100%; padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-2); color: var(--fg); font-family: var(--font-ui); font-size: calc(var(--base-font) * 0.95); }
-  .pet-card-id input:focus { outline: none; border-color: var(--accent); }
-  .pet-card-meta, .pet-card-sub { font-family: var(--font-ui); font-size: calc(var(--base-font) * 0.8); color: var(--muted); }
-  .pet-card-needs { display: grid; gap: 4px; margin-bottom: 12px; }
-  .pet-need { display: grid; grid-template-columns: 76px 1fr; align-items: center; gap: 8px; font-family: var(--font-ui); font-size: calc(var(--base-font) * 0.78); color: var(--muted); }
-  .pet-need-bar { height: 6px; border-radius: 3px; background: var(--card-2); overflow: hidden; }
-  .pet-need-bar > div { height: 100%; background: var(--accent); border-radius: 3px; }
-  .pet-card-stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; text-align: center; font-family: var(--font-ui); }
-  .pet-card-stats b { display: block; font-size: calc(var(--base-font) * 0.95); color: var(--fg); }
-  .pet-card-stats span { font-size: calc(var(--base-font) * 0.68); color: var(--muted); }
-  .pet-card-sub { margin: 6px 0 4px; text-align: center; }
-  .pet-card-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-  .pet-card-chips .chip { padding: 5px 10px; border: 1px solid var(--border); border-radius: 999px; background: var(--bg-2); color: var(--fg); font-family: var(--font-ui); font-size: calc(var(--base-font) * 0.8); cursor: pointer; }
-  .pet-card-chips .chip.active { background: var(--accent); color: var(--accent-text); border-color: var(--accent3); }
-  .pet-card-chips .chip:disabled { opacity: .5; cursor: not-allowed; }
-  .pet-card-row { margin-top: 12px; }
-  .pet-card-actions { display: flex; justify-content: flex-end; }
-  .pet-card-open { margin-top: 6px; align-self: flex-start; padding: 6px 12px; }
-  .pet-menu { position: fixed; z-index: 95; min-width: 180px; padding: 6px; background: var(--card); color: var(--fg); border: 1px solid var(--border); border-radius: 10px; box-shadow: var(--shadow); font-family: var(--font-ui); font-size: calc(var(--base-font) * 0.82); }
-  .pet-menu-hd { padding: 4px 8px 6px; margin-bottom: 4px; border-bottom: 1px solid var(--border); color: var(--muted); font-size: 0.92em; white-space: nowrap; }
-  .pet-menu-item { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 12px; padding: 5px 8px; border: 0; border-radius: 6px; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; }
-  .pet-menu-item:hover, .pet-menu-item:focus { background: var(--card-2); outline: none; }
-  .pet-menu-item:focus-visible { box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--accent) 60%, transparent); }
-  .pet-menu-chev { color: var(--muted); }
-  .pet-menu-sep { height: 1px; margin: 4px 2px; background: var(--border); }
-  #pet-overlay { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 0; pointer-events: none; z-index: 60; image-rendering: pixelated; }
   #pixel-scene-canvas {
     position: absolute;
     inset: 0;
@@ -471,7 +440,7 @@
   }
   .preview-overlay.active { display: block; }
 
-  /* ---------- Toasts (float just above the dock; the desktop shell moves them into its title bar) ---------- */
+  /* ---------- Toasts (float just above the dock) ---------- */
   #notification-area {
     position: absolute; left: 0; right: 0; bottom: calc(100% + var(--space-2));
     display: flex; flex-direction: column; align-items: center; gap: 6px; pointer-events: none;
@@ -535,6 +504,48 @@
   .form-row input { margin-bottom: 0; }
   .modal .btn { width: 100%; margin-top: 4px; }
 
+  .color-picker-container { position: relative; display: flex; flex-direction: column; gap: 6px; align-items: center; }
+  #theme-accent-btn {
+    width: 38px; height: 38px; border-radius: 8px; 
+    border: 2px solid var(--border); cursor: pointer; 
+    background-color: #d97757; transition: transform 0.2s;
+    margin-bottom: 10px; 
+  }
+  #theme-accent-btn:hover { transform: scale(1.05); }
+  #color-dropdown {
+    display: none; position: absolute; top: 68px; right: 0; 
+    background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; 
+    padding: 12px; z-index: 200; box-shadow: 0 4px 14px rgba(0,0,0,0.3); 
+    flex-direction: column; gap: 12px; width: 260px;
+  }
+  .cp-section { display: flex; flex-direction: column; gap: 8px; }
+  .cp-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 2px; }
+  .cp-gradient-row { display: grid; grid-template-columns: repeat(10, 1fr); gap: 0; border-radius: 4px; overflow: hidden; height: 16px; }
+  .cp-swatch { height: 16px; cursor: pointer; transition: transform 0.1s; }
+  .cp-swatch:hover { transform: scale(1.2); z-index: 1; }
+  .cp-grid .cp-swatch { height: 20px; border-radius: 3px; }
+  
+  .cp-slider-row { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .cp-slider-row label { width: 60px; font-size: 11px; text-align: right; color: var(--muted); margin: 0; flex-shrink: 0; }
+  .cp-slider { 
+    -webkit-appearance: none; appearance: none; flex: 1; min-width: 0; height: 10px; 
+    border-radius: 5px; outline: none; background: var(--bg); border: 1px solid var(--border); 
+    margin: 0; cursor: pointer;
+  }
+  .cp-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 1px solid #000; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+  .cp-slider::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 1px solid #000; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+  
+  .cp-hue-slider { 
+    background: linear-gradient(to right, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%) !important; 
+    border: 1px solid var(--border);
+  }
+  .cp-opa-slider { 
+    background-image: 
+        linear-gradient(to right, transparent, var(--cp-current, #fff)),
+        repeating-conic-gradient(#ccc 0% 25%, transparent 0% 50%);
+    background-size: 100% 100%, 8px 8px;
+  }
+
   .settings-slider { -webkit-appearance: none; appearance: none; width: 100%; height: 8px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 4px; outline: none; margin-top: 4px; }
   .settings-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; background: var(--accent); border: 2px solid var(--bg); border-radius: 50%; cursor: pointer; }
   .settings-slider::-moz-range-thumb { width: 18px; height: 18px; background: var(--accent); border: 2px solid var(--bg); border-radius: 50%; cursor: pointer; }
@@ -560,65 +571,9 @@
   .scale-setting { flex: 0 0 auto; width: 108px; display: flex; flex-direction: column; gap: 6px; }
   .scale-setting select { font-variant-numeric: tabular-nums; cursor: pointer; }
   .modal select:focus-visible { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
-  /* ---------- Theme settings (v3.2): a quiet list, then one companion bar ---------- */
-  #theme-modal .modal { max-width: 452px; padding: 20px 22px 22px; }
-  #theme-modal .modal-header { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
-  .ts { display: flex; flex-direction: column; gap: 16px; font-family: var(--font-ui); }
-  .ts-row { position: relative; display: grid; grid-template-columns: 92px minmax(0, 1fr); align-items: center; column-gap: 16px; min-height: 32px; }
-  .ts-label { font-size: 13px; font-weight: 500; color: var(--muted); }
-  .ts-control { display: flex; align-items: center; gap: 12px; min-width: 0; }
-  #theme-modal .ts-hidden { position: absolute; width: 1px; height: 1px; margin: 0; padding: 0; opacity: 0; pointer-events: none; overflow: hidden; }
-
-  /* Theme swatches: each theme as a tiny red cell on a film, its accent rim around a pale centre. */
-  .ts-swatches { display: flex; flex-wrap: wrap; gap: 6px; }
-  .ts-swatch {
-    width: 22px; height: 22px; padding: 0; border: 0; border-radius: 50%; cursor: pointer;
-    background: radial-gradient(circle, var(--sw-center) 0 30%, var(--sw-rim) 46% 100%);
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--fg) 14%, transparent);
-    transition: transform 0.12s ease, box-shadow 0.12s ease;
-  }
-  .ts-swatch:hover { transform: scale(1.12); }
-  .ts-swatch[aria-checked="true"] { box-shadow: 0 0 0 2px var(--card), 0 0 0 3.5px var(--fg); }
-  .ts-swatch:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--accent); }
-  .ts-palette-name { font-size: 13px; color: var(--fg); white-space: nowrap; }
-
-
-  /* Segmented switch (display size, animal). */
-  .ts-seg { display: inline-flex; gap: 2px; padding: 3px; border-radius: 10px; background: var(--bg-2); border: 1px solid var(--border); }
-  .ts-seg button {
-    padding: 5px 11px; border: 0; border-radius: 7px; background: transparent; cursor: pointer;
-    font: 500 12.5px/1.2 var(--font-ui); color: var(--muted); font-variant-numeric: tabular-nums;
-    transition: background-color 0.12s ease, color 0.12s ease;
-  }
-  .ts-seg button:hover { color: var(--fg); }
-  .ts-seg button[aria-checked="true"] { background: var(--card); color: var(--fg); box-shadow: 0 1px 2px color-mix(in srgb, #000 16%, transparent), inset 0 0 0 1px var(--border); }
-  .ts-seg button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-
-  /* The companion bar: the pet (opens its card) and the animal switch, together. */
-  .ts-companion {
-    position: relative; display: flex; align-items: center; gap: 12px; margin-top: 4px;
-    padding: 8px 8px 8px 10px; border-radius: 14px; background: var(--bg-2); border: 1px solid var(--border);
-  }
-  .ts-pet {
-    flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; padding: 4px 6px 4px 2px;
-    border: 0; border-radius: 10px; background: transparent; color: var(--fg); text-align: left; cursor: pointer;
-  }
-  .ts-pet:hover:not(:disabled) { background: color-mix(in srgb, var(--fg) 5%, transparent); }
-  .ts-pet:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-  .ts-pet:disabled { cursor: default; }
-  .ts-pet-portrait { width: 108px; height: 66px; flex: none; image-rendering: pixelated; }
-  .ts-pet:disabled .ts-pet-portrait { opacity: 0.35; }
-  .ts-species { flex: none; }
-
   @media (max-width: 600px) {
-    .ts-row { grid-template-columns: 1fr; row-gap: 8px; }
-    .ts-companion { flex-wrap: wrap; }
-    .ts-pet { flex-basis: 100%; }
-    .ts-species { width: 100%; justify-content: space-between; }
-    .ts-species button { flex: 1; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .ts-swatch, .ts-seg button { transition: none; }
+    #theme-modal .settings-row { flex-wrap: wrap; }
+    #theme-modal .scale-setting { width: 100%; }
   }
   .settings-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
   .settings-2col .settings-col { display: flex; flex-direction: column; gap: 6px; margin-bottom: 0; }
@@ -1271,7 +1226,6 @@
       </div>
 
       <div class="dock" id="dock">
-        <canvas id="pet-overlay" aria-hidden="true"></canvas>
         <div id="notification-area"></div>
         <div class="button-row dock-actions">
           <canvas id="pixel-scene-canvas" aria-hidden="true"></canvas>
@@ -1429,60 +1383,68 @@
         </button>
       </div>
     </h2>
-    <div class="ts">
-      <div class="ts-row">
-        <span class="ts-label" id="ts-theme-label">Theme</span>
-        <div class="ts-control">
-          <div class="ts-swatches" role="radiogroup" aria-labelledby="ts-theme-label"></div>
-          <span class="ts-palette-name" aria-hidden="true"></span>
-        </div>
-        <select id="theme-palette" class="ts-hidden" tabindex="-1" aria-hidden="true">
+    
+    <div class="settings-row" style="gap: 12px; margin-bottom: 4px; align-items: flex-end;">
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+        <label>Theme</label>
+        <select id="theme-palette">
           <option value="monochrome">Monochrome</option>
           <option value="space">Space</option>
           <option value="cyberpunk">Cyberpunk</option>
           <option value="fantasy">Fantasy</option>
           <option value="aurora">Aurora</option>
           <option value="claude">Claude</option>
-          <option value="ios">Glass</option>
+          <option value="ios">iOS</option>
           <option value="zenless">Zenless</option>
         </select>
       </div>
-
-      <!-- One setting scales text, buttons and spacing together; the window refits to match. -->
-      <div class="ts-row">
-        <span class="ts-label" id="ts-scale-label">Display size</span>
-        <div class="ts-control">
-          <div class="ts-seg ts-scale" role="radiogroup" aria-labelledby="ts-scale-label">
-            <button type="button" role="radio" data-value="80">80%</button>
-            <button type="button" role="radio" data-value="100">100%</button>
-            <button type="button" role="radio" data-value="120">120%</button>
-            <button type="button" role="radio" data-value="140">140%</button>
+      <div class="color-picker-container">
+        <label style="opacity: 0; font-size: calc(var(--base-font) * 0.9); height: 19px;">Color</label>
+        <div id="theme-accent-btn"></div>
+        <div id="color-dropdown">
+          <div class="cp-section">
+             <div class="cp-grid" id="cp-standard"></div>
+          </div>
+          <div class="cp-section" id="cp-gradients"></div>
+          <div class="cp-section">
+             <div class="cp-slider-row">
+                <label>Hue</label>
+                <input type="range" id="cp-hue" min="0" max="360" value="0" class="cp-slider cp-hue-slider">
+             </div>
+             <div class="cp-slider-row">
+                <label>Saturation</label>
+                <input type="range" id="cp-sat" min="0" max="100" value="100" class="cp-slider cp-sat-slider">
+             </div>
+             <div class="cp-slider-row">
+                <label>Brightness</label>
+                <input type="range" id="cp-bri" min="0" max="100" value="50" class="cp-slider cp-bri-slider">
+             </div>
+             <div class="cp-slider-row">
+                <label>Opacity</label>
+                <input type="range" id="cp-opa" min="0" max="100" value="100" class="cp-slider cp-opa-slider">
+             </div>
           </div>
         </div>
-        <select id="theme-scale" class="ts-hidden" tabindex="-1" aria-hidden="true">
-          <option value="80">80%</option>
-          <option value="100">100%</option>
-          <option value="120">120%</option>
-          <option value="140">140%</option>
-        </select>
       </div>
-
-      <!-- Companion: the pet itself opens its card; the switch picks the animal. -->
-      <div class="ts-companion">
-        <button type="button" class="ts-pet" id="pet-card-btn">
-          <canvas class="ts-pet-portrait" width="108" height="66" aria-hidden="true"></canvas>
-        </button>
-        <div class="ts-seg ts-species" role="radiogroup" aria-label="Companion">
-          <button type="button" role="radio" data-value="off">Off</button>
-          <button type="button" role="radio" data-value="cat">Cat</button>
-          <button type="button" role="radio" data-value="shiba">Shiba</button>
-          <button type="button" role="radio" data-value="capybara">Capybara</button>
-        </div>
-        <select id="theme-animal" class="ts-hidden" tabindex="-1" aria-hidden="true">
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+        <label>Companion Animal</label>
+        <select id="theme-animal">
           <option value="off">Off</option>
           <option value="cat">Cat</option>
-          <option value="shiba">Shiba</option>
+          <option value="dog">Dog</option>
           <option value="capybara">Capybara</option>
+          <option value="rabbit">Rabbit</option>
+          <option value="cow">Cow</option>
+        </select>
+      </div>
+      <!-- One setting scales text, buttons and spacing together; the window refits to match. -->
+      <div class="scale-setting">
+        <label for="theme-scale">Display scale</label>
+        <select id="theme-scale">
+          <option value="75">75%</option>
+          <option value="100">100%</option>
+          <option value="125">125%</option>
+          <option value="150">150%</option>
         </select>
       </div>
     </div>
@@ -1608,2133 +1570,6 @@
     </div>
   </div>
 </div>
-
-<script id="pet-engine">
-/* PetEngine: the companion pet (v3.0). Units: PetStore, PetArt, PetRender, PetWorld, PetBody, PetBrain, PetUI.
-   All randomness goes through PetEngine.rand(); logic runs at a fixed 30 Hz step. */
-
-/* ---------- PetStore: pbf_pet load / save / migrate, needs drift while away, mood word ---------- */
-const PetStore = (function () {
-  'use strict';
-  const SPECIES = ['cat', 'shiba', 'capybara'];
-  const DEFAULT_NAMES = { cat: 'Mochi', shiba: 'Kuri', capybara: 'Yuzu' };
-  // Points per live minute. PetBrain.DRIFT replaces this once PetBrain exists.
-  const LOCAL_DRIFT = { hunger: 4, energy: -3, fun: -3, affection: -2, curiosity: 3 };
-  const NEED_KEYS = ['hunger', 'energy', 'fun', 'affection', 'curiosity'];
-  const ACCESSORIES = ['bandana', 'orange', 'bow', 'scarf', 'party', 'crown'];
-  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
-
-  function localDate(ms) {
-    const d = new Date(ms);
-    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
-  }
-  function drift() { return (typeof PetBrain !== 'undefined' && PetBrain.DRIFT) || LOCAL_DRIFT; }
-
-  function defaults(species, now = Date.now()) {
-    const sp = SPECIES.includes(species) ? species : 'cat';
-    return {
-      v: 1, species: sp, name: DEFAULT_NAMES[sp], renamed: false, born: localDate(now),
-      needs: { hunger: 30, energy: 70, fun: 50, affection: 60, curiosity: 40 },
-      stats: { treats: 0, fetches: 0, pets: 0 },
-      days: [], daysCount: 0,
-      accessory: null, gags: true, hiddenUntil: null, lastSeen: now
-    };
-  }
-
-  function migrateAnimal(a) {
-    if (a === 'dog') return 'shiba';
-    if (a === 'rabbit' || a === 'cow') return 'cat';
-    if (a === 'off' || SPECIES.includes(a)) return a;
-    return 'off';
-  }
-
-  // While the app is closed: 25% of the live rate. Energy recovers (the pet rests).
-  // Hunger is never pushed above 70 and affection never below 30; negative time is ignored.
-  function offlineDrift(needs, elapsedMs) {
-    const mins = Math.max(0, Number(elapsedMs) || 0) / 60000;
-    const r = drift(), out = {};
-    NEED_KEYS.forEach(k => {
-      const start = clamp(Number(needs && needs[k]) || 0, 0, 100);
-      const rate = k === 'energy' ? Math.abs(r.energy) : r[k];
-      let v = clamp(start + rate * 0.25 * mins, 0, 100);
-      if (k === 'hunger' && v > start) v = Math.min(v, Math.max(start, 70));
-      if (k === 'affection' && v < start) v = Math.max(v, Math.min(start, 30));
-      out[k] = v;
-    });
-    return out;
-  }
-
-  function recordDay(state, day) {
-    if (!Array.isArray(state.days)) state.days = [];
-    if (!state.days.includes(day) && state.lastDay !== day) {
-      state.daysCount = (state.daysCount || 0) + 1;
-      state.lastDay = day;
-      if (state.days.length < 400) state.days.push(day); else state.days = [];
-    }
-    return state;
-  }
-
-  function sanitize(raw, now) {
-    if (!raw || typeof raw !== 'object' || raw.v !== 1 || !SPECIES.includes(raw.species)) return null;
-    const d = defaults(raw.species, now);
-    const s = Object.assign(d, raw);
-    s.needs = Object.assign(defaults(raw.species, now).needs, raw.needs || {});
-    NEED_KEYS.forEach(k => { s.needs[k] = clamp(Number(s.needs[k]) || 0, 0, 100); });
-    const num = v => { const n = Number(v); return isFinite(n) && n >= 0 ? Math.floor(n) : 0; };
-    const st = raw.stats && typeof raw.stats === 'object' ? raw.stats : {};
-    s.stats = { treats: num(st.treats), fetches: num(st.fetches), pets: num(st.pets) };
-    s.daysCount = num(raw.daysCount);
-    s.days = Array.isArray(raw.days) ? raw.days.filter(d => typeof d === 'string').slice(-400) : [];
-    s.lastDay = typeof raw.lastDay === 'string' ? raw.lastDay : undefined;
-    s.accessory = ACCESSORIES.includes(raw.accessory) ? raw.accessory : null;
-    s.gags = raw.gags !== false;
-    s.hiddenUntil = Number(raw.hiddenUntil) > 0 ? Number(raw.hiddenUntil) : null;
-    s.renamed = !!raw.renamed;
-    s.name = String(s.name || DEFAULT_NAMES[s.species]).slice(0, 20);
-    return s;
-  }
-
-  function load(now = Date.now(), today = localDate(now)) {
-    let raw = null;
-    try { raw = readJSON('pbf_pet', null); } catch (e) { raw = null; }
-    let s = sanitize(raw, now);
-    if (!s) s = defaults('cat', now);
-    const last = Number(s.lastSeen) || now;
-    s._awayMs = Math.max(0, now - last);
-    s.needs = offlineDrift(s.needs, now - last);
-    s.lastSeen = now;
-    return recordDay(s, today);
-  }
-
-  function save(state, now = Date.now()) {
-    try {
-      const out = {};
-      Object.keys(state).forEach(k => { if (k[0] !== '_') out[k] = state[k]; });
-      out.lastSeen = now;
-      safeStorage.set('pbf_pet', JSON.stringify(out));
-    } catch (e) { /* storage blocked or full: the pet keeps going */ }
-  }
-
-  function setSpecies(state, species) {
-    if (!SPECIES.includes(species)) return state;
-    const s = Object.assign({}, state, { species });
-    if (!s.renamed) s.name = DEFAULT_NAMES[species];
-    if (s.accessory === 'orange' && species !== 'capybara') s.accessory = null;
-    return s;
-  }
-
-  function moodWord(state, ctx) {
-    const n = state.needs, c = ctx || {};
-    if (c.now < c.startledUntil) return 'startled';
-    if (n.energy < 25 || c.asleep) return 'sleepy';
-    if (n.hunger > 65) return 'hungry';
-    if (n.affection < 35) return 'sulky';
-    if (n.fun > 70 && n.energy > 50) return 'playful';
-    if (n.affection > 70) return 'happy';
-    return 'content';
-  }
-
-  return { SPECIES, DEFAULT_NAMES, localDate, defaults, migrateAnimal, offlineDrift, recordDay, load, save, setSpecies, moodWord };
-})();
-
-/* ==UNIT PetArt== */
-/* ---------- PetArt: shape rigs -> pixel key maps (cached), layers, palette ---------- */
-const PetArt = (function () {
-  'use strict';
-  const SPECIES = ['cat', 'shiba', 'capybara'];
-  const FRAMES = { stand: 1, walk: 6, run: 4, sit: 3, lie: 3, sleep: 1, eat: 2, jump: 4, startle: 1, bow: 1, roll: 3, faint: 1 };
-  const frameCount = (sp, pose) => (sp === 'capybara' && pose === 'jump') ? 3 : FRAMES[pose];
-  const lerp = (a, b, t) => a + (b - a) * t;
-  const clamp01 = t => Math.max(0, Math.min(1, t));
-
-  // ---- generator: primitives -> mask -> keys -> auto shade/highlight -> paint -> outline ----
-  function inside(s, x, y) {
-    if (s.t === 'ell') return ((x - s.cx) / s.rx) ** 2 + ((y - s.cy) / s.ry) ** 2 <= 1;
-    if (s.t === 'rect') return x >= s.x && x < s.x + s.w && y >= s.y && y < s.y + s.h;
-    if (s.t === 'seg') {
-      const dx = s.x2 - s.x1, dy = s.y2 - s.y1, L = dx * dx + dy * dy;
-      const t = L ? clamp01(((x - s.x1) * dx + (y - s.y1) * dy) / L) : 0;
-      const px = s.x1 + dx * t - x, py = s.y1 + dy * t - y;
-      return px * px + py * py <= s.r * s.r;
-    }
-    if (s.t === 'poly') {
-      let c = false; const p = s.pts;
-      for (let i = 0, j = p.length - 1; i < p.length; j = i++) {
-        const [xi, yi] = p[i], [xj, yj] = p[j];
-        if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) c = !c;
-      }
-      return c;
-    }
-    return false;
-  }
-  // opts: { hl:[x0,x1], shadeBelow, blockers:[shapes] (no outline drawn inside them) }
-  function gen(W, H, shapes, paint, opts = {}) {
-    const key = [];
-    for (let y = 0; y < H; y++) {
-      key.push([]);
-      for (let x = 0; x < W; x++) {
-        let k = ' '; const px = x + .5, py = y + .5;
-        for (const s of shapes) if (inside(s, px, py)) k = s.sub ? ' ' : (s.key || 'b');
-        key[y].push(k);
-      }
-    }
-    const M = (x, y) => x >= 0 && y >= 0 && x < W && y < H && key[y][x] !== ' ';
-    const base = key.map(r => r.slice());
-    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
-      if (base[y][x] !== 'b') continue;
-      if (!M(x, y + 1)) key[y][x] = 's';
-      else if (!M(x, y + 2) && y > (opts.shadeBelow || 0)) key[y][x] = 's';
-      if (!M(x, y - 1) && (!opts.hl || (x >= opts.hl[0] && x <= opts.hl[1]))) key[y][x] = 'h';
-    }
-    const P = {
-      px(x, y, c) { x = Math.floor(x); y = Math.floor(y); if (M(x, y)) key[y][x] = c; },
-      arc(cx, cy, rx, ry, a0, a1, c) { for (let a = a0; a <= a1; a += 2) { const r = a * Math.PI / 180; P.px(cx + Math.cos(r) * rx, cy + Math.sin(r) * ry, c); } },
-      ell(cx, cy, rx, ry, c, f) {
-        for (let y = 0; y < H; y++) for (let x = 0; x < W; x++)
-          if (M(x, y) && ((x + .5 - cx) / rx) ** 2 + ((y + .5 - cy) / ry) ** 2 <= 1 && (!f || f(x, y, key[y][x]))) key[y][x] = c;
-      },
-      region(f, c) { for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (M(x, y) && f(x, y, key[y][x])) key[y][x] = c; }
-    };
-    if (paint) paint(P);
-    const blk = opts.blockers || [];
-    const out = key.map(r => r.slice());
-    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
-      if (M(x, y)) continue;
-      if (!(M(x + 1, y) || M(x - 1, y) || M(x, y + 1) || M(x, y - 1))) continue;
-      if (blk.some(s => inside(s, x + .5, y + .5))) continue;
-      out[y][x] = 'o';
-    }
-    return out.map(r => r.join(''));
-  }
-
-  // ---- geometry helpers ----
-  function rotPt(p, c, deg) {
-    const r = deg * Math.PI / 180, dx = p[0] - c[0], dy = p[1] - c[1];
-    return [c[0] + dx * Math.cos(r) - dy * Math.sin(r), c[1] + dx * Math.sin(r) + dy * Math.cos(r)];
-  }
-  function moveShape(s, f) {   // f maps a point
-    if (s.t === 'ell') { const [cx, cy] = f([s.cx, s.cy]); return Object.assign({}, s, { cx, cy }); }
-    if (s.t === 'rect') { const [x, y] = f([s.x + s.w / 2, s.y + s.h / 2]); return Object.assign({}, s, { x: x - s.w / 2, y: y - s.h / 2 }); }
-    if (s.t === 'seg') { const a = f([s.x1, s.y1]), b = f([s.x2, s.y2]); return Object.assign({}, s, { x1: a[0], y1: a[1], x2: b[0], y2: b[1] }); }
-    if (s.t === 'poly') return Object.assign({}, s, { pts: s.pts.map(f) });
-    return s;
-  }
-  // knee position for a 2-segment leg (equal segments), bend: +1 knee toward +x, -1 toward -x
-  function knee(h, f, len, bend) {
-    const l = len / 2, dx = f[0] - h[0], dy = f[1] - h[1], d = Math.hypot(dx, dy) || 0.001;
-    const m = [(h[0] + f[0]) / 2, (h[1] + f[1]) / 2];
-    if (d >= len) return m;
-    const k = Math.sqrt(Math.max(0, l * l - (d / 2) * (d / 2)));
-    let nx = -dy / d, ny = dx / d;
-    if (Math.sign(nx || 1) !== bend) { nx = -nx; ny = -ny; }
-    return [m[0] + nx * k, m[1] + ny * k];
-  }
-
-  // ---- species rigs (standing pose, facing right; feet rest on y = ground) ----
-  const RIGS = {
-    shiba: {
-      W: 36, H: 22, ground: 21, rearX: 7, frontX: 25, hl: [4, 31], shadeBelow: 9, legR: 1.05, len: 7,
-      torso: [
-        { t: 'ell', cx: 15, cy: 12.2, rx: 9.6, ry: 4.4 },
-        { t: 'ell', cx: 10.5, cy: 12.6, rx: 4.6, ry: 4.2 },
-        { t: 'ell', cx: 22, cy: 11.5, rx: 4.4, ry: 5.0 },
-        { t: 'ell', cx: 24.4, cy: 7.8, rx: 3.6, ry: 4.4 }
-      ],
-      legs: [ // id, hip x/y, far?, front?
-        { id: 'bf', x: 11.5, y: 14, far: true, front: false }, { id: 'ff', x: 23.5, y: 14, far: true, front: true },
-        { id: 'bn', x: 9.5, y: 14, far: false, front: false }, { id: 'fn', x: 21.5, y: 14, far: false, front: true }
-      ],
-      neck: [25.5, 6.5], tailRoot: [7.5, 9], mouth: [33, 8], hatOff: [1, -5], neckAcc: [24, 10],
-      stride: 4.2, lift: 2.2,
-      marks(P, T) {
-        const c = T([25.6, 10.6]); P.ell(c[0], c[1], 2.2, 4.4, 'w', (x) => x >= c[0] - 1.6);
-        const b = T([16, 15.5]); P.region((x, y, k) => k !== ' ' && Math.abs(y - b[1]) <= 0.6 && x >= b[0] - 3 && x <= b[0] + 5, 'w');
-        const th = T([10.5, 12.6]); P.arc(th[0], th[1], 3.6, 3.4, -60, 100, 's');
-      },
-      sock: true
-    },
-    cat: {
-      W: 30, H: 19, ground: 18, rearX: 7, frontX: 22, hl: [5, 27], shadeBelow: 8, legR: 0.95, len: 6,
-      torso: [
-        { t: 'ell', cx: 14, cy: 11, rx: 8.6, ry: 3.6 },
-        { t: 'ell', cx: 9.5, cy: 11, rx: 4.2, ry: 3.8 },
-        { t: 'ell', cx: 19.5, cy: 10.6, rx: 3.8, ry: 3.8 },
-        { t: 'ell', cx: 21.6, cy: 7.6, rx: 2.8, ry: 3.4 }
-      ],
-      legs: [
-        { id: 'bf', x: 10.5, y: 12.5, far: true, front: false }, { id: 'ff', x: 20.5, y: 12.5, far: true, front: true },
-        { id: 'bn', x: 8.5, y: 12.5, far: false, front: false }, { id: 'fn', x: 18.5, y: 12.5, far: false, front: true }
-      ],
-      neck: [22.5, 6.5], tailRoot: [6, 9.5], mouth: [27, 8], hatOff: [0, -5], neckAcc: [21.5, 9.5],
-      stride: 3.6, lift: 1.8,
-      marks(P, T) {
-        [[11, 8], [14, 8], [17, 8]].forEach(p => { const q = T(p); P.region((x, y, k) => k !== ' ' && k !== 'o' && Math.abs(x + .5 - q[0]) < .6 && y >= q[1] - .5 && y <= q[1] + 1.5, 'k'); });
-        const ch = T([21.5, 10.5]); P.ell(ch[0], ch[1], 1.6, 2.6, 'w', (x) => x >= ch[0] - .5);
-      },
-      sock: true
-    },
-    capybara: {
-      W: 40, H: 19, ground: 18, rearX: 4, frontX: 27, hl: [2, 36], shadeBelow: 8, legR: 1.45, len: 5,
-      torso: [
-        { t: 'ell', cx: 9.5, cy: 7.4, rx: 8.4, ry: 6.4 },
-        { t: 'ell', cx: 18, cy: 8.4, rx: 11, ry: 5.6 },
-        { t: 'ell', cx: 25, cy: 8.4, rx: 5.2, ry: 4.6 }
-      ],
-      legs: [
-        { id: 'bf', x: 11.5, y: 13, far: true, front: false }, { id: 'ff', x: 26.5, y: 13, far: true, front: true },
-        { id: 'bn', x: 7.5, y: 13, far: false, front: false }, { id: 'fn', x: 23.5, y: 13, far: false, front: true }
-      ],
-      neck: [27, 6], tailRoot: null, mouth: [36, 10], hatOff: [1, -4], neckAcc: [26, 9],
-      stride: 2.2, lift: 1.2,
-      marks(P, T) {
-        const h = T([9.5, 9.5]); P.arc(h[0], h[1], 5.6, 5.2, -40, 120, 's');
-        const s = T([24.6, 10.4]); P.arc(s[0], s[1], 3.0, 2.8, 120, 210, 's');
-      },
-      sock: false
-    }
-  };
-
-  // ---- heads (layer): shapes in standing body coords; rotated about the rig's neck point ----
-  const HEADS = {
-    shiba: {
-      shapes: () => [
-        { t: 'ell', cx: 27.4, cy: 5.6, rx: 4.6, ry: 3.7 },
-        { t: 'poly', pts: [[29, 4.6], [33.6, 5.6], [34.8, 6.6], [34.2, 7.9], [31, 8.8], [28.5, 8.6]] }
-      ],
-      ears: back => back
-        ? [{ t: 'poly', pts: [[23.4, 4.4], [22.0, 1.4], [25.8, 3.0]] }, { t: 'poly', pts: [[25.8, 3.2], [24.2, 0.6], [28.6, 2.6]] }]
-        : [{ t: 'poly', pts: [[24.2, 4.2], [24.9, 0.6], [27.2, 3.2]] }, { t: 'poly', pts: [[26.4, 3.0], [28.2, 0.3], [29.8, 3.6]] }],
-      paint(P, R, back) {
-        const m = R([31.5, 8.4]); P.ell(m[0], m[1], 3.4, 1.1, 'w');
-        const c = R([28.2, 7.6]); P.ell(c[0], c[1], 1.8, 1.2, 'w');
-        if (!back) { const e1 = R([27.5, 1.5]); P.px(e1[0], e1[1], 'h'); P.px(e1[0] + 1, e1[1] + 1, 'h'); }
-        const nose = R([34.2, 6.2]); P.px(nose[0], nose[1], 'e');
-        const brow = R([28.5, 4.4]); P.px(brow[0], brow[1], 'w');
-        const mo = R([32.5, 8.5]); P.px(mo[0], mo[1], 's');
-      },
-      eye: [29.5, 5.5], hat: [27.5, 1.5], hl: [20, 34]
-    },
-    cat: {
-      shapes: () => [
-        { t: 'ell', cx: 24.4, cy: 5.2, rx: 3.9, ry: 3.4 },
-        { t: 'ell', cx: 27.0, cy: 6.6, rx: 1.9, ry: 1.5 }
-      ],
-      ears: back => back
-        ? [{ t: 'poly', pts: [[21, 3.6], [19.6, 1.0], [23, 2.2]] }, { t: 'poly', pts: [[23.6, 2.0], [22.6, -0.4], [26, 1.6]] }]
-        : [{ t: 'poly', pts: [[21.2, 3.4], [21.4, -0.4], [23.6, 2.2]] }, { t: 'poly', pts: [[24.2, 2.0], [25.6, -0.8], [26.6, 2.8]] }],
-      paint(P, R, back) {
-        const m = R([27.2, 7.4]); P.ell(m[0], m[1], 1.8, 1.0, 'w');
-        const n = R([28.6, 6.3]); P.px(n[0], n[1], 'n');
-        [[23, 2.2], [24.4, 2.4]].forEach(p => { const q = R(p); P.px(q[0], q[1], 'k'); });
-        if (!back) { const e = R([25.2, 1.0]); P.px(e[0], e[1], 'h'); }
-      },
-      eye: [25.5, 5.0], hat: [24, 0.6], hl: [18, 30]
-    },
-    capybara: {
-      shapes: () => [
-        { t: 'poly', pts: [[24.5, 4.6], [27.5, 3.4], [32, 3.1], [35.2, 3.7], [37.2, 5.0], [37.6, 8.6], [36.4, 10.6], [33, 11.4], [28.5, 11.2], [25.5, 10.2]] }
-      ],
-      ears: back => back ? [{ t: 'ell', cx: 27.6, cy: 3.4, rx: 1.5, ry: 1.0 }] : [{ t: 'ell', cx: 28.4, cy: 3.1, rx: 1.4, ry: 1.3 }],
-      paint(P, R) {
-        const j = R([31.5, 7.6]); P.arc(j[0], j[1], 3.9, 3.6, 95, 215, 's');
-        const m1 = R([35.5, 10.5]), m2 = R([36.5, 10.5]); P.px(m1[0], m1[1], 's'); P.px(m2[0], m2[1], 's');
-        const n = R([36.5, 5.5]); P.px(n[0], n[1], 'k');
-        const b = R([29.5, 4.5]); P.px(b[0], b[1], 'k');
-        const ie = R([28.5, 2.5]); P.px(ie[0], ie[1], 'h');
-      },
-      eye: [30.5, 4.5], hat: [31, 2.4], hl: [24, 38]
-    }
-  };
-  const HEAD_ANGLE = { level: 0, up: -24, down: 38 };
-
-  // ---- tails (layer) ----
-  const TAILS = {
-    cat(k, puffed) {   // long tail rising from the rump; k 0..4 sweeps it
-      // starts pointing up-left from the rump and curls toward vertical; k sways the whole tail
-      const root = [6, 9.5], start = [236, 228, 220, 212, 204][k];
-      const pts = [root]; let p = root.slice(), ang = start * Math.PI / 180;
-      for (let i = 0; i < 4; i++) { ang += 0.2; p = [p[0] + Math.cos(ang) * 2.1, p[1] + Math.sin(ang) * 2.1]; pts.push(p); }
-      const r = puffed ? 1.6 : 0.95;
-      const shapes = []; for (let i = 0; i < pts.length - 1; i++) shapes.push({ t: 'seg', x1: pts[i][0], y1: pts[i][1], x2: pts[i + 1][0], y2: pts[i + 1][1], r });
-      return { shapes, root, behind: true, paint: P => { const t = pts[pts.length - 1]; P.px(t[0], t[1], 'k'); } };
-    },
-    shiba(k) {   // curled tail over the back
-      const d = [[0, 0], [0.5, -0.4], [1.0, -0.2], [0.6, 0.3], [-0.3, 0.2]][k];
-      const root = [7.5, 9];
-      const cx = 4.3 + d[0] + 3, cy = 4.2 + d[1] + 1;
-      return {
-        shapes: [
-          { t: 'ell', cx, cy, rx: 3.4, ry: 3.2 },
-          { t: 'ell', cx: cx + .3, cy: cy + .2, rx: 1.3, ry: 1.2, sub: true },
-          { t: 'seg', x1: root[0], y1: root[1], x2: cx + 1.2, y2: cy + 2.2, r: 1.4 }
-        ],
-        root, behind: false,
-        paint: P => P.region((x, y) => y >= cy && x <= cx + .3, 'w')
-      };
-    }
-  };
-
-  // ---- poses: per frame -> { T (body point transform), feet, headOff, headAngle, sy } ----
-  function poseParams(sp, pose, i) {
-    const R = RIGS[sp], len = R.len;
-    const n = frameCount(sp, pose);
-    const P = { dyRear: 0, dyFront: 0, dx: 0, arch: 0, headOff: [0, 0], headAngle: 'level', feet: null, hidden: [], lyingSide: false };
-    const legFoot = (leg, dx, lift) => [leg.x + dx, R.ground - 0.5 - lift];
-    const gait = (phaseOff, stance, stride, liftH, t) => {
-      const feet = {};
-      R.legs.forEach(l => {
-        const ph = (t + phaseOff[l.id]) % 1;
-        let dx, lift = 0;
-        if (ph < stance) dx = stride * (0.5 - ph / stance);
-        else { const s = (ph - stance) / (1 - stance); dx = stride * (-0.5 + s); lift = Math.sin(s * Math.PI) * liftH; }
-        feet[l.id] = legFoot(l, dx, lift);
-      });
-      return feet;
-    };
-    switch (pose) {
-      case 'stand': break;
-      case 'walk': P.feet = gait({ bn: 0, fn: 0.25, bf: 0.5, ff: 0.75 }, 0.6, R.stride, R.lift, i / n);
-        P.dyRear = P.dyFront = (i % 3 === 1) ? -0.4 : 0; break;
-      case 'run': {
-        P.feet = gait({ bn: 0, bf: 0.1, fn: 0.5, ff: 0.6 }, 0.4, R.stride * 1.7, R.lift * 1.6, i / n);
-        const s = Math.sin(i / n * Math.PI * 2); P.dyFront = s * 1.2; P.dyRear = -s * 1.2; break;
-      }
-      case 'sit': {
-        const t = [0.45, 0.8, 1][i];
-        P.dyRear = t * (len - 1.5); P.dyFront = -t * 1.2; P.headAngle = 'level';
-        P.feet = {}; R.legs.forEach(l => { P.feet[l.id] = l.front ? legFoot(l, 0.5 * t, 0) : legFoot(l, 3.2 * t, 0); });
-        break;
-      }
-      case 'lie': case 'sleep': case 'faint': {
-        const t = pose === 'lie' ? [0.45, 0.8, 1][i] : 1;
-        P.dyRear = P.dyFront = t * (len - 1.2);
-        P.feet = {};
-        R.legs.forEach(l => {
-          if (pose === 'faint') P.feet[l.id] = legFoot(l, l.front ? len * 0.9 : -len * 0.9, 1.2);
-          else if (pose === 'sleep') P.feet[l.id] = legFoot(l, l.front ? 2 : 1.5, 0.2);
-          else P.feet[l.id] = legFoot(l, l.front ? len * 0.8 * t : 1.6 * t, 0);
-        });
-        if (pose === 'sleep') { P.headOff = [-1.5, len - 0.5]; P.headAngle = 'down'; P.sy = 0.9; }
-        if (pose === 'faint') { P.headOff = [0.5, len - 1.5]; P.lyingSide = true; }
-        break;
-      }
-      case 'eat': P.headOff = [1.5, 4 + i * 0.6]; P.headAngle = 'down'; P.dyFront = 0.6; break;
-      case 'jump': {
-        const step = sp === 'capybara' ? ['crouch', 'rise', 'land'][i] : ['crouch', 'rise', 'fall', 'land'][i];
-        P.feet = {};
-        R.legs.forEach(l => {
-          if (step === 'crouch') P.feet[l.id] = legFoot(l, 0, 0);
-          if (step === 'rise') P.feet[l.id] = l.front ? [l.x - 1.5, l.y + len - 2.5] : [l.x - 3.5, l.y + len - 0.6];
-          if (step === 'fall') P.feet[l.id] = l.front ? [l.x + 2.5, l.y + len - 0.6] : [l.x + 1.5, l.y + len - 2.5];
-          if (step === 'land') P.feet[l.id] = legFoot(l, l.front ? 1.4 : -1.4, 0);
-        });
-        if (step === 'crouch') { P.dyRear = P.dyFront = 2; }
-        if (step === 'rise') { P.dyFront = -1.5; P.dyRear = 0.8; P.headAngle = 'up'; }
-        if (step === 'fall') { P.dyFront = 0.8; P.dyRear = -0.8; P.headAngle = 'down'; }
-        if (step === 'land') { P.dyRear = P.dyFront = 1.2; }
-        break;
-      }
-      case 'startle':
-        P.dyRear = P.dyFront = -1; P.arch = sp === 'cat' ? 2.2 : 1; P.headAngle = 'up';
-        P.feet = {}; R.legs.forEach(l => { P.feet[l.id] = legFoot(l, l.front ? 1.6 : -1.6, 0); }); break;
-      case 'bow':
-        P.dyFront = len - 2; P.dyRear = -0.5; P.headAngle = 'level'; P.headOff = [1, 0];
-        P.feet = {}; R.legs.forEach(l => { P.feet[l.id] = l.front ? legFoot(l, len * 0.9, 0) : legFoot(l, -0.5, 0); }); break;
-      case 'roll': {
-        P.dyRear = P.dyFront = len - 0.8; P.headAngle = 'up'; P.headOff = [0, len - 2.5];
-        P.feet = {}; R.legs.forEach((l, j) => {
-          const w = Math.sin((i / n) * Math.PI * 2 + j) * 1.2;
-          P.feet[l.id] = [l.x + w + (l.front ? 1 : -1), l.y + len - 0.8 - len - 1.5];
-        });
-        P.upsideDown = true; break;
-      }
-    }
-    return P;
-  }
-
-  function makeT(sp, P) {
-    const R = RIGS[sp];
-    return p => {
-      const t = clamp01((p[0] - R.rearX) / (R.frontX - R.rearX));
-      const archY = P.arch ? -P.arch * Math.sin(t * Math.PI) : 0;
-      return [p[0] + P.dx, p[1] + lerp(P.dyRear, P.dyFront, t) + archY];
-    };
-  }
-
-  const cache = new Map();
-  function memo(k, f) { if (!cache.has(k)) cache.set(k, f()); return cache.get(k); }
-
-  function frame(sp, pose, i) {
-    return memo('f|' + sp + '|' + pose + '|' + i, () => {
-      const R = RIGS[sp], P = poseParams(sp, pose, i), T = makeT(sp, P);
-      const shapes = R.torso.map(s => {
-        const m = moveShape(s, T);
-        return (P.sy && m.t === 'ell') ? Object.assign(m, { ry: m.ry * P.sy, cy: m.cy + m.ry * (1 - P.sy) }) : m;
-      });
-      const legShapes = [];
-      R.legs.forEach(l => {
-        const hip = T([l.x, l.y]);
-        let foot = P.feet ? P.feet[l.id] : [l.x, R.ground - 0.5];
-        if (P.upsideDown) foot = [foot[0], Math.min(foot[1], hip[1] - 1)];
-        // legs never reach past the leg length
-        const d = Math.hypot(foot[0] - hip[0], foot[1] - hip[1]);
-        if (d > R.len) foot = [hip[0] + (foot[0] - hip[0]) * R.len / d, hip[1] + (foot[1] - hip[1]) * R.len / d];
-        const k = knee(hip, foot, R.len, l.front ? 1 : -1);
-        const key = l.far ? 's' : 'b';
-        legShapes.push({ t: 'seg', x1: hip[0], y1: hip[1], x2: k[0], y2: k[1], r: R.legR, key, far: l.far });
-        legShapes.push({ t: 'seg', x1: k[0], y1: k[1], x2: foot[0], y2: foot[1], r: R.legR * 0.92, key, far: l.far });
-        if (R.sock) legShapes.push({ t: 'seg', x1: foot[0] - (l.front ? 0 : 0), y1: foot[1] - 0.6, x2: foot[0] + 0.4, y2: foot[1], r: R.legR * 0.95, key: 'w', far: l.far });
-      });
-      // far legs first, body, near legs on top
-      const all = legShapes.filter(s => s.far).concat(shapes, legShapes.filter(s => !s.far));
-      const map = gen(R.W, R.H, all, Pt => R.marks(Pt, T), { hl: R.hl, shadeBelow: R.shadeBelow });
-      const neck = T(R.neck);
-      const head = [neck[0] + P.headOff[0], neck[1] + P.headOff[1]];
-      const rows = map.map((r, y) => r.trim() ? y : -1).filter(y => y >= 0);
-      const legTop = Math.min(...R.legs.map(l => T([l.x, l.y])[1]));
-      const xs = []; map.forEach(r => [...r].forEach((c, x) => { if (c !== ' ') xs.push(x); }));
-      return {
-        map, W: R.W, H: R.H,
-        split: Math.max(1, Math.floor(legTop)),
-        top: rows.length ? rows[0] : 0,
-        headAngle: P.headAngle,
-        anchors: {
-          head, neck: T(R.neckAcc), mouth: [R.mouth[0] + P.headOff[0], R.mouth[1] + T(R.mouth)[1] - R.mouth[1] + P.headOff[1]],
-          hat: [head[0] + R.hatOff[0], head[1] + R.hatOff[1]],
-          tail: R.tailRoot ? T(R.tailRoot) : null,
-          shadow: [Math.min(...xs) + 2, Math.max(...xs) - 2]
-        }
-      };
-    });
-  }
-
-  function head(sp, angle, ears) {
-    return memo('h|' + sp + '|' + angle + '|' + ears, () => {
-      const R = RIGS[sp], Hd = HEADS[sp], c = R.neck, deg = HEAD_ANGLE[angle] || 0;
-      const rot = p => rotPt(p, c, deg);
-      const shapes = Hd.shapes().concat(Hd.ears(ears === 'back')).map(s => moveShape(s, rot));
-      // the neck below the head blocks the head's outline so the join is seamless
-      const neckBlock = R.torso.slice(-1).map(s => Object.assign({}, s));
-      const map = gen(R.W, R.H, shapes, Pt => Hd.paint(Pt, rot, ears === 'back'), { hl: Hd.hl, blockers: neckBlock });
-      return { map, W: R.W, H: R.H, eye: rot(Hd.eye).map(Math.floor), hat: rot(Hd.hat), neckJoin: c.slice() };
-    });
-  }
-
-  function tail(sp, k, puffed = false) {
-    if (!TAILS[sp]) return null;
-    return memo('t|' + sp + '|' + k + '|' + !!puffed, () => {
-      const R = RIGS[sp], d = TAILS[sp](k, puffed);
-      const map = gen(R.W, R.H, d.shapes, d.paint, { hl: [0, R.W], blockers: [R.torso[sp === 'cat' ? 1 : 1]] });
-      return { map, W: R.W, H: R.H, root: d.root, behind: d.behind };
-    });
-  }
-
-  const EYES = {
-    open: [[0, 0, 'e']],
-    half: [[0, 0, 'e'], [0, -1, 's']],
-    closed: [[0, 0, 's']],
-    happy: [[-1, 0, 'e'], [0, -1, 'e'], [1, 0, 'e']],
-    faint: [[-1, -1, 'e'], [1, -1, 'e'], [0, 0, 'e'], [-1, 1, 'e'], [1, 1, 'e']]
-  };
-  function eyes(kind) { return EYES[kind] || EYES.open; }
-
-  // accessories: small maps with their own anchor point (A = acc1, B = acc2)
-  const ACC = {
-    bandana: { anchor: 'neck', at: [2, 0], map: ['oooooo', 'oAAAAo', ' oAAo ', '  oo  '] },
-    scarf:   { anchor: 'neck', at: [3, 0], map: ['ooooooo', 'oABABAo', 'oooAAo ', '  oAo  ', '  oo   '] },
-    bow:     { anchor: 'hat', at: [2, 2], map: ['oo oo', 'oAoAo', 'oABAo', 'oo oo'] },
-    party:   { anchor: 'hat', at: [1, 5], map: ['  o  ', ' oAo ', ' oBo ', 'oAAAo', 'oBBBo', 'ooooo'] },
-    crown:   { anchor: 'hat', at: [3, 3], map: ['o o o', 'oBoBo', 'oBBBo', 'ooooo'] },
-    orange:  { anchor: 'hat', at: [2, 3], map: ['  h ', ' ooo', 'oAAAo', 'oAAAo', ' ooo '] }
-  };
-  function accessory(id, sp, angle) {
-    const a = ACC[id]; if (!a) return null;
-    return { map: a.map, anchor: a.anchor, at: a.at };
-  }
-
-  // ---- palette ----
-  const hx = h => { h = String(h || '').trim(); if (/^#[0-9a-f]{3}$/i.test(h)) h = '#' + [...h.slice(1)].map(c => c + c).join(''); return /^#[0-9a-f]{6}$/i.test(h) ? [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16)) : null; };
-  function toHex(c) { return '#' + c.map(v => Math.max(0, Math.min(255, Math.round(v + 1e-9))).toString(16).padStart(2, '0')).join(''); }
-  function parseColor(c) {
-    const s = String(c || '').trim();
-    const h8 = s.match(/^#([0-9a-f]{6})[0-9a-f]{2}$/i); if (h8) return hx('#' + h8[1]);
-    const h4 = s.match(/^#([0-9a-f]{3})[0-9a-f]$/i); if (h4) return hx('#' + h4[1]);
-    const hs = s.match(/^hsla?\(\s*([\d.]+)(?:deg)?[\s,]+([\d.]+)%[\s,]+([\d.]+)%/i);
-    if (hs) {
-      const H = (+hs[1] % 360) / 360, S = +hs[2] / 100, L = +hs[3] / 100;
-      const q = L < .5 ? L * (1 + S) : L + S - L * S, p = 2 * L - q;
-      const f = t => { t = (t + 1) % 1; return t < 1 / 6 ? p + (q - p) * 6 * t : t < .5 ? q : t < 2 / 3 ? p + (q - p) * (2 / 3 - t) * 6 : p; };
-      return [f(H + 1 / 3), f(H), f(H - 1 / 3)].map(v => v * 255);
-    }
-    const h = hx(s); if (h) return h;
-    const m = String(c || '').match(/rgba?\(\s*([\d.]+)[ ,]+([\d.]+)[ ,]+([\d.]+)/i);
-    return m ? [+m[1], +m[2], +m[3]] : [217, 119, 87];
-  }
-  function mix(a, b, t) { const A = parseColor(a), B = parseColor(b); return toHex(A.map((v, i) => v + (B[i] - v) * t)); }
-  const dist = (a, b) => { const A = parseColor(a), B = parseColor(b); return Math.hypot(A[0] - B[0], A[1] - B[1], A[2] - B[2]); };
-  function palette({ accent, accent2, accent3 }) {
-    const ac = toHex(parseColor(accent));
-    const p = {
-      b: ac, s: mix(ac, '#000000', .2), o: mix(ac, '#000000', .5), k: mix(ac, '#000000', .38),
-      h: mix(ac, '#ffffff', .3), w: mix(ac, '#ffffff', .62), n: mix(ac, '#ff8fa3', .45), e: '#1c1714'
-    };
-    p.acc1 = (accent2 && dist(accent2, ac) >= 40) ? toHex(parseColor(accent2)) : p.h;
-    p.acc2 = (accent3 && dist(accent3, ac) >= 40) ? toHex(parseColor(accent3)) : p.k;
-    p.A = p.acc1; p.B = p.acc2;
-    return p;
-  }
-
-  // Merge every layer of one pose into a key grid (PAD spare rows on top for ears, hats, jumps).
-  // Head and front-tail outlines never cover body fill, so joins stay seamless.
-  const PAD = 6;
-  function compose(sp, pose, i, o = {}) {
-    const ck = 'c|' + sp + '|' + pose + '|' + i + '|' + [o.headAngle, o.ears, o.eyes, o.tailK, !!o.puffed, o.accessory, !!o.noTail, !!o.noEyes].join('|');
-    return memo(ck, () => composeNow(sp, pose, i, o));
-  }
-  function composeNow(sp, pose, i, o) {
-    const f = frame(sp, pose, i), W = f.W, H = f.H + PAD;
-    const g = Array.from({ length: H }, (_, y) => y < PAD ? Array(W).fill(' ') : [...f.map[y - PAD]]);
-    const put = (m, ox, oy, mode) => m.forEach((r, y) => [...r].forEach((c, x) => {
-      if (c === ' ') return; const X = Math.round(x + ox), Y = Math.round(y + oy) + PAD;
-      if (Y < 0 || Y >= H || X < 0 || X >= W) return;
-      const cur = g[Y][X];
-      if (mode === 'under') { if (cur === ' ') g[Y][X] = c; return; }
-      if (mode !== 'force' && c === 'o' && cur !== ' ' && cur !== 'o') return;
-      g[Y][X] = c;
-    }));
-    const t = (!o.noTail && sp !== 'capybara' && f.anchors.tail) ? tail(sp, o.tailK || 0, o.puffed) : null;
-    if (t && t.behind) put(t.map, f.anchors.tail[0] - t.root[0], f.anchors.tail[1] - t.root[1], 'under');
-    const h = head(sp, o.headAngle || f.headAngle, o.ears || 'up');
-    const hx0 = f.anchors.head[0] - h.neckJoin[0], hy0 = f.anchors.head[1] - h.neckJoin[1];
-    put(h.map, hx0, hy0);
-    if (t && !t.behind) put(t.map, f.anchors.tail[0] - t.root[0], f.anchors.tail[1] - t.root[1]);
-    const eyeKind = o.eyes || (pose === 'faint' ? 'faint' : pose === 'sleep' ? 'closed' : 'open');
-    const ex = Math.round(h.eye[0] + hx0), ey = Math.round(h.eye[1] + hy0);
-    if (!o.noEyes) eyes(eyeKind).forEach(([dx, dy, k]) => { const X = ex + dx, Y = ey + dy + PAD; if (Y >= 0 && Y < H && X >= 0 && X < W && g[Y][X] !== ' ') g[Y][X] = k; });
-    if (o.accessory) {
-      const a = accessory(o.accessory, sp);
-      if (a) {
-        const at = a.anchor === 'hat' ? [h.hat[0] + hx0, h.hat[1] + hy0] : f.anchors.neck;
-        put(a.map, Math.round(at[0] - a.at[0]), Math.round(at[1] - a.at[1]), 'force');
-      }
-    }
-    return { rows: g.map(r => r.join('')), W, H, pad: PAD, split: f.split + PAD, eye: [ex, ey + PAD],
-      tail: t ? { k: o.tailK || 0, behind: t.behind, ox: Math.round(f.anchors.tail[0] - t.root[0]), oy: Math.round(f.anchors.tail[1] - t.root[1]) + PAD } : null };
-  }
-
-  function clearCache() { cache.clear(); }
-
-  return { SPECIES, FRAMES, frameCount, RIGS, PAD, gen, frame, head, tail, eyes, accessory, compose, palette, mix, clearCache };
-})();
-/* ==END PetArt== */
-
-/* ==UNIT PetWorld== */
-/* ---------- PetWorld: surfaces, the solid button block, centre band, nap spot, toys/treats/laser ---------- */
-const PetWorld = (function () {
-  'use strict';
-  let overlay = null;
-  const rectOf = sel => { const el = typeof sel === 'string' ? document.querySelector(sel) : sel; return el ? el.getBoundingClientRect() : null; };
-
-  function attach(ov) { overlay = ov; }
-  function setEnv() { /* nothing configurable since v3.1 */ }
-  function origin() { const r = overlay ? overlay.getBoundingClientRect() : { left: 0, top: 0, width: 0 }; return r; }
-
-  // Surfaces in overlay coordinates. Floor = the action bar's ground line (2px above its bottom).
-  function measure() {
-    const o = origin(), strip = rectOf('.dock-actions');
-    if (!strip) return [];
-    const S = [{ id: 'floor', x0: strip.left - o.left + 4, x1: strip.right - o.left - 4, y: strip.bottom - o.top - 2 }];
-    [['generate', '#generate-btn'], ['reset', '#reset-all-btn']].forEach(([id, sel]) => {
-      const r = rectOf(sel);
-      if (r && r.width > 0) S.push({ id, x0: r.left - o.left + 2, x1: r.right - o.left - 2, y: r.top - o.top, bx0: r.left - o.left, bx1: r.right - o.left });
-    });
-    return S;
-  }
-  // The buttons are solid: neighbouring buttons closer than 30px form one block the pet must go over.
-  function blocks(S) {
-    S = S || measure();
-    const parts = S.filter(s => s.id !== 'floor').sort((a, b) => a.bx0 - b.bx0), out = [];
-    parts.forEach(p => {
-      const last = out[out.length - 1];
-      if (last && p.bx0 - last.x1 < 30) { last.x1 = Math.max(last.x1, p.bx1); last.top = Math.min(last.top, p.y); last.parts.push(p.id); }
-      else out.push({ x0: p.bx0, x1: p.bx1, top: p.y, parts: [p.id] });
-    });
-    return out;
-  }
-  // Nearest x for a sprite of width w whose left edge is x that keeps it clear of every block.
-  function clearOfBlocks(x, w, S) {
-    for (const k of blocks(S)) {
-      if (x + w > k.x0 && x < k.x1) {
-        const left = k.x0 - w - 1, right = k.x1 + 1;
-        x = (Math.abs(x - left) <= Math.abs(x - right)) ? left : right;
-      }
-    }
-    return x;
-  }
-  function centreBand() {
-    const o = origin(), g = rectOf('#generate-btn'), r = rectOf('#reset-all-btn');
-    if (!g || !r) return { x0: 0, x1: 0 };
-    return { x0: Math.min(g.left, r.left) - o.left - 60, x1: Math.max(g.right, r.right) - o.left + 60 };
-  }
-  // The pet's favourite nap spot: free floor between the keyboard hints and the button band (no prop drawn).
-  function homeSpot(species, petW) {
-    const S = measure(); if (!S.length) return null;
-    const o = origin(), floor = S[0], band = centreBand(), w = petW || 60;
-    const hint = rectOf('#app-brand');
-    const left = Math.max(floor.x0 + 30, hint && hint.width ? hint.right - o.left + 12 : floor.x0 + 30);
-    const x = band.x0 - w - 8;
-    if (x < left) return null;
-    return { x, w };
-  }
-
-  // ---- props: toys (ball, yarn), treats, the laser dot ----
-  const toys = [], treats = [];
-  let laser = null, propClock = 0;
-  const GRAV = 900, RESTITUTION = 0.5, FRICTION = 0.6;
-
-  function spawnToy(kind, x, y, vx = 0) {
-    const t = { kind, x, y, vx, vy: 0, surf: null, held: false, born: propClock, thread: [] };
-    toys.push(t); if (toys.length > 3) toys.shift();
-    return t;
-  }
-  function spawnTreat(kind, x, surfId) {
-    const S = measure();
-    let s = S.find(q => q.id === surfId) || S[0];
-    if (!s) return null;
-    if (s.id === 'floor') {                     // dropped behind a button: it lands on that button's top
-      const k = blocks(S).find(b => x > b.x0 && x < b.x1);
-      if (k) {
-        const tops = S.filter(q => k.parts.includes(q.id));
-        s = tops.reduce((best, q) => (!best || Math.abs((q.x0 + q.x1) / 2 - x) < Math.abs((best.x0 + best.x1) / 2 - x)) ? q : best, null) || s;
-      }
-    }
-    const t = { kind, x: Math.max(s.x0 + 2, Math.min(s.x1 - 2, x)), y: s.y, surf: s.id, born: propClock };
-    treats.push(t); if (treats.length > 4) treats.shift();
-    return t;
-  }
-  // Laser dot: follows the pointer inside the dock for 20 s (or until a click).
-  function startLaser() { laser = { x: null, y: null, left: 20000 }; }
-  function stopLaser() { laser = null; }
-  function moveLaser(x, y) { if (laser) { laser.x = x; laser.y = y; } }
-
-  function stepToys(dtMs, S) {
-    const dt = Math.min(50, dtMs) / 1000; propClock += dtMs;
-    const floor = S.find(s => s.id === 'floor'), B = blocks(S);
-    toys.forEach(t => {
-      if (t.held) return;
-      let s = t.surf ? S.find(q => q.id === t.surf) : null;
-      if (s && (t.x < s.x0 || t.x > s.x1)) { t.surf = null; s = null; }   // rolled off the edge
-      if (!s) {
-        const y0 = t.y; t.vy += GRAV * dt; t.y += t.vy * dt;
-        const land = S.filter(q => t.x >= q.x0 && t.x <= q.x1 && y0 <= q.y + 0.5 && t.y >= q.y).sort((a, b) => a.y - b.y)[0];
-        if (land) {
-          t.y = land.y;
-          if (Math.abs(t.vy) < 40) { t.vy = 0; t.surf = land.id; } else t.vy = -t.vy * RESTITUTION;
-        }
-        if (floor && t.y > floor.y + 40) { t.y = floor.y; t.vy = 0; t.surf = 'floor'; }
-      } else {
-        t.y = s.y; t.vx *= Math.max(0, 1 - FRICTION * dt);
-        if (Math.abs(t.vx) < 4) t.vx = 0;
-      }
-      const x0 = t.x; t.x += t.vx * dt;
-      // the buttons' sides are walls for anything below their top
-      B.forEach(k => {
-        if (t.y > k.top + 2 && t.x > k.x0 && t.x < k.x1) {
-          if (x0 <= k.x0) { t.x = k.x0; t.vx = -Math.abs(t.vx) * 0.6; }
-          else if (x0 >= k.x1) { t.x = k.x1; t.vx = Math.abs(t.vx) * 0.6; }
-          else t.x = (t.x - k.x0 < k.x1 - t.x) ? k.x0 : k.x1;
-        }
-      });
-      if (floor && (t.x < floor.x0 || t.x > floor.x1) && t.surf === 'floor') { t.x = Math.max(floor.x0, Math.min(floor.x1, t.x)); t.vx = -t.vx * 0.5; }
-      if (t.kind === 'yarn' && Math.abs(t.vx) > 4) { t.thread.push({ x: t.x, y: t.y, at: propClock }); if (t.thread.length > 60) t.thread.shift(); }
-      t.thread = t.thread.filter(p => propClock - p.at < 3000);
-    });
-    for (let i = toys.length - 1; i >= 0; i--) if (toys[i].returned && propClock - toys[i].returnedAt > 20000) toys.splice(i, 1);
-    for (let i = treats.length - 1; i >= 0; i--) if (propClock - treats[i].born > 60000) treats.splice(i, 1);
-    if (laser) { laser.left -= dtMs; if (laser.left <= 0) laser = null; }
-  }
-  function clearProps() { toys.length = 0; treats.length = 0; laser = null; }
-
-  return { attach, setEnv, measure, blocks, clearOfBlocks, centreBand, homeSpot,
-    spawnToy, spawnTreat, startLaser, stopLaser, moveLaser, stepToys, clearProps,
-    toys, treats, get laser() { return laser; }, get propClock() { return propClock; } };
-})();
-/* ==END PetWorld== */
-
-/* ==UNIT PetRender== */
-/* ---------- PetRender: cached layer canvases, pet blitting, environment drawing ---------- */
-const PetRender = (function () {
-  'use strict';
-  let envCanvas = null, ovCanvas = null, envCtx = null, ovCtx = null;
-  let pal = null, z = 2, dpr = 1;
-  const cache = new Map();       // LRU of layer canvases
-  const LRU_MAX = 400;
-
-  function attach(env, ov) {
-    envCanvas = env; ovCanvas = ov;
-    envCtx = env ? env.getContext('2d') : null;
-    ovCtx = ov ? ov.getContext('2d') : null;
-  }
-  function rebuild(palette, pixelSize) { pal = palette; z = pixelSize; cache.clear(); }
-  function paletteKey() { return pal ? pal.b + '|' + z : ''; }
-  function pixelSize() { return z; }
-
-  function canvasFor(key, rows) {
-    let c = cache.get(key);
-    if (c) { cache.delete(key); cache.set(key, c); return c; }
-    c = document.createElement('canvas');
-    c.width = rows[0].length * z; c.height = rows.length * z;
-    const x = c.getContext('2d');
-    rows.forEach((r, j) => { for (let i = 0; i < r.length; i++) { const k = r[i]; if (k !== ' ') { x.fillStyle = pal[k] || pal.b; x.fillRect(i * z, j * z, z, z); } } });
-    cache.set(key, c);
-    if (cache.size > LRU_MAX) cache.delete(cache.keys().next().value);
-    return c;
-  }
-
-  // Sprite box: x = left edge, footY = surface y; returns layout used by drawing and hit-testing.
-  function layout(view) {
-    const f = PetArt.frame(view.species, view.pose, view.frame || 0);
-    const W = f.W * z, top = view.footY - f.H * z;
-    return { f, W, top, padTop: top - PetArt.PAD * z };
-  }
-  function bodyRows(view) {
-    return PetArt.compose(view.species, view.pose, view.frame || 0,
-      { headAngle: view.headAngle, ears: view.ears, accessory: view.accessory, noTail: true, noEyes: true });
-  }
-
-  function drawPet(ctx, view) {
-    if (!pal || !view) return;
-    const L = layout(view), f = L.f, sp = view.species;
-    const comp = bodyRows(view);
-    const bkey = ['b', sp, view.pose, view.frame || 0, view.headAngle || f.headAngle, view.ears || 'up', view.accessory || ''].join('|');
-    const body = canvasFor(bkey, comp.rows);
-    const dy = ((view.breath ? 1 : 0) + (view.squash ? 1 : 0)) * z;
-    const splitPx = comp.split * z;
-    ctx.save();
-    ctx.globalAlpha = view.alpha == null ? 1 : view.alpha;
-    ctx.imageSmoothingEnabled = false;
-    if (view.dir === -1) { ctx.translate(Math.round(view.x) + L.W, 0); ctx.scale(-1, 1); } else ctx.translate(Math.round(view.x), 0);
-    const top = Math.round(L.padTop);
-    // tail layer (behind or in front of the body)
-    let tailDraw = null;
-    if (f.anchors.tail) {
-      const t = PetArt.tail(sp, view.tailK || 0, !!view.puffed);
-      if (t) {
-        const tc = canvasFor(['t', sp, view.tailK || 0, !!view.puffed].join('|'), t.map);
-        const tx = Math.round(f.anchors.tail[0] - t.root[0]) * z, ty = top + (Math.round(f.anchors.tail[1] - t.root[1]) + PetArt.PAD) * z + dy;
-        tailDraw = () => ctx.drawImage(tc, tx, ty);
-        if (t.behind) tailDraw();
-      }
-    }
-    // upper body (breathes / squashes) then legs
-    if (splitPx > 0) ctx.drawImage(body, 0, 0, body.width, splitPx, 0, top + dy, body.width, splitPx);
-    ctx.drawImage(body, 0, splitPx, body.width, body.height - splitPx, 0, top + splitPx, body.width, body.height - splitPx);
-    if (tailDraw && !PetArt.tail(sp, view.tailK || 0, !!view.puffed).behind) tailDraw();
-    // eyes
-    const eyeKind = view.eyes || 'open';
-    PetArt.eyes(eyeKind).forEach(([ex, ey, k]) => {
-      const X = comp.eye[0] + ex, Y = comp.eye[1] + ey;
-      if (comp.rows[Y] && comp.rows[Y][X] && comp.rows[Y][X] !== ' ') { ctx.fillStyle = pal[k]; ctx.fillRect(X * z, top + Y * z + dy, z, z); }
-    });
-    ctx.restore();
-  }
-
-  function bounds(view) {
-    const L = layout(view);
-    return { x: view.x, y: L.padTop, w: L.W, h: (L.f.H + PetArt.PAD) * z };
-  }
-  // True when (px,py) in overlay coords is within 1 sprite px of a painted pixel.
-  function hit(view, px, py) {
-    if (!view) return false;
-    const L = layout(view), comp = bodyRows(view);
-    let gx = Math.floor((px - view.x) / z), gy = Math.floor((py - L.padTop) / z);
-    if (view.dir === -1) gx = comp.W - 1 - gx;
-    for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
-      const r = comp.rows[gy + dy];
-      if (r && r[gx + dx] && r[gx + dx] !== ' ') return true;
-    }
-    return false;
-  }
-
-  function drawShadow(ctx, view, surfaceY) {
-    if (!view) return;
-    const f = PetArt.frame(view.species, view.pose, view.frame || 0);
-    const air = Math.max(0, surfaceY - view.footY);
-    const sx0 = f.anchors.shadow[0], sx1 = f.anchors.shadow[1];
-    let w = (sx1 - sx0) * z - air / 2; if (w < 6) w = 6;
-    const cx = view.dir === -1 ? view.x + (f.W - (sx0 + sx1) / 2) * z : view.x + (sx0 + sx1) / 2 * z;
-    ctx.save(); ctx.globalAlpha = Math.max(0.05, 0.16 - air / 300); ctx.fillStyle = '#000';
-    ctx.fillRect(Math.round(cx - w / 2), Math.round(surfaceY - z), Math.round(w), z); ctx.restore();
-  }
-
-  // ---- props & effects (overlay) ----
-  const PROP = {
-    fish: [' hhh k', 'hhwhhk', ' hhh k'], chicken: [' ss ', 'ssss', ' ss ', '  w ', ' ww '], milk: ['wwwww', 'hhhhh', ' hhh '],
-    bone: ['w   w', 'wwwww', 'w   w'], sweetpotato: [' kkk ', 'kkkkk', ' kkk '], watermelon: ['nnnnn', ' nen ', '  h  '],
-    orange: [' hk ', 'AAAA', 'AAAA', ' AA '], grass: ['h h h', 'hhhhh'],
-    ball: [' AA ', 'AwAA', 'AAAA', ' AA '], yarn: [' BB ', 'BhBB', 'BBhB', ' BB '],
-    heart: [' n n ', 'nnnnn', ' nnn ', '  n  '], spark: [' A ', 'AwA', ' A '], star: [' B ', 'BBB', ' B '],
-    bflyOpen: ['A   A', 'AA AA', ' AkA ', '  k  '], bflyShut: ['  A  ', ' AkA ', '  k  '],
-    birdFly: ['k   k', ' kkk ', '  k  '], birdSit: [' kk  ', 'kkkkn', ' kkk ', ' e e '], birdPeck: ['     ', ' kk  ', 'kkkkk', ' e en']
-  };
-  function stamp(ctx, map, x, yBottom, keyColor, alpha) {
-    ctx.globalAlpha = alpha == null ? 1 : alpha;
-    const h = map.length;
-    map.forEach((r, j) => { for (let i = 0; i < r.length; i++) { const k = r[i]; if (k === ' ') continue; ctx.fillStyle = keyColor(k); ctx.fillRect(Math.round(x + i * z), Math.round(yBottom - (h - j) * z), z, z); } });
-  }
-  function drawProps(ctx, world, effects, now) {
-    if (!pal) return;
-    const kc = k => pal[k] || pal.b;
-    ctx.save();
-    world.treats.forEach(t => { const m = PROP[t.kind] || PROP.fish; stamp(ctx, m, t.x - m[0].length * z / 2, t.y, kc, 1); });
-    world.toys.forEach(t => {
-      if (t.thread.length > 1) {
-        ctx.strokeStyle = pal.B || pal.k; ctx.lineWidth = 1; ctx.globalAlpha = 0.6;
-        ctx.beginPath(); t.thread.forEach((p, i) => { const yy = p.y - 1; if (i) ctx.lineTo(p.x, yy); else ctx.moveTo(p.x, yy); }); ctx.stroke();
-      }
-      const m = PROP[t.kind] || PROP.ball; stamp(ctx, m, t.x - m[0].length * z / 2, t.y, kc, 1);
-    });
-    const L = world.laser;
-    if (L && L.x != null) {
-      ctx.globalAlpha = 0.3; ctx.fillStyle = pal.acc1; ctx.fillRect(Math.round(L.x - 3), Math.round(L.y - 3), 6, 6);
-      ctx.globalAlpha = 1; ctx.fillRect(Math.round(L.x - 1), Math.round(L.y - 1), 3, 3);
-    }
-    effects.forEach(e => {
-      const p = Math.min(1, (now - e.t) / 1200); if (p >= 1) return;
-      const m = PROP[e.kind] || PROP.heart;
-      e.parts.forEach(q => stamp(ctx, m, e.x + q[0] * z, e.y - p * 18 + q[1] * z, kc, 1 - p));
-    });
-    ctx.restore();
-  }
-
-  return { attach, rebuild, paletteKey, pixelSize, drawPet, drawShadow, bounds, hit, drawProps, layout };
-})();
-/* ==END PetRender== */
-
-/* ==UNIT PetBody== */
-/* ---------- PetBody: steering, gaits, jumps, poses, and the live layers (blink, breath, tail) ---------- */
-const PetBody = (function () {
-  'use strict';
-  const SPEED = { cat: { walk: 30, run: 80 }, shiba: { walk: 40, run: 110 }, capybara: { walk: 14, run: 30 } };
-  const TAU = 220;                       // ms: speed easing time constant
-  const env = { reducedMotion: () => false, rand: Math.random, pixelSize: () => 2, surfaces: () => [], blocks: () => [], clearOfBlocks: x => x };
-  function setEnv(o) { Object.assign(env, o); }
-
-  function create(species) {
-    return {
-      species, x: 0, vx: 0, dir: 1, surf: 'floor', footY: 0,
-      mode: 'idle', gait: 'walk', target: null, final: null, pending: null, pose: 'stand', frame: 0, dist: 0,
-      t: 0, poseStart: 0, poseHold: 0, poseLoop: false, squashUntil: 0, turnUntil: 0, turnTo: 0,
-      jump: null, headAngle: null, attention: null, ears: 'up', eyes: null, wag: 'calm', puffedUntil: 0,
-      nextBlink: 1500, blinkUntil: 0, earTwitchUntil: 0
-    };
-  }
-  const widthOf = b => PetArt.frame(b.species, 'stand', 0).W * env.pixelSize();
-  const find = (S, id) => S.find(s => s.id === id);
-
-  function walkTo(b, x, gait = 'walk') {
-    if (b.mode === 'air' || b.mode === 'crouch') { b.pending = { final: x, gait }; return; }
-    b.final = x; b.target = x; b.gait = gait; b.pending = null; b.mode = gait === 'run' ? 'run' : 'walk';
-  }
-  function stopMoving(b) { b.target = null; b.final = null; b.pending = null; if (b.mode === 'walk' || b.mode === 'run') b.mode = 'idle'; }
-
-  // The next point to walk to on the way to b.final. The buttons are a solid block: on the floor the pet
-  // walks up to the block's wall and jumps onto the top; on a top it crosses to the far edge, hops to the
-  // next button, or jumps down beyond the block. Returns null when it has just started such a jump.
-  function legTarget(b, S, W, cur) {
-    const fin = b.final != null ? b.final : b.target;
-    if (!cur || fin == null) return fin;
-    const B = env.blocks(S), keep = () => ({ final: fin, gait: b.gait });
-    if (cur.id === 'floor') {
-      const dir = Math.sign(fin - b.x); if (!dir) return fin;
-      const ahead = B.filter(k => dir > 0 ? (k.x0 >= b.x + W - 2 && fin + W > k.x0) : (k.x1 <= b.x + 2 && fin < k.x1))
-        .sort((p, q) => dir > 0 ? p.x0 - q.x0 : q.x1 - p.x1)[0];
-      if (!ahead) return fin;
-      const approach = dir > 0 ? ahead.x0 - W - 1 : ahead.x1 + 1;
-      if (Math.abs(b.x - approach) <= 1.5 && Math.abs(b.vx) < 25) {
-        const partId = dir > 0 ? ahead.parts[0] : ahead.parts[ahead.parts.length - 1], part = find(S, partId);
-        const land = dir > 0 ? part.x0 - W * 0.2 + 2 : part.x1 - W * 0.8 - 2;
-        if (jumpTo(b, partId, land, S)) { b.pending = keep(); return null; }
-        b.final = null; return approach;          // can't climb (too high, reduced motion): stop at the wall
-      }
-      return approach;
-    }
-    const lo = cur.x0 - W * 0.2, hi = cur.x1 - W * 0.8;
-    if (fin >= lo - 0.5 && fin <= hi + 0.5) return fin;
-    const dir = fin > hi ? 1 : -1, edge = dir > 0 ? hi : lo;
-    if (Math.abs(b.x - edge) > 1.5) return edge;
-    const k = B.find(q => q.parts.includes(cur.id));
-    const nextId = k ? k.parts[k.parts.indexOf(cur.id) + dir] : null;
-    if (nextId) {
-      const n = find(S, nextId), land = dir > 0 ? n.x0 - W * 0.2 + 2 : n.x1 - W * 0.8 - 2;
-      if (jumpTo(b, nextId, land, S)) { b.pending = keep(); return null; }
-    } else if (k) {
-      const floor = find(S, 'floor'), land = dir > 0 ? k.x1 + 2 : k.x0 - W - 2;
-      if (floor && land >= floor.x0 - W * 0.2 && land <= floor.x1 - W * 0.8 && jumpTo(b, 'floor', land, S)) { b.pending = keep(); return null; }
-    }
-    b.final = null; return edge;                    // nowhere further to go: wait at the edge
-  }
-
-  function jumpTo(b, id, x, surfaces) {
-    if (env.reducedMotion()) return false;
-    if (b.mode === 'air' || b.mode === 'crouch') return false;
-    const S = surfaces || env.surfaces(), to = find(S, id), from = find(S, b.surf);
-    if (!to || !from || to.id === from.id) return false;
-    const W = widthOf(b), capy = b.species === 'capybara';
-    if (to.x1 - to.x0 < W * 0.8) return false;
-    if (from.y - to.y > (capy ? 40 : 75)) return false;
-    let x1 = Math.max(to.x0 - W * 0.2, Math.min(to.x1 - W * 0.8, x));
-    if (to.id === 'floor') x1 = env.clearOfBlocks(x1, W, S);       // never land inside the buttons
-    b.mode = 'crouch'; b.vx = 0; b.target = null;
-    b.dir = x1 >= b.x ? 1 : -1;
-    const crouch = capy ? 420 : 220;
-    b.jump = { x0: b.x, y0: from.y, x1, y1: to.y, t0: b.t + crouch, dur: (capy ? 700 : 520) + Math.abs(x1 - b.x) * 1.2,
-      apex: Math.min(from.y, to.y) - (capy ? 14 : 26), to: to.id, fall: false };
-    return true;
-  }
-  // A little jump straight up and back down on the same surface (happy hop).
-  function hop(b) {
-    if (env.reducedMotion() || b.mode === 'air' || b.mode === 'crouch') return false;
-    const capy = b.species === 'capybara';
-    b.mode = 'crouch'; b.vx = 0; b.target = null;
-    b.jump = { x0: b.x, y0: b.footY, x1: b.x, y1: b.footY, t0: b.t + 120, dur: capy ? 420 : 380, apex: b.footY - (capy ? 6 : 14), to: b.surf, fall: false };
-    return true;
-  }
-  function fallTo(b, floor) {
-    b.mode = 'air'; b.vx = 0; b.target = null;
-    b.jump = { x0: b.x, y0: b.footY, x1: b.x, y1: floor.y, t0: b.t, dur: 260, apex: b.footY, to: floor.id, fall: true };
-  }
-
-  // Play a pose: hold (ms) on its last frame, or loop its frames (150 ms each) for hold ms.
-  function play(b, pose, o = {}) {
-    if (b.mode === 'air' || b.mode === 'crouch') return;
-    b.mode = 'pose'; b.pose = pose; b.frame = 0; b.poseStart = b.t; b.poseHold = o.hold == null ? 1200 : o.hold; b.poseLoop = !!o.loop;
-    b.vx = 0; b.target = null; b.final = null; b.pending = null;
-  }
-  function lookAt(b, x, y) { b.attention = (x == null) ? null : { x, y }; }
-
-  function step(b, dt, S) {
-    dt = Math.max(0, Math.min(50, dt)); b.t += dt;
-    const floor = find(S, 'floor');
-    const here = find(S, b.surf);
-    if (!here && b.mode !== 'air' && floor) fallTo(b, floor);
-    const W = widthOf(b), cur = find(S, b.surf);
-
-    if (b.mode === 'crouch') {
-      b.pose = 'jump'; b.frame = 0;
-      if (b.t >= b.jump.t0) b.mode = 'air';
-    } else if (b.mode === 'air') {
-      const j = b.jump, p = Math.min(1, (b.t - j.t0) / j.dur);
-      b.x = j.x0 + (j.x1 - j.x0) * p;
-      b.footY = j.fall ? j.y0 + (j.y1 - j.y0) * p * p
-        : (1 - p) * (1 - p) * j.y0 + 2 * (1 - p) * p * (2 * j.apex - (j.y0 + j.y1) / 2) + p * p * j.y1;
-      b.pose = 'jump'; b.frame = b.species === 'capybara' ? 1 : (p < 0.5 ? 1 : 2);
-      if (p >= 1) {
-        const dest = find(S, j.to) || floor;
-        b.surf = dest.id; b.footY = dest.y; b.jump = null;
-        if (dest.id === 'floor') b.x = env.clearOfBlocks(b.x, W, S);
-        b.squashUntil = b.t + 140;
-        b.mode = 'pose'; b.pose = 'jump'; b.frame = PetArt.frameCount(b.species, 'jump') - 1; b.poseStart = b.t; b.poseHold = 140; b.poseLoop = false;
-      }
-    } else {
-      if (cur) b.footY = cur.y;
-      if (b.mode === 'walk' || b.mode === 'run') {
-        const sp = SPEED[b.species][b.mode === 'run' ? 'run' : 'walk'];
-        const lo = cur ? cur.x0 - W * 0.2 : -Infinity, hi = cur ? cur.x1 - W * 0.8 : Infinity;
-        const leg = legTarget(b, S, W, cur);
-        if (leg === null) return;                    // a climb / hop / jump-down just started
-        const tgt = Math.max(lo, Math.min(hi, leg));
-        const dx = tgt - b.x, wantDir = Math.sign(dx) || b.dir;
-        // turning around: a short pause before the flip
-        if (wantDir !== b.dir && Math.abs(b.vx) < 3) {
-          if (!b.turnUntil) b.turnUntil = b.t + 90;
-          b.vx = 0; b.pose = 'stand'; b.frame = 0;
-          if (b.t >= b.turnUntil) { b.dir = wantDir; b.turnUntil = 0; }
-        } else {
-          b.turnUntil = 0;
-          const want = Math.sign(dx) * Math.min(sp, Math.abs(dx) / 0.25);
-          b.vx += (want - b.vx) * Math.min(1, dt / TAU);
-          if (Math.sign(b.vx) !== Math.sign(dx) && Math.abs(b.vx) > 0.5 && Math.abs(dx) < 3) b.vx = 0;
-          let nx = b.x + b.vx * dt / 1000;
-          if ((nx - tgt) * (b.x - tgt) <= 0) nx = tgt;        // never overshoot
-          b.dist += Math.abs(nx - b.x); b.x = nx;
-          if (Math.abs(b.vx) > 1) b.dir = b.vx > 0 ? 1 : -1;
-          const run = b.mode === 'run';
-          b.pose = run ? 'run' : 'walk';
-          b.frame = Math.floor(b.dist / (run ? 6 : 4)) % PetArt.frameCount(b.species, b.pose);
-          if (Math.abs(tgt - b.x) < 0.5) {
-            b.x = tgt; b.vx = 0;
-            if (b.final == null || Math.abs(tgt - b.final) < 0.5 || tgt !== leg) { b.mode = 'idle'; b.target = null; b.final = null; }
-          }
-        }
-      } else if (b.mode === 'pose') {
-        const n = PetArt.frameCount(b.species, b.pose), el = b.t - b.poseStart;
-        b.frame = b.poseLoop ? Math.floor(el / 150) % n : Math.min(n - 1, Math.floor(el / 150));
-        if (b.poseHold >= 0 && el >= b.poseHold + (b.poseLoop ? 0 : (n - 1) * 150)) { b.mode = 'idle'; }
-      }
-      if (b.mode === 'idle' && b.pending) { const p = b.pending; b.pending = null; walkTo(b, p.final, p.gait); }
-      if (b.mode === 'idle') { b.pose = 'stand'; b.frame = 0; b.vx = 0; }
-      if (cur) b.x = Math.max(cur.x0 - W * 0.2, Math.min(cur.x1 - W * 0.8, b.x));
-      if (cur && cur.id === 'floor') b.x = env.clearOfBlocks(b.x, W, S);   // solid buttons
-    }
-    // live layers
-    if (b.t >= b.nextBlink) { b.blinkUntil = b.t + 130; b.nextBlink = b.t + 2200 + env.rand() * 3800; }
-    if (env.rand() < dt / 9000) b.earTwitchUntil = b.t + 120;
-  }
-
-  function headAngleFor(b) {
-    if (b.headAngle) return b.headAngle;
-    if (!b.attention) return null;
-    const z = env.pixelSize(), headY = b.footY - PetArt.frame(b.species, 'stand', 0).H * z * 0.75;
-    if (b.attention.y < headY - 25) return 'up';
-    if (b.attention.y > headY + 25) return 'down';
-    return 'level';
-  }
-
-  function view(b, now) {
-    const asleep = b.pose === 'sleep';
-    const period = b.wag === 'excited' ? 120 : b.wag === 'happy' ? 180 : 520;
-    const seq = [0, 1, 2, 3, 4, 3, 2, 1];
-    const tailK = seq[Math.floor(b.t / period) % seq.length];
-    const breathP = asleep ? 3000 : (b.wag === 'excited' ? 1000 : 1800);
-    const anglePose = (b.pose === 'stand' || b.pose === 'sit' || b.pose === 'walk' || b.pose === 'lie') ? headAngleFor(b) : null;
-    return {
-      species: b.species, pose: b.pose, frame: b.frame, dir: b.dir, x: b.x, footY: b.footY,
-      headAngle: anglePose || PetArt.frame(b.species, b.pose, b.frame).headAngle,
-      ears: (b.t < b.earTwitchUntil || b.t < (b.earsBackUntil || 0)) ? 'back' : (b.ears || 'up'),
-      eyes: b.eyes || (asleep ? 'closed' : b.pose === 'faint' ? 'faint' : b.t < b.blinkUntil ? 'closed' : 'open'),
-      tailK, puffed: b.t < b.puffedUntil,
-      breath: ((b.t % breathP) / breathP) > 0.6 ? 1 : 0,
-      squash: b.t < b.squashUntil ? 1 : 0,
-      accessory: b.accessory || null, alpha: 1
-    };
-  }
-
-  return { SPEED, setEnv, create, walkTo, stopMoving, jumpTo, hop, play, lookAt, step, view, widthOf };
-})();
-/* ==END PetBody== */
-
-/* ==UNIT PetBrain== */
-/* ---------- PetBrain: needs, weighted activity choice, personality, reactions ---------- */
-const PetBrain = (function () {
-  'use strict';
-  // Points per live minute (sleep: energy +12/min instead).
-  const DRIFT = { hunger: 4, energy: -3, fun: -1.5, affection: -2, curiosity: 3 };
-  const ACTIVITIES = ['wander', 'explore', 'sitWatch', 'nap', 'groom', 'stretch', 'zoomies', 'beg', 'sulk', 'playToy', 'eat'];
-  const PERSONALITY = {
-    cat: { nap: 1.6, explore: 1.5, zoomies: 0.7, ignoreCall: 0.3 },
-    shiba: { zoomies: 2, playToy: 1.6, explore: 0.8 },
-    capybara: { sitWatch: 1.8, explore: 0.3, zoomies: 0.1, nap: 1.2 }
-  };
-  const IDLE_NAP_MS = 120000;
-  const clamp = v => Math.max(0, Math.min(100, v));
-  const env = { rand: Math.random, reducedMotion: () => false, extraScores: null, onAction: null };
-  function setEnv(o) { Object.assign(env, o); }
-
-  function create(state, body) {
-    return { state, body, act: null, last: null, nextChoice: 0, clock: 0, startledUntil: 0, napFromIdle: false, events: {},
-      stay: false, stops: [], attention: null };
-  }
-  const R = () => env.rand();
-  const between = (a, b) => a + R() * (b - a);
-  const W = br => PetBody.widthOf(br.body);
-
-  // A floor x for the pet's left edge whose whole sprite stays out of the centre band.
-  function floorSpot(br, ctx, prefer) {
-    const floor = ctx.surfaces.find(s => s.id === 'floor'), band = PetWorld.centreBand(), w = W(br);
-    if (!floor) return br.body.x;
-    const lo = floor.x0 - w * 0.2, hi = floor.x1 - w * 0.8;
-    const leftHi = band.x0 - w - 2, rightLo = band.x1 + 2;
-    const pickLeft = leftHi > lo + 4 && (rightLo > hi - 4 || (prefer != null ? prefer < band.x0 : R() < 0.5));
-    let x = prefer != null ? prefer : (pickLeft ? between(lo, leftHi) : between(rightLo, hi));
-    if (x + w >= band.x0 && x <= band.x1) x = pickLeft ? leftHi : rightLo;
-    return Math.max(lo, Math.min(hi, x));
-  }
-  function onFloor(br) { return br.body.surf === 'floor'; }
-
-  function scores(br, ctx) {
-    const n = br.state.needs, p = PERSONALITY[br.body.species] || {}, rm = ctx.reducedMotion;
-    const s = {
-      wander: 30 + n.curiosity * 0.3,
-      explore: rm ? 0 : n.curiosity * 0.6 * (n.energy > 30 ? 1 : 0.3),
-      sitWatch: 35,
-      nap: Math.max(0, 100 - n.energy) * 0.9 + 4,
-      groom: 18,
-      stretch: 14,
-      zoomies: rm ? 0 : Math.max(2, ((n.energy - 60) * 1.2 + Math.max(0, n.fun - 50)) * 0.5),
-      beg: n.hunger > 60 ? (n.hunger - 50) * 1.5 : 0,
-      sulk: n.affection < 35 ? (40 - n.affection) * 2 : 0,
-      playToy: (!rm && freeToy(br)) ? 40 + n.fun * 0.5 : 0, eat: nearestTreat(br, ctx) ? 80 + n.hunger : 0
-    };
-    if (PetWorld.laser && !rm) s.playToy = 400;
-    if (env.extraScores) Object.assign(s, env.extraScores(br, ctx, s));
-    Object.keys(s).forEach(k => { s[k] *= (p[k] || 1); });
-    if (!onFloor(br)) { s.explore = s.explore + 30; s.nap = 0; s.beg = 0; s.sulk = 0; s.zoomies = 0; }   // high up: mostly come back down
-    if (br.last && s[br.last]) s[br.last] *= 0.4;
-    if (br.stay) ['wander', 'explore', 'zoomies', 'beg', 'sulk', 'nap', 'eat', 'playToy'].forEach(k => { s[k] = 0; });
-    return s;
-  }
-  function choose(br, ctx) {
-    const s = scores(br, ctx);
-    let total = 0; const keys = Object.keys(s).filter(k => s[k] > 0);
-    keys.forEach(k => { total += s[k]; });
-    let r = R() * total;
-    for (const k of keys) { r -= s[k]; if (r <= 0) return k; }
-    return 'sitWatch';
-  }
-
-  // ---- activity runners: each returns false when finished ----
-  function start(br, name, ctx, data) {
-    br.act = { name, phase: 0, until: 0, data: data || {} };
-    br.last = name.startsWith('react:') ? br.last : name;
-    br.body.eyes = null; br.body.headAngle = null; br.body.wag = 'calm';
-    const b = br.body, a = br.act, now = br.clock;
-    switch (name) {
-      case 'wander': {
-        const cur = ctx.surfaces.find(s => s.id === b.surf);
-        const x = onFloor(br) ? floorSpot(br, ctx) : between(cur.x0 - W(br) * 0.2, cur.x1 - W(br) * 0.8);
-        PetBody.walkTo(b, x, 'walk'); break;
-      }
-      case 'explore': {
-        const others = ctx.surfaces.filter(s => s.id !== b.surf);
-        const to = onFloor(br) ? others[Math.floor(R() * others.length)] : ctx.surfaces.find(s => s.id === 'floor');
-        if (!to) return false;
-        const tx = to.id === 'floor' ? floorSpot(br, ctx) : between(to.x0, Math.max(to.x0, to.x1 - W(br)));
-        a.data.to = to.id; a.data.tx = tx;
-        // walk close to the take-off point first
-        if (onFloor(br)) PetBody.walkTo(b, Math.max(to.x0 - W(br) * 1.2, Math.min(to.x1, tx)) - (tx > b.x ? W(br) * 0.6 : -W(br) * 0.2), 'walk');
-        break;
-      }
-      case 'sitWatch': case 'groom': case 'nap': case 'sulk': case 'beg': {
-        let x = b.x;
-        if (onFloor(br)) {
-          if (name === 'beg') {
-            const band = PetWorld.centreBand(), fl = ctx.surfaces.find(s => s.id === 'floor');
-            // sit just outside the band facing the buttons; the right side when the left has no room (narrow windows)
-            a.data.begDir = (fl && band.x0 - 8 - W(br) >= fl.x0 - W(br) * 0.2) ? 1 : -1;
-            x = a.data.begDir === 1 ? band.x0 - 8 - W(br) : band.x1 + 8;
-          }
-          else if (name === 'nap') { const h = PetWorld.homeSpot(b.species, W(br)); x = h ? h.x + (h.w - W(br)) / 2 : floorSpot(br, ctx); }
-          else if (name === 'sulk') x = floorSpot(br, ctx);
-          else x = floorSpot(br, ctx, (b.x + W(br) < PetWorld.centreBand().x0 || b.x > PetWorld.centreBand().x1) ? b.x : null);
-        }
-        a.data.x = x;
-        if (Math.abs(x - b.x) > 1) PetBody.walkTo(b, x, name === 'beg' ? 'run' : 'walk');
-        break;
-      }
-      case 'stretch': PetBody.play(b, 'bow', { hold: 1200 }); break;
-      case 'greet': {
-        const floor = ctx.surfaces.find(s => s.id === 'floor'); if (!floor || !onFloor(br)) return false;
-        PetBody.walkTo(b, (floor.x0 + floor.x1) / 2 - W(br) / 2, 'run'); b.wag = 'excited'; break;
-      }
-      case 'zoomies': a.data.laps = 3 + Math.floor(R() * 3); b.wag = 'excited'; break;
-      default: break;
-    }
-    return true;
-  }
-
-  // ---- props helpers ----
-  const z = () => env.pixelSize ? env.pixelSize() : 2;
-  function mouth(br) {
-    const b = br.body, f = PetArt.frame(b.species, b.pose, b.frame), Z = z();
-    const mx = b.dir === 1 ? b.x + f.anchors.mouth[0] * Z : b.x + (f.W - f.anchors.mouth[0]) * Z;
-    return { x: mx, y: b.footY - (f.H - f.anchors.mouth[1]) * Z };
-  }
-  function freeToy(br) { return PetWorld.toys.find(t => !t.held && !t.returned) || null; }
-  function nearestTreat(br, ctx) {
-    const b = br.body, from = ctx.surfaces.find(s => s.id === b.surf);
-    let best = null, bd = Infinity;
-    PetWorld.treats.forEach(t => {
-      const s = ctx.surfaces.find(q => q.id === t.surf); if (!s || !from) return;
-      if (t.surf !== b.surf && (from.y - s.y > (b.species === 'capybara' ? 40 : 75) || env.reducedMotion())) return;
-      const d = Math.abs(t.x - (b.x + W(br) / 2)) + (t.surf === b.surf ? 0 : 60);
-      if (d < bd) { bd = d; best = t; }
-    });
-    return best;
-  }
-  // Left edge x that puts the mouth at prop x, approaching from the current side.
-  function mouthTo(br, px) {
-    const b = br.body, f = PetArt.frame(b.species, 'stand', 0), Z = z(), mx = f.anchors.mouth[0] * Z;
-    return (px >= b.x + W(br) / 2) ? px - mx : px - (f.W * Z - mx);
-  }
-  // Go to a prop's surface (jumping if needed) and line the mouth up; true while still travelling.
-  function goTo(br, ctx, surf, px, gait) {
-    const b = br.body;
-    if (b.mode === 'air' || b.mode === 'crouch') return true;
-    if (b.surf !== surf) { if (!PetBody.jumpTo(b, surf, mouthTo(br, px), ctx.surfaces)) return null; return true; }
-    const s = ctx.surfaces.find(q => q.id === surf);
-    let tx = mouthTo(br, px);
-    if (s) tx = Math.max(s.x0 - W(br) * 0.2, Math.min(s.x1 - W(br) * 0.8, tx));
-    if (surf === 'floor') tx = PetWorld.clearOfBlocks(tx, W(br), ctx.surfaces);   // reach from beside the buttons, never through them
-    if (Math.abs(tx - b.x) > 2) { const fin = b.final != null ? b.final : b.target; if (b.mode !== 'walk' && b.mode !== 'run' || Math.abs((fin || 0) - tx) > 6) PetBody.walkTo(b, tx, gait || 'walk'); return true; }
-    if (b.mode === 'walk' || b.mode === 'run') return true;
-    b.dir = px >= b.x + W(br) / 2 ? 1 : -1;
-    return false;
-  }
-  function logStop(br) {
-    if (onFloor(br)) br.stops.push({ activity: br.act.name, x0: br.body.x, x1: br.body.x + W(br) });
-    if (br.stops.length > 500) br.stops.shift();
-  }
-
-  function run(br, ctx) {
-    const b = br.body, a = br.act, now = br.clock, moving = b.mode === 'walk' || b.mode === 'run';
-    if (!a) return false;
-    if (b.mode === 'air' || b.mode === 'crouch') return true;
-    switch (a.name) {
-      case 'wander':
-        if (moving) return true;
-        if (!a.until) { a.until = now + between(600, 2200); if (R() < 0.4) b.dir = -b.dir; }
-        return now < a.until;
-      case 'explore':
-        if (moving) return true;
-        if (a.phase === 0) { a.phase = 1; if (!PetBody.jumpTo(b, a.data.to, a.data.tx, ctx.surfaces)) return false; return true; }
-        if (a.phase === 1) { a.phase = 2; a.until = now + between(1500, 5000); PetBody.play(b, 'sit', { hold: 99999 }); return true; }
-        return now < a.until;
-      case 'sitWatch': case 'groom': case 'beg':
-        if (moving) return true;
-        if (a.phase === 0) {
-          a.phase = 1; a.until = now + (a.name === 'groom' ? between(2000, 4000) : a.name === 'beg' ? between(4000, 6000) : between(4000, 10000));
-          if (a.name === 'beg') { b.dir = a.data.begDir || 1; b.headAngle = 'up'; b.eyes = null; }
-          if (a.name === 'groom') b.headAngle = 'down';
-          PetBody.play(b, 'sit', { hold: 99999 }); logStop(br);
-        }
-        if (a.name === 'sitWatch' && br.attention) PetBody.lookAt(b, br.attention.x, br.attention.y);
-        if (a.name === 'sitWatch' && R() < 1 / 150) { b.headAngle = ['level', 'up', 'down'][Math.floor(R() * 3)]; a.lookUntil = now + 900; }
-        if (a.lookUntil && now > a.lookUntil) { b.headAngle = null; a.lookUntil = 0; }
-        return now < a.until;
-      case 'sulk':
-        if (moving) return true;
-        if (a.phase === 0) {
-          a.phase = 1; a.until = now + between(6000, 12000);
-          const band = PetWorld.centreBand(); b.dir = (b.x + W(br) / 2 < (band.x0 + band.x1) / 2) ? -1 : 1;
-          b.ears = 'back'; PetBody.play(b, 'lie', { hold: 99999 }); logStop(br);
-        }
-        if (now >= a.until) b.ears = 'up';
-        return now < a.until;
-      case 'nap':
-        if (moving) return true;
-        if (a.phase === 0) { a.phase = 1; PetBody.play(b, 'lie', { hold: 400 }); logStop(br); a.until = now + 450; return true; }
-        if (a.phase === 1 && now >= a.until) { a.phase = 2; PetBody.play(b, 'sleep', { hold: 999999 }); a.until = now + between(20000, 60000); }
-        if (a.phase === 2) br.state.needs.energy = clamp(br.state.needs.energy + (12 / 60000) * ctx.dt);
-        return br.napFromIdle ? true : now < a.until;
-      case 'stretch':
-        return b.mode === 'pose';
-      case 'eat': {
-        const tr = a.data.treat && PetWorld.treats.includes(a.data.treat) ? a.data.treat : (a.data.treat = nearestTreat(br, ctx));
-        if (!tr) return false;
-        if (a.phase === 0) { const g = goTo(br, ctx, tr.surf, tr.x, 'run'); if (g === null) return false; if (g) return true; a.phase = 1; a.until = now + 1200; PetBody.play(b, 'eat', { hold: 1200, loop: true }); b.wag = 'happy'; }
-        if (now < a.until) return true;
-        const i = PetWorld.treats.indexOf(tr); if (i >= 0) PetWorld.treats.splice(i, 1);
-        const fav = PetUI.TREATS[b.species][0][0];
-        br.state.needs.hunger = clamp(br.state.needs.hunger - (tr.kind === fav ? 50 : 35));
-        br.state.stats.treats = (br.state.stats.treats || 0) + 1;
-        br.act = null;
-        return false;
-      }
-      case 'playToy': {
-        if (PetWorld.laser) {                       // laser dot mode
-          const L = PetWorld.laser; if (L.x == null) { b.headAngle = 'up'; return true; }
-          PetBody.lookAt(b, L.x, L.y);
-          if (b.species === 'capybara') { if (b.pose !== 'sit') PetBody.play(b, 'sit', { hold: 99999 }); return true; }
-          const near = Math.abs(L.x - (b.x + W(br) / 2)) < 60;
-          if (b.species === 'cat' && near && b.mode !== 'pose' && R() < 0.05) { PetBody.play(b, 'bow', { hold: 500 }); a.pounce = now + 600; return true; }
-          if (a.pounce && now >= a.pounce) { a.pounce = 0; PetBody.hop(b); return true; }
-          if (b.mode !== 'pose' && b.mode !== 'air' && b.mode !== 'crouch' && onFloor(br) && Math.abs(mouthTo(br, L.x) - b.x) > 6) PetBody.walkTo(b, mouthTo(br, L.x), 'run');
-          b.wag = 'excited';
-          return true;
-        }
-        const toy = a.data.toy && PetWorld.toys.includes(a.data.toy) ? a.data.toy : (a.data.toy = freeToy(br));
-        if (!toy) return false;
-        if (a.phase === 0) {                        // chase it
-          if (toy.surf == null) { PetBody.lookAt(b, toy.x, toy.y); return true; }
-          if (b.species === 'capybara') { const g = goTo(br, ctx, toy.surf, toy.x + 14, 'walk'); if (g === null) return false; if (g) return true; a.phase = 9; a.until = now + 4000; PetBody.play(b, 'sit', { hold: 99999 }); return true; }
-          const g = goTo(br, ctx, toy.surf, toy.x, 'run'); if (g === null) return false; if (g) return true;
-          const fetch = b.species === 'shiba' || R() < 0.4;
-          if (!fetch) { toy.vx = (b.dir === 1 ? 1 : -1) * 120; toy.vy = -80; toy.surf = null; PetBody.play(b, 'bow', { hold: 400 }); return R() < 0.5; }
-          toy.held = true; a.phase = 1; b.wag = 'excited';
-          const target = br.attention ? br.attention.x : floorSpot(br, ctx) + W(br) / 2;
-          a.data.dropX = target;
-        }
-        if (a.phase === 1) {                        // carry it back
-          const m = mouth(br); toy.x = m.x; toy.y = m.y + 2;
-          const g = goTo(br, ctx, 'floor', a.data.dropX, 'run'); if (g === null) { a.phase = 2; } else if (g) return true;
-          a.phase = 2;
-        }
-        if (a.phase === 2) {
-          toy.held = false; toy.surf = null; toy.vy = 0; toy.vx = 0; toy.returned = true; toy.returnedAt = PetWorld.propClock;
-          br.state.stats.fetches = (br.state.stats.fetches || 0) + 1; br.state.needs.fun = clamp(br.state.needs.fun + 15);
-          b.eyes = 'happy'; PetBody.play(b, 'sit', { hold: 900 }); a.phase = 3; a.until = now + 900; return true;
-        }
-        return now < a.until;
-      }
-      case 'come':
-        if (moving) return true;
-        if (a.phase === 0 && onFloor(br) && Math.abs(b.x - a.data.tx) > 2) { a.phase = 1; PetBody.walkTo(b, a.data.tx, 'walk'); return true; }
-        if (a.phase < 2) { a.phase = 2; a.until = now + 1500; b.wag = 'happy'; b.headAngle = 'up'; PetBody.play(b, 'sit', { hold: 99999 }); }
-        return now < a.until;
-      case 'greet':
-        if (moving) return true;
-        if (a.phase === 0) { a.phase = 1; b.eyes = 'happy'; PetBody.play(b, 'bow', { hold: 1200 }); return true; }
-        return b.mode === 'pose';
-      case 'zoomies': {
-        if (moving) return true;
-        if (a.data.laps <= 0) { b.wag = 'calm'; return false; }
-        a.data.laps--;
-        const floor = ctx.surfaces.find(s => s.id === 'floor');
-        if (!floor || !onFloor(br)) return false;
-        const x = (a.data.laps % 2) ? floor.x0 + between(0, 40) : floor.x1 - W(br) - between(0, 40);
-        PetBody.walkTo(b, x, 'run'); br.state.needs.energy = clamp(br.state.needs.energy - 4); br.state.needs.fun = clamp(br.state.needs.fun + 3);
-        return true;
-      }
-      default:
-        if (a.name.startsWith('react:')) return now < a.until || b.mode === 'pose' || b.mode === 'air' || b.mode === 'crouch';
-        if (env.onAction) return env.onAction(br, a, ctx);
-        return false;
-    }
-  }
-
-  function step(br, dt, ctx) {
-    br.clock += dt; ctx.dt = dt;
-    const n = br.state.needs, asleep = br.body.pose === 'sleep';
-    Object.keys(DRIFT).forEach(k => {
-      let rate = DRIFT[k];
-      if (asleep && k === 'energy') rate = 12;
-      if (asleep && k === 'hunger') rate = 2;
-      n[k] = clamp(n[k] + rate * dt / 60000);
-    });
-    // two idle minutes: nap until the user comes back
-    if (ctx.idleMs >= IDLE_NAP_MS && !br.napFromIdle && !(br.act && br.act.name.startsWith('react:'))) {
-      br.napFromIdle = true;                       // an ongoing nap also becomes 'until you come back'
-      if (!(br.act && br.act.name === 'nap')) start(br, 'nap', ctx);
-    }
-    const alive = run(br, ctx);
-    if (!alive || (!br.act)) {
-      if (br.act && br.act.name === 'nap') br.napFromIdle = false;
-      br.act = null;
-      if (!start(br, choose(br, ctx), ctx)) br.act = null;
-    }
-  }
-
-  function notify(br, event, data, ctx) {
-    const b = br.body, now = br.clock;
-    if (event === 'busy') {
-      if (data) br.attention = data;
-      if (br.napFromIdle && br.act && br.act.name === 'nap') {
-        br.napFromIdle = false;
-        br.act = { name: 'react:wake', phase: 0, until: now + 1200, data: {} };
-        PetBody.play(b, 'bow', { hold: 1100 }); b.eyes = 'half';
-        return;
-      }
-      if (br.act && (br.act.name === 'wander') && onFloor(br) && (b.mode === 'idle' || b.mode === 'walk')) {
-        start(br, 'sitWatch', ctx || { surfaces: PetWorld.measure() });
-      }
-      return;
-    }
-    if (b.mode === 'air' || b.mode === 'crouch') return;
-    br.napFromIdle = false;
-    if (event === 'reset') {
-      br.act = { name: 'react:reset', phase: 0, until: now + 700, data: {} };
-      PetBody.play(b, 'startle', { hold: 700 }); b.puffedUntil = b.t + 1500; b.earsBackUntil = b.t + 1500; b.headAngle = null;
-      br.startledUntil = now + 3000;
-    } else if (event === 'generate') {
-      br.act = { name: 'react:generate', phase: 0, until: now + 900, data: {} };
-      br.state.needs.fun = clamp(br.state.needs.fun + 5);
-      b.eyes = 'happy'; b.wag = 'happy';
-      if (!env.reducedMotion() && PetBody.hop(b)) { /* hop */ } else PetBody.play(b, 'sit', { hold: 800 });
-    } else if (event === 'error') {
-      br.act = { name: 'react:error', phase: 0, until: now + 900, data: {} };
-      b.earsBackUntil = b.t + 1500; b.headAngle = 'down'; PetBody.play(b, 'sit', { hold: 800 });
-    } else if (event === 'boop' || event === 'pet') {
-      br.state.needs.affection = clamp(br.state.needs.affection + 3);
-      br.act = { name: 'react:' + event, phase: 0, until: now + 700, data: {} };
-      b.eyes = 'happy'; b.wag = 'happy';
-      if (event === 'pet') {                       // cat purrs with a slow tail, capybara melts, Shiba wags hard
-        if (b.species === 'cat') { b.eyes = 'closed'; b.wag = 'calm'; }
-        else if (b.species === 'capybara') { b.eyes = 'closed'; }
-        else { b.wag = 'excited'; }
-      }
-      if (event === 'boop') b.earTwitchUntil = b.t + 200;
-    }
-  }
-
-  function wake(br) {
-    br.napFromIdle = false;
-    br.act = { name: 'react:wake', phase: 0, until: br.clock + 1200, data: {} };
-    PetBody.play(br.body, 'bow', { hold: 1100 }); br.body.eyes = 'half';
-  }
-  // 'Come here': walk (or hop down, then walk) to x; the cat sometimes just looks.
-  function call(br, x, ctx) {
-    const b = br.body, p = PERSONALITY[b.species] || {};
-    if (p.ignoreCall && R() < p.ignoreCall) { br.act = { name: 'react:ignore', phase: 0, until: br.clock + 900, data: {} }; PetBody.play(b, 'sit', { hold: 800 }); return; }
-    br.napFromIdle = false;
-    const tx = x - W(br) / 2;
-    br.act = { name: 'come', phase: 0, until: 0, data: { tx } };
-    if (!onFloor(br)) PetBody.jumpTo(b, 'floor', tx, ctx.surfaces);
-    else PetBody.walkTo(b, tx, Math.abs(tx - b.x) > 120 ? 'run' : 'walk');
-  }
-  const isFainted = () => false;   // fainting was removed in v3.1
-
-  function current(br) { return br && br.act ? br.act.name : 'idle'; }
-
-  return { DRIFT, ACTIVITIES, PERSONALITY, IDLE_NAP_MS, setEnv, create, scores, step, notify, current, floorSpot, start, wake, call, isFainted };
-})();
-/* ==END PetBrain== */
-
-/* ==UNIT PetUI== */
-/* ---------- PetUI: hit-testing, the two right-click menus, boops and hover petting ---------- */
-const PetUI = (function () {
-  'use strict';
-  const TREATS = {
-    cat: [['fish', 'Fish'], ['chicken', 'Chicken'], ['milk', 'Milk']],
-    shiba: [['chicken', 'Chicken'], ['bone', 'Bone'], ['sweetpotato', 'Sweet potato']],
-    capybara: [['watermelon', 'Watermelon'], ['orange', 'Orange'], ['grass', 'Grass']]
-  };
-  const INTERACTIVE = 'button, select, input, textarea, label, a, .card-content, .modal, .modal-overlay, .mode-toggle, [role="button"], .pet-menu';
-  let api = null, menuEl = null, menuKind = false, menuAt = null, restoreFocus = null;
-
-  function attach(a) { api = a; }
-
-  function treatsFor(sp) { return (TREATS[sp] || TREATS.cat).map(([id, label], i) => ({ id: 'feed:' + id, label: i === 0 ? label + ' ★' : label })); }
-  function menuItems(kind) {
-    const st = api.state(), sp = st.species;
-    if (kind === 'floor') {
-      return [
-        { id: 'treatHere', label: 'Drop treat here', sub: treatsFor(sp).map(t => Object.assign({}, t, { id: t.id.replace('feed:', 'treatHere:') })) },
-        { id: 'ballHere', label: 'Throw ball here' },
-        { id: 'callHere', label: 'Call ' + st.name + ' here' }
-      ];
-    }
-    const items = [];
-    items.push({ id: 'pet', label: 'Pet' });
-    items.push({ id: 'feed', label: 'Feed', sub: treatsFor(sp) });
-    items.push({ id: 'play', label: 'Play', sub: [{ id: 'play:ball', label: 'Ball' }].concat(sp === 'cat' ? [{ id: 'play:yarn', label: 'Yarn' }] : []).concat([{ id: 'play:laser', label: 'Laser dot' }]) });
-    items.push(api.isAsleep() ? { id: 'wake', label: 'Wake up' } : { id: 'nap', label: 'Nap' });
-    items.push({ id: 'come', label: 'Come here' });
-    items.push(api.isStaying() ? { id: 'release', label: 'Let roam' } : { id: 'stay', label: 'Stay' });
-    items.push({ id: 'sep' });
-    items.push({ id: 'card', label: 'Pet card…' });
-    items.push({ id: 'species', label: 'Change animal', sub: [['cat', 'Cat'], ['shiba', 'Shiba'], ['capybara', 'Capybara']].map(([id, l]) => ({ id: 'species:' + id, label: l + (id === sp ? ' ✓' : '') })) });
-    items.push({ id: 'hide', label: 'Hide until tomorrow' });
-    return items;
-  }
-
-  // ---- menu DOM ----
-  function buildList(items, cls) {
-    const el = document.createElement('div');
-    el.className = 'pet-menu ' + (cls || ''); el.setAttribute('role', 'menu');
-    items.forEach(it => {
-      if (it.id === 'sep') { const s = document.createElement('div'); s.className = 'pet-menu-sep'; s.setAttribute('role', 'separator'); el.appendChild(s); return; }
-      const b = document.createElement('button');
-      b.type = 'button'; b.className = 'pet-menu-item'; b.dataset.id = it.id; b.setAttribute('role', 'menuitem'); b.tabIndex = -1;
-      b.textContent = it.label;
-      if (it.sub) { b.setAttribute('aria-haspopup', 'menu'); const ch = document.createElement('span'); ch.className = 'pet-menu-chev'; ch.textContent = '›'; b.appendChild(ch); b._sub = it.sub; }
-      el.appendChild(b);
-    });
-    return el;
-  }
-  function place(el, x, y) {
-    el.style.left = '0px'; el.style.top = '0px';
-    const r = el.getBoundingClientRect(), W = window.innerWidth, H = window.innerHeight;
-    el.style.left = Math.max(4, Math.min(W - r.width - 4, x)) + 'px';
-    el.style.top = Math.max(4, Math.min(H - r.height - 4, y - r.height - 6 < 4 ? y + 6 : y - r.height - 6)) + 'px';
-  }
-  function closeSub() { if (menuEl && menuEl._subEl) { menuEl._subEl.remove(); menuEl._subEl = null; } }
-  function openSub(btn, focusFirst) {
-    closeSub();
-    const sub = buildList(btn._sub, 'pet-menu-sub');
-    document.body.appendChild(sub);
-    const r = btn.getBoundingClientRect(), sr = sub.getBoundingClientRect();
-    const left = r.right + sr.width + 4 > window.innerWidth ? r.left - sr.width - 2 : r.right + 2;
-    sub.style.left = Math.max(4, left) + 'px'; sub.style.top = Math.max(4, Math.min(window.innerHeight - sr.height - 4, r.top - 6)) + 'px';
-    sub._parentBtn = btn;
-    wireList(sub);
-    menuEl._subEl = sub;
-    if (focusFirst) sub.querySelector('.pet-menu-item').focus();
-  }
-  function wireList(list) {
-    list.addEventListener('click', e => {
-      const b = e.target.closest('.pet-menu-item'); if (!b) return;
-      e.stopPropagation();
-      if (b._sub) { openSub(b, true); return; }
-      choose(b.dataset.id);
-    });
-    list.addEventListener('pointerover', e => {
-      const b = e.target.closest('.pet-menu-item'); if (!b) return;
-      b.focus({ preventScroll: true });
-      if (list === menuEl) { if (b._sub) openSub(b, false); else closeSub(); }
-    });
-    list.addEventListener('keydown', e => {
-      const items = [...list.querySelectorAll('.pet-menu-item')], i = items.indexOf(document.activeElement);
-      const k = e.key;
-      // Every key stays inside the menu: the app's Enter / Backspace shortcuts must never see it.
-      e.stopPropagation();
-      if (['ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft', 'Enter', ' ', 'Escape', 'Tab', 'Home', 'End', 'Backspace'].includes(k)) e.preventDefault();
-      if (k === 'ArrowDown') items[(i + 1) % items.length].focus();
-      else if (k === 'ArrowUp') items[(i - 1 + items.length) % items.length].focus();
-      else if (k === 'Home') items[0].focus();
-      else if (k === 'End') items[items.length - 1].focus();
-      else if (k === 'ArrowRight' && items[i] && items[i]._sub) openSub(items[i], true);
-      else if (k === 'ArrowLeft' && list._parentBtn) { const p = list._parentBtn; closeSub(); p.focus(); }
-      else if (k === 'Enter' || k === ' ') { if (items[i]) { if (items[i]._sub) openSub(items[i], true); else choose(items[i].dataset.id); } }
-      else if (k === 'Escape' || k === 'Tab') closeMenu();
-    });
-  }
-  function openMenu(kind, cx, cy) {
-    closeMenu();
-    restoreFocus = document.activeElement;
-    menuKind = kind; menuAt = api.toOverlay(cx, cy);
-    const items = menuItems(kind);
-    menuEl = buildList(items, 'pet-menu-root');
-    if (kind === 'pet') {
-      const st = api.state();
-      const hd = document.createElement('div'); hd.className = 'pet-menu-hd';
-      hd.textContent = st.name + ' · ' + api.mood() + ' · day ' + st.daysCount;
-      menuEl.insertBefore(hd, menuEl.firstChild);
-    }
-    document.body.appendChild(menuEl);
-    place(menuEl, cx, cy);
-    wireList(menuEl);
-    menuEl.querySelector('.pet-menu-item').focus({ preventScroll: true });
-    setTimeout(() => document.addEventListener('pointerdown', outside, true), 0);
-  }
-  function outside(e) { if (!e.target.closest || !e.target.closest('.pet-menu')) closeMenu(); }
-  function closeMenu() {
-    document.removeEventListener('pointerdown', outside, true);
-    closeSub();
-    if (menuEl) { menuEl.remove(); menuEl = null; }
-    const had = menuKind; menuKind = false;
-    if (had && restoreFocus && restoreFocus.focus && document.contains(restoreFocus)) { try { restoreFocus.focus({ preventScroll: true }); } catch (e) { /* ignore */ } }
-    restoreFocus = null;
-  }
-  function isMenuOpen() { return menuKind; }
-  function choose(id) {
-    const at = menuAt; closeMenu();
-    api.act(id, at || {});
-  }
-
-  // ---- pointer handling ----
-  function inFloorZone(e) {
-    const strip = document.querySelector('.dock-actions'); if (!strip) return false;
-    const r = strip.getBoundingClientRect();
-    if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) return false;
-    return !(e.target && e.target.closest && e.target.closest(INTERACTIVE));
-  }
-  function onPet(e) { return api.active() && api.hit(e.clientX, e.clientY); }
-  // A dialog is up, or the pointer is over text input: the pet stays out of it.
-  function blocked(e) {
-    if (document.querySelector('.modal-overlay.active')) return true;
-    return !!(e.target && e.target.closest && e.target.closest('textarea, input, select, [contenteditable], .modal-overlay'));
-  }
-  function onContextMenu(e) {
-    if (!api || !api.active()) return;
-    if (e.target && e.target.closest && e.target.closest('.pet-menu')) { e.preventDefault(); return; }
-    if (blocked(e)) return;
-    if (onPet(e)) { e.preventDefault(); openMenu('pet', e.clientX, e.clientY); return; }
-    if (inFloorZone(e)) { e.preventDefault(); openMenu('floor', e.clientX, e.clientY); }
-  }
-  function onClick(e) {
-    if (!api || !api.active() || e.button || blocked(e)) return;
-    if (PetWorld.laser) { PetWorld.stopLaser(); return; }
-    if (e.target && e.target.closest && e.target.closest(INTERACTIVE)) return;
-    if (onPet(e)) { api.act('boop', api.toOverlay(e.clientX, e.clientY)); return; }
-    if (inFloorZone(e)) api.act('dropFavourite', api.toOverlay(e.clientX, e.clientY));
-  }
-  let hover = null;
-  function onMove(e) {
-    if (!api || !api.active() || menuKind || blocked(e)) { hover = null; return; }
-    if (!onPet(e) || (e.target && e.target.closest && e.target.closest(INTERACTIVE))) { hover = null; return; }
-    const now = performance.now();
-    if (!hover || Math.hypot(e.clientX - hover.x, e.clientY - hover.y) > 6) { hover = { x: e.clientX, y: e.clientY, t: now, last: 0 }; return; }
-  }
-  function tickHover(nowOverride) {
-    if (!hover) return;
-    if (!api.active() || !api.hit(hover.x, hover.y)) { hover = null; return; }   // the pet walked away from the pointer
-    const now = nowOverride != null ? nowOverride : performance.now();
-    if (now - hover.t >= 1000 && now - hover.last >= 1200) { hover.last = now; api.act('pet', null); }
-  }
-  function init() {
-    document.addEventListener('contextmenu', onContextMenu);
-    document.addEventListener('click', onClick);
-    document.addEventListener('pointermove', onMove, { passive: true });
-    window.addEventListener('blur', () => { hover = null; });
-    document.documentElement.addEventListener('mouseleave', () => { hover = null; });
-    setInterval(tickHover, 200);
-  }
-
-  // ---- pet card (modal) ----
-  const ACCESSORY_UNLOCKS = { bandana: 2, orange: 3, bow: 5, scarf: 10, party: 20, crown: 30 };
-  const ACC_LABEL = { bandana: 'Bandana', orange: 'Orange', bow: 'Bow', scarf: 'Scarf', party: 'Party hat', crown: 'Crown' };
-  const NEEDS = [['hunger', 'Hunger'], ['energy', 'Energy'], ['fun', 'Fun'], ['affection', 'Affection'], ['curiosity', 'Curiosity']];
-  const SPECIES_LABEL = { cat: 'Cat', shiba: 'Shiba', capybara: 'Capybara' };
-  let cardEl = null, cardRaf = null;
-  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const CLOSE_SVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
-
-  function ensureCard() {
-    if (cardEl) return cardEl;
-    cardEl = document.createElement('div');
-    cardEl.className = 'modal-overlay'; cardEl.id = 'pet-card-modal';
-    cardEl.innerHTML = '<div class="modal pet-card" role="dialog" aria-modal="true" aria-labelledby="pet-card-title">' +
-      '<h2 class="modal-header"><span id="pet-card-title">Pet card</span><div class="modal-header-actions">' +
-      '<button type="button" class="icon-btn icon-btn-sm modal-close" data-close="pet-card-modal" aria-label="Close">' + CLOSE_SVG + '</button></div></h2>' +
-      '<div class="pet-card-body"></div></div>';
-    document.body.appendChild(cardEl);
-    const body = cardEl.querySelector('.pet-card-body');
-    body.addEventListener('change', e => {
-      const st = api.state();
-      if (e.target.name === 'pet-name') {
-        const v = e.target.value.trim().slice(0, 20);
-        st.name = v || PetStore.DEFAULT_NAMES[st.species]; st.renamed = !!v; api.save(); renderCard();
-      }
-    });
-    body.addEventListener('click', e => {
-      const st = api.state();
-      const acc = e.target.closest('[data-accessory]');
-      if (acc && !acc.disabled) { st.accessory = acc.dataset.accessory === 'none' ? null : acc.dataset.accessory; api.save(); renderCard(); return; }
-      const sp = e.target.closest('[data-species]');
-      if (sp) { api.act('species:' + sp.dataset.species, {}); renderCard(); return; }
-    });
-    return cardEl;
-  }
-  function renderCard() {
-    if (!cardEl) return;
-    const st = api.state(), sp = st.species, mood = api.mood();
-    const acc = ['none'].concat(Object.keys(ACCESSORY_UNLOCKS).filter(a => a !== 'orange' || sp === 'capybara')).map(a => {
-      const need = ACCESSORY_UNLOCKS[a] || 0, locked = a !== 'none' && st.daysCount < need, on = (st.accessory || 'none') === a;
-      return '<button type="button" class="chip pet-acc' + (on ? ' active' : '') + '" data-accessory="' + a + '"' + (locked ? ' disabled title="Unlocks on day ' + need + '"' : '') + '>' +
-        (a === 'none' ? 'None' : ACC_LABEL[a]) + (locked ? ' · day ' + need : '') + '</button>';
-    }).join('');
-    const species = Object.keys(SPECIES_LABEL).map(s => '<button type="button" class="chip pet-sp' + (s === sp ? ' active' : '') + '" data-species="' + s + '">' + SPECIES_LABEL[s] + '</button>').join('');
-    const body = cardEl.querySelector('.pet-card-body');
-    const focusName = document.activeElement && document.activeElement.name === 'pet-name';
-    body.innerHTML =
-      '<div class="pet-card-top"><canvas class="pet-card-portrait" width="160" height="112" aria-hidden="true"></canvas><div class="pet-card-id">' +
-      '<label class="pet-card-label" for="pet-name-input">Name</label><input id="pet-name-input" name="pet-name" type="text" maxlength="20" value="' + esc(st.name) + '" autocomplete="off">' +
-      '<div class="pet-card-meta">' + SPECIES_LABEL[sp] + ' · ' + esc(mood) + '</div></div></div>' +
-      '<h3>Wardrobe</h3><div class="pet-card-chips">' + acc + '</div>' +
-      '<h3>Animal</h3><div class="pet-card-chips">' + species + '</div>';
-    if (focusName) body.querySelector('[name="pet-name"]').focus();
-  }
-  function drawPortrait() {
-    if (!cardEl || !cardEl.classList.contains('active')) { cardRaf = null; return; }
-    const c = cardEl.querySelector('.pet-card-portrait');
-    if (c) {
-      const rows = api.portraitRows(), pal = api.palette(), Z = 4, x = c.getContext('2d');
-      x.clearRect(0, 0, c.width, c.height);
-      const ox = Math.floor((c.width - rows[0].length * Z) / 2), oy = c.height - rows.length * Z;
-      rows.forEach((r, j) => { for (let i = 0; i < r.length; i++) { const k = r[i]; if (k !== ' ') { x.fillStyle = pal[k] || pal.b; x.fillRect(ox + i * Z, oy + j * Z, Z, Z); } } });
-    }
-    cardRaf = requestAnimationFrame(drawPortrait);
-  }
-  function openCard() {
-    ensureCard(); renderCard();
-    if (typeof openModal === 'function') openModal('pet-card-modal'); else cardEl.classList.add('active');
-    if (!cardRaf) cardRaf = requestAnimationFrame(drawPortrait);
-    drawPortrait();
-  }
-
-  return { TREATS, ACCESSORY_UNLOCKS, attach, init, menuItems, openMenu, closeMenu, isMenuOpen, openCard, renderCard, tickHover };
-})();
-/* ==END PetUI== */
-
-const PetEngine = (function () {
-  'use strict';
-  const STEP_MS = 1000 / 30;
-  const TALLEST = 22;                 // tallest standing sprite (Shiba), in sprite px
-
-  // ---- seedable RNG (mulberry32) ----
-  let rngState = (Date.now() >>> 0) || 1;
-  function rand() {
-    rngState = (rngState + 0x6D2B79F5) >>> 0;
-    let t = rngState;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  }
-
-  let pet = null;                     // PetState (PetStore)
-  let saveTimer = null;
-  let envCanvas = null, ovCanvas = null, envCtx = null, ovCtx = null;
-  let colors = null, pal = null, z = 2, dpr = 1;
-  let rafId = null, lastT = 0, acc = 0;
-  let forcedView = null;
-  let rmOverride = null;
-  const amb = { stars: [], clouds: [], sky: null, skyForced: null };
-
-  const reducedMotion = () => rmOverride != null ? rmOverride : !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-  function species() {
-    const a = (typeof userTheme !== 'undefined' && userTheme.animal) || 'off';
-    return PetStore.SPECIES.includes(a) ? a : null;
-  }
-  function themeColors() {
-    const cs = getComputedStyle(document.documentElement);
-    const v = (n, d) => (cs.getPropertyValue(n) || '').trim() || d;
-    return { accent: v('--accent', '#d97757'), accent2: v('--accent2', '#e89b7b'), accent3: v('--accent3', '#c26347'),
-      bg: v('--bg', '#f9f9f7'), muted: v('--muted', '#6b6b66'), border: v('--border', '#e5e5e0'), fg: v('--fg', '#1a1a18'),
-      dark: document.documentElement.getAttribute('data-theme') === 'dark' };
-  }
-
-  let surfaces = [];
-  function makeCtx() { surfaces = PetWorld.measure(); return { now: clock, surfaces, idleMs: clock - lastBusy, reducedMotion: reducedMotion(), dt: STEP_MS }; }
-  function logicStep() {
-    const b = ensureBody(); if (!b) return;
-    clock += STEP_MS;
-    const ctx = makeCtx(); lastCtx = ctx;
-    PetWorld.stepToys(STEP_MS, surfaces);
-    PetBrain.step(brain, STEP_MS, ctx);
-    PetBody.step(b, STEP_MS, surfaces);
-  }
-
-  // ---- canvases ----
-  function sizeCanvases() {
-    const dock = document.getElementById('dock'), strip = document.querySelector('.dock-actions');
-    if (!dock || !strip || !ovCanvas) return;
-    const sr = strip.getBoundingClientRect(), dr = dock.getBoundingClientRect();
-    const newZ = Math.max(1, Math.floor((sr.height + 12) / TALLEST));
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const head = (TALLEST + PetArt.PAD + 4) * newZ + 30;
-    const ovH = Math.round(dr.height + head);
-    ovCanvas.style.height = ovH + 'px';
-    ovCanvas.width = Math.round(dr.width * dpr); ovCanvas.height = Math.round(ovH * dpr);
-    ovCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    if (envCanvas) {
-      envCanvas.width = Math.round(sr.width * dpr); envCanvas.height = Math.round(sr.height * dpr);
-      envCanvas.style.width = sr.width + 'px'; envCanvas.style.height = sr.height + 'px';
-      envCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-    if (newZ !== z || !pal) { z = newZ; if (pal) PetRender.rebuild(pal, z); }
-  }
-
-  // ---- the pet's body ----
-  let body = null, brain = null, clock = 0, lastBusy = 0, lastBusyCall = 0, lastCtx = null;
-  function ensureBody() {
-    const sp = species(); if (!sp) { body = null; return null; }
-    if (body && body.species === sp) return body;
-    const S = PetWorld.measure(); if (!S.length) return null;
-    body = PetBody.create(sp);
-    const home = PetWorld.homeSpot(sp, PetBody.widthOf(body));
-    const band = PetWorld.centreBand(), W = PetBody.widthOf(body), fl = S[0];
-    body.x = home ? home.x : (band.x0 - W - 10 >= fl.x0 ? band.x0 - W - 10 : Math.min(fl.x1 - W, band.x1 + 10));
-    body.surf = 'floor'; body.footY = fl.y;
-    brain = PetBrain.create(pet, body);
-    lastBusy = clock;
-    if (pet && pet._awayMs >= 8 * 3600e3) { pet._awayMs = 0; brain.act = null; PetBrain.start(brain, 'greet', makeCtx()); }
-    return body;
-  }
-  function currentView(now) {
-    if (forcedView) return forcedView;
-    const b = ensureBody(); if (!b) return null;
-    const v = PetBody.view(b, now); v.accessory = pet && pet.accessory; return v;
-  }
-  function render(now) {
-    if (!ovCtx) return;
-    const sp = species();
-    const ovW = ovCanvas.width / dpr, ovH = ovCanvas.height / dpr;
-    ovCtx.clearRect(0, 0, ovW, ovH);
-    const view = currentView(now);
-    if (!view) return;
-    const S = PetWorld.measure();
-    const under = S.reduce((best, s) => (view.x + 10 < s.x1 && view.x + 20 > s.x0 && s.y >= view.footY - 0.5 && (!best || s.y < best.y)) ? s : best, null);
-    PetRender.drawProps(ovCtx, PetWorld, effects, now);
-    PetRender.drawShadow(ovCtx, view, under ? under.y : view.footY);
-    PetRender.drawPet(ovCtx, view);
-  }
-
-  let lastError = 0;
-  function guard(fn) { try { fn(); } catch (err) { const t = Date.now(); if (t - lastError > 10000 && window.console) console.warn('PetEngine:', err); lastError = t; } }
-  // One frame: fixed 30 Hz logic steps then a render; a failure never escapes or piles up steps.
-  function frame(ts) {
-    const dt = Math.min(50, lastT ? ts - lastT : STEP_MS); lastT = ts;
-    acc = Math.min(250, acc + dt);
-    while (acc >= STEP_MS) { acc -= STEP_MS; guard(logicStep); }
-    guard(() => render(ts));
-  }
-  function tick(ts) { rafId = requestAnimationFrame(tick); frame(ts); }
-  function isHidden() {
-    if (!pet || !pet.hiddenUntil) return false;
-    const left = pet.hiddenUntil - Date.now();
-    if (left <= 0 || left > 24 * 3600e3) { pet.hiddenUntil = null; return false; }   // expired, or a clock that jumped back
-    return true;
-  }
-  function unhide() { if (pet && pet.hiddenUntil) { pet.hiddenUntil = null; saveNow(); refreshRunning(); } }
-  function shouldRun() { return !!species() && !document.hidden && !isHidden(); }
-  function start() { if (rafId) return; lastT = 0; acc = 0; rafId = requestAnimationFrame(tick); }
-  function stop() {
-    if (rafId) cancelAnimationFrame(rafId); rafId = null;
-    if (ovCtx) ovCtx.clearRect(0, 0, ovCanvas.width, ovCanvas.height);
-    if (envCtx) envCtx.clearRect(0, 0, envCanvas.width, envCanvas.height);
-  }
-  function refreshRunning() { if (shouldRun()) start(); else stop(); }
-
-  // ---- persistence ----
-  function syncSpeciesFromTheme() {
-    const a = species();
-    if (pet && a && a !== pet.species) pet = PetStore.setSpecies(pet, a);
-  }
-  function checkDay(now) { if (pet) PetStore.recordDay(pet, PetStore.localDate(now || Date.now())); }
-  function saveNow() { if (pet) { checkDay(); PetStore.save(pet); } }
-
-  // ---- actions (menus, clicks, petting) ----
-  function nextMidnight() { const d = new Date(); d.setHours(24, 0, 0, 0); return d.getTime(); }
-  function act(id, at) {
-    const b = ensureBody(); if (!b || !brain) return;
-    const [verb, arg] = String(id).split(':');
-    const ctx = makeCtx();
-    const fav = PetUI.TREATS[b.species][0][0];
-    const spawnTreat = (kind, x) => { if (PetWorld.spawnTreat) PetWorld.spawnTreat(kind, x, b.surf === 'floor' ? 'floor' : b.surf); };
-    const mouthX = () => b.dir === 1 ? b.x + PetBody.widthOf(b) + 6 : b.x - 6;
-    switch (verb) {
-      case 'pet': pet.stats.pets++; notify('pet'); effect('hearts'); break;
-      case 'boop': notify('boop'); effect('hearts'); break;
-      case 'feed': spawnTreat(arg, mouthX()); break;
-      case 'treatHere': PetWorld.spawnTreat(arg, at.x, 'floor'); break;
-      case 'dropFavourite': PetWorld.spawnTreat(fav, at.x, 'floor'); break;
-      case 'play': if (typeof throwToy === 'function') throwToy(arg, null); break;
-      case 'ballHere': if (typeof throwToy === 'function') throwToy('ball', at); break;
-      case 'nap': brain.napFromIdle = false; PetBrain.start(brain, 'nap', ctx); break;
-      case 'wake': PetBrain.wake(brain); break;
-      case 'come': case 'callHere': PetBrain.call(brain, at && at.x != null ? at.x : b.x, ctx); break;
-      case 'stay': brain.stay = true; break;
-      case 'release': brain.stay = false; break;
-      case 'card': openCard(); break;
-      case 'species':
-        userTheme.animal = arg; try { safeStorage.set('pbf_theme', JSON.stringify(userTheme)); } catch (er) { /* ignore */ }
-        applyTheme(); break;
-      case 'hide': pet.hiddenUntil = nextMidnight(); saveNow(); refreshRunning(); break;
-    }
-  }
-  const effects = [];
-  // Floating hearts / sparkles / stars just above the pet's head.
-  function effect(kind) {
-    const v = currentView(performance.now()); if (!v) return;
-    const f = PetArt.frame(v.species, v.pose, v.frame);
-    const hx = v.dir === 1 ? v.x + f.anchors.head[0] * z : v.x + (f.W - f.anchors.head[0]) * z;
-    const map = { hearts: 'heart', sparkle: 'spark', stars: 'star' };
-    const parts = kind === 'hearts' ? [[0, 0], [5, -4]] : kind === 'sparkle' ? [[-6, 2], [2, -3], [8, 1]] : [[-5, 0], [0, -4], [5, 0]];
-    effects.push({ kind: map[kind] || 'heart', x: hx, y: v.footY - (f.H - 1) * z, t: performance.now(), parts });
-    while (effects.length > 12) effects.shift();
-  }
-  function throwToy(kind, at) {
-    const b = ensureBody(); if (!b || !brain) return;
-    if (kind === 'laser') { PetWorld.startLaser(); PetBrain.start(brain, 'playToy', makeCtx()); return; }
-    const S = PetWorld.measure(), floor = S[0], W = PetBody.widthOf(b);
-    const x = at && at.x != null ? at.x : b.x + W / 2 + b.dir * (W * 0.6);
-    const toy = PetWorld.spawnToy(kind, Math.max(floor.x0 + 4, Math.min(floor.x1 - 4, x)), (at && at.y != null ? Math.min(at.y, floor.y - 20) : b.footY - 30), at ? 0 : b.dir * 140);
-    brain.act = null; PetBrain.start(brain, 'playToy', makeCtx(), { toy });
-  }
-  const uiApi = {
-    active: () => !!species() && !isHidden() && !!ovCanvas,
-    view: () => currentView(performance.now()),
-    hit: (cx, cy) => { const v = currentView(performance.now()); if (!v || !ovCanvas) return false; const o = ovCanvas.getBoundingClientRect(); return PetRender.hit(v, cx - o.left, cy - o.top); },
-    toOverlay: (cx, cy) => { const o = ovCanvas.getBoundingClientRect(); return { x: cx - o.left, y: cy - o.top }; },
-    state: () => pet,
-    mood: () => PetStore.moodWord(pet, { now: clock, startledUntil: brain ? brain.startledUntil : 0, asleep: !!(body && body.pose === 'sleep') }),
-    isFainted: () => PetBrain.isFainted(brain),
-    isAsleep: () => !!(body && body.pose === 'sleep'),
-    isStaying: () => !!(brain && brain.stay),
-    save: () => saveNow(),
-    palette: () => pal || PetArt.palette(themeColors()),
-    portraitRows: () => {
-      const b = ensureBody(), sp = (pet && pet.species) || 'cat';
-      const v = b ? PetBody.view(b, performance.now()) : null;
-      return PetArt.compose(sp, 'stand', 0, { tailK: v ? v.tailK : 2, eyes: v && v.eyes === 'closed' ? 'closed' : 'open', accessory: pet && pet.accessory }).rows;
-    },
-    resetPet: () => {
-      pet = PetStore.recordDay(PetStore.defaults(pet.species), PetStore.localDate(Date.now()));
-      body = null; brain = null; saveNow();
-    },
-    act
-  };
-
-  // ---- public API ----
-  function init() { guard(initNow); }
-  function initNow() {
-    pet = PetStore.load();
-    syncSpeciesFromTheme();
-    saveNow();
-    if (!saveTimer) saveTimer = setInterval(saveNow, 10000);
-    envCanvas = document.getElementById('pixel-scene-canvas');
-    ovCanvas = document.getElementById('pet-overlay');
-    envCtx = envCanvas ? envCanvas.getContext('2d') : null;
-    ovCtx = ovCanvas ? ovCanvas.getContext('2d') : null;
-    PetWorld.attach(ovCanvas);
-    PetRender.attach(envCanvas, ovCanvas);
-    PetBody.setEnv({ reducedMotion, rand, pixelSize: () => z, surfaces: () => PetWorld.measure(), blocks: S => PetWorld.blocks(S), clearOfBlocks: (x, w, S) => PetWorld.clearOfBlocks(x, w, S) });
-    PetBrain.setEnv({ reducedMotion, rand, pixelSize: () => z, onEffect: k => effect(k) });
-    document.addEventListener('pointermove', e => { if (!PetWorld.laser || !ovCanvas) return; const o = ovCanvas.getBoundingClientRect(), d = document.getElementById('dock').getBoundingClientRect(); if (e.clientY >= d.top - 40 && e.clientY <= d.bottom && e.clientX >= d.left && e.clientX <= d.right) PetWorld.moveLaser(e.clientX - o.left, e.clientY - o.top); }, { passive: true });
-    const busy = e => {
-      const t = performance.now(); if (t - lastBusyCall < 1000) return; lastBusyCall = t;
-      let pt = null;
-      if (e.clientX != null && ovCanvas) { const o = ovCanvas.getBoundingClientRect(); pt = { x: e.clientX - o.left, y: e.clientY - o.top }; }
-      notify('busy', pt);
-    };
-    document.addEventListener('pointerdown', busy, { passive: true, capture: true });
-    document.addEventListener('keydown', busy, { passive: true, capture: true });
-    document.addEventListener('visibilitychange', () => { if (document.hidden) saveNow(); refreshRunning(); });
-    window.addEventListener('pagehide', saveNow);
-    PetUI.attach(uiApi); PetUI.init();
-    setInterval(() => guard(() => { checkDay(); refreshRunning(); }), 60000);
-    if (window.ResizeObserver && document.getElementById('dock')) new ResizeObserver(() => resize()).observe(document.getElementById('dock'));
-    onThemeChange();
-  }
-  function onThemeChange() { guard(onThemeChangeNow); }
-  function onThemeChangeNow() {
-    syncSpeciesFromTheme();
-    if (!ovCanvas) return;
-    colors = themeColors();
-    pal = PetArt.palette(colors);
-    sizeCanvases();
-    PetRender.rebuild(pal, z);
-    refreshRunning();
-  }
-  function resize() { guard(() => { if (ovCanvas) sizeCanvases(); }); }
-  function notify(event, data) { guard(() => notifyNow(event, data)); }
-  function notifyNow(event, data) {
-    if (event === 'busy') lastBusy = clock;
-    if (event === 'generate') setTimeout(() => effect('sparkle'), 0);
-    if (!ensureBody() || !brain) return;
-    PetBrain.notify(brain, event, data, makeCtx());
-  }
-  function openCard() { if (pet) PetUI.openCard(); }
-  // For the Theme settings companion bar: who the pet is and how it feels (null when Off).
-  function summary() {
-    if (!pet || !species()) return null;
-    let mood = 'content'; guard(() => { mood = uiApi.mood(); });
-    return { name: pet.name, species: pet.species, mood };
-  }
-  // Draw the pet, standing, centred in a small canvas (cleared when there is no pet).
-  function portrait(canvas) {
-    const x = canvas.getContext('2d'); x.clearRect(0, 0, canvas.width, canvas.height);
-    if (!species()) return false;
-    let ok = false;
-    guard(() => {
-      const rows = uiApi.portraitRows(), p = uiApi.palette();
-      const Z = Math.max(1, Math.floor(Math.min(canvas.width / rows[0].length, canvas.height / rows.length)));
-      const ox = Math.floor((canvas.width - rows[0].length * Z) / 2), oy = canvas.height - rows.length * Z;
-      rows.forEach((r, j) => { for (let i = 0; i < r.length; i++) { const k = r[i]; if (k !== ' ') { x.fillStyle = p[k] || p.b; x.fillRect(ox + i * Z, oy + j * Z, Z, Z); } } });
-      ok = true;
-    });
-    return ok;
-  }
-
-  // Debug: every frame, head angle, tail key and accessory of each species at x4 (Esc closes).
-  function sheet(only) {
-    const old = document.getElementById('pet-sheet'); if (old) old.remove();
-    const tc = themeColors(), p = PetArt.palette(tc), Z = 4;
-    const wrap = document.createElement('div');
-    wrap.id = 'pet-sheet';
-    wrap.style.cssText = 'position:fixed;inset:0;z-index:300;overflow:auto;padding:16px;background:' + tc.bg + ';color:' + tc.fg + ';font:12px Inter,sans-serif';
-    const draw = (rows, label) => {
-      const cell = document.createElement('div');
-      cell.style.cssText = 'display:inline-block;margin:0 10px 12px 0;vertical-align:bottom;text-align:center';
-      const c = document.createElement('canvas'); c.width = rows[0].length * Z; c.height = rows.length * Z;
-      c.style.imageRendering = 'pixelated';
-      const x = c.getContext('2d');
-      rows.forEach((r, j) => [...r].forEach((k, i) => { if (k !== ' ') { x.fillStyle = p[k] || p.b; x.fillRect(i * Z, j * Z, Z, Z); } }));
-      cell.appendChild(c); const l = document.createElement('div'); l.textContent = label; l.style.opacity = .7; cell.appendChild(l);
-      return cell;
-    };
-    (only ? [only] : PetArt.SPECIES).forEach(sp => {
-      const h = document.createElement('h3'); h.textContent = sp; h.style.margin = '8px 0'; wrap.appendChild(h);
-      Object.keys(PetArt.FRAMES).forEach(pose => {
-        for (let i = 0; i < PetArt.frameCount(sp, pose); i++) wrap.appendChild(draw(PetArt.compose(sp, pose, i, { tailK: 2 }).rows, pose + ' ' + i));
-      });
-      wrap.appendChild(document.createElement('br'));
-      ['level', 'up', 'down'].forEach(a => ['up', 'back'].forEach(e => wrap.appendChild(draw(PetArt.compose(sp, 'stand', 0, { headAngle: a, ears: e, tailK: 2 }).rows, 'head ' + a + '/' + e))));
-      ['happy', 'half', 'closed', 'faint'].forEach(k => wrap.appendChild(draw(PetArt.compose(sp, 'stand', 0, { eyes: k, tailK: 2 }).rows, 'eyes ' + k)));
-      if (sp !== 'capybara') [0, 1, 2, 3, 4].forEach(k => wrap.appendChild(draw(PetArt.compose(sp, 'stand', 0, { tailK: k, puffed: k === 4 && sp === 'cat' }).rows, 'tail ' + k + (k === 4 && sp === 'cat' ? ' puffed' : ''))));
-      ['bandana', 'bow', 'scarf', 'party', 'crown'].concat(sp === 'capybara' ? ['orange'] : []).forEach(a => wrap.appendChild(draw(PetArt.compose(sp, 'stand', 0, { accessory: a, tailK: 2 }).rows, a)));
-    });
-    const close = e => { if (e.key === 'Escape') { wrap.remove(); document.removeEventListener('keydown', close, true); } };
-    document.addEventListener('keydown', close, true);
-    document.body.appendChild(wrap);
-    return wrap;
-  }
-
-  const units = { PetStore, PetArt, PetWorld, PetRender, PetBody, PetBrain, PetUI };
-  const _test = {
-    units,
-    state() { return pet; },
-    seed(n) { rngState = (n >>> 0) || 1; },
-    sim(ms) { const n = Math.round(ms / STEP_MS); for (let i = 0; i < n; i++) logicStep(); },
-    envItems() { return []; },
-    stepBody(dt) { const b = ensureBody(); PetBody.step(b, dt, PetWorld.measure()); },
-    // A floor x (sprite left edge) clear of the buttons, on the far side from avoidX when given.
-    freeFloorX(avoidX) {
-      const b = ensureBody(), W = PetBody.widthOf(b), S = PetWorld.measure(), fl = S[0], band = PetWorld.centreBand();
-      const left = band.x0 - W - 4 >= fl.x0 ? fl.x0 + 4 : null, right = fl.x1 - W - 4 > band.x1 ? fl.x1 - W - 4 : null;
-      if (avoidX == null) return left != null ? left : right;
-      return (avoidX > (fl.x0 + fl.x1) / 2) ? (left != null ? left : right) : (right != null ? right : left);
-    },
-    placeView(v) { forcedView = v; render(performance.now()); },
-    clearView() { forcedView = null; },
-    paletteKey() { return PetRender.paletteKey(); },
-    reducedMotion(v) { rmOverride = v; },
-    running() { return !!rafId; },
-    tick(ts) { frame(ts); },
-    acc() { return acc; },
-    checkDay(now) { checkDay(now); },
-    isHidden() { return isHidden(); },
-    act(id, at) { act(id, at); },
-    placeOnSurface(id, x) { const b = ensureBody(), s = PetWorld.measure().find(q => q.id === id); b.surf = id; b.footY = s.y; b.x = x; b.mode = 'idle'; b.pose = 'stand'; },
-    timeFrames(n) {
-      const t0 = performance.now(); let now = t0;
-      for (let i = 0; i < n; i++) { now += 16.7; if (i % 2 === 0) logicStep(); render(now); }
-      const ms = performance.now() - t0; return { total: ms, avg: ms / n };
-    },
-    body() { return ensureBody(); },
-    brain() { ensureBody(); return brain; },
-    view() { return currentView(performance.now()); },
-    ctx() { return makeCtx(); },
-    floorStops() { const s = brain ? brain.stops.slice() : []; if (brain) brain.stops.length = 0; return s; },
-    resetPet(sp) {
-      userTheme.animal = sp; pet = PetStore.recordDay(PetStore.defaults(sp), PetStore.localDate(Date.now()));
-      body = null; brain = null; forcedView = null; ensureBody();
-    },
-    render() { render(performance.now()); },
-    petClientRect() {
-      const v = currentView(performance.now()), o = ovCanvas.getBoundingClientRect(), f = PetArt.frame(v.species, v.pose, v.frame);
-      const cxS = (f.anchors.shadow[0] + f.anchors.shadow[1]) / 2, cx = v.dir === 1 ? v.x + cxS * z : v.x + (f.W - cxS) * z;
-      return { cx: o.left + cx, cy: o.top + v.footY - f.H * z * 0.45, w: f.W * z, h: f.H * z };
-    },
-    // A client point on a painted pet pixel that is not over a control (for click tests).
-    petPoint() {
-      const v = currentView(performance.now()), o = ovCanvas.getBoundingClientRect(), bd = PetRender.bounds(v);
-      for (let y = bd.y + bd.h - 4; y > bd.y; y -= 3) for (let x = bd.x + 2; x < bd.x + bd.w; x += 3) {
-        if (!PetRender.hit(v, x, y)) continue;
-        const el = document.elementFromPoint(o.left + x, o.top + y);
-        if (el && !(el.closest && el.closest('button, select, input, textarea, label, a, .mode-toggle, [role="button"], .card-content, .modal'))) return { cx: o.left + x, cy: o.top + y };
-      }
-      return null;
-    },
-    emptyFloorPoint() {
-      const o = ovCanvas.getBoundingClientRect(), s = document.querySelector('.dock-actions').getBoundingClientRect();
-      const y = s.top + s.height / 2, v = currentView(performance.now()), pb = v ? PetRender.bounds(v) : null;
-      for (let x = s.left + 8; x < s.right - 8; x += 6) {
-        const el = document.elementFromPoint(x, y);
-        if (!el || (el.closest && el.closest('button, select, input, textarea, label, a, .mode-toggle, [role="button"], .dock-hint'))) continue;
-        if (pb && x - o.left > pb.x - 10 && x - o.left < pb.x + pb.w + 10) continue;
-        return { x, y };
-      }
-      return { x: s.left + 4, y };
-    },
-    movePetAwayFrom() { const b = ensureBody(), S = PetWorld.measure(); b.surf = 'floor'; b.footY = S[0].y; b.x = S[0].x1 - PetBody.widthOf(b) - 10; b.mode = 'idle'; b.pose = 'stand'; brain.act = { name: 'react:hold', phase: 0, until: clock + 60000, data: {} }; },
-    hidePet() { act('hide'); },
-    throwBall() { throwToy('ball', null); },
-    feedNow() { const b = ensureBody(); const W = PetBody.widthOf(b); PetWorld.spawnTreat(PetUI.TREATS[b.species][1][0], b.dir === 1 ? b.x + W + 4 : b.x - 4, b.surf); if (!PetBrain.isFainted(brain)) { brain.act = null; PetBrain.start(brain, 'eat', makeCtx()); } },
-    events(name) { const n = brain ? brain.events[name] || 0 : 0; if (brain) brain.events[name] = 0; return n; },
-    stats() { return pet.stats; },
-    setDays(n) { pet.daysCount = n; PetUI.renderCard(); },
-    reload() { pet = PetStore.load(); body = null; brain = null; forcedView = null; PetWorld.clearProps(); onThemeChange(); }
-  };
-  const _debug = { sheet, force(o) {
-    if (!o) return;
-    if ('days' in o && pet) { pet.daysCount = o.days; PetUI.renderCard(); }
-  } };
-
-  return { init, onThemeChange, resize, notify, openCard, unhide, summary, portrait, rand, _test, _debug };
-})();
-</script>
 
 <script>
   let SHARED_DATA = {
@@ -3881,7 +1716,7 @@ const PetEngine = (function () {
       light: { bg: '#f9f9f7', bg2: '#ffffff', card: '#ffffff', card2: '#f0f0ec', border: '#e5e5e0', fg: '#1a1a18', muted: '#6b6b66', accent: '#d97757', accent2: '#c26347', accent3: '#d97757' }
     },
     ios: {
-      name: 'Glass',
+      name: 'iOS',
       dark: { bg: '#0b0b0b', bg2: 'rgba(30,30,30,0.5)', card: 'rgba(40,40,40,0.6)', card2: 'rgba(50,50,50,0.5)', border: 'rgba(255,255,255,0.15)', fg: '#ffffff', muted: '#bbbbbb', accent: '#0a84ff', accent2: '#409cff', accent3: '#006edc' },
       light: { bg: '#f2f2f7', bg2: 'rgba(255,255,255,0.6)', card: 'rgba(255,255,255,0.75)', card2: 'rgba(240,240,245,0.9)', border: 'rgba(0,0,0,0.1)', fg: '#000000', muted: '#3c3c43', accent: '#0a84ff', accent2: '#006edc', accent3: '#007aff' }
     }
@@ -3916,7 +1751,7 @@ const PetEngine = (function () {
   };
   // Font, button size and spacing are fixed at these; Display scale sizes everything together.
   const FIXED_LAYOUT = { fontSlider: 3, btnSlider: 2, padding: 1, fontFamily: "'Inter', sans-serif" };
-  const SCALE_STOPS = [0.8, 1, 1.2, 1.4];
+  const SCALE_STOPS = [0.75, 1, 1.25, 1.5];
   function normalScale(s) {
     s = Number(s);
     return SCALE_STOPS.reduce((best, v) => Math.abs(v - s) < Math.abs(best - s) ? v : best, 1);
@@ -3940,8 +1775,6 @@ const PetEngine = (function () {
   // Older versions saved separate font / button / spacing choices; those are gone now.
   ['fontSlider', 'btnSlider', 'padding', 'fontFamily'].forEach(k => delete userTheme[k]);
   userTheme.scale = normalScale(userTheme.scale == null ? 1 : userTheme.scale);
-  // v3.0 companions: dog became the Shiba; rabbit and cow were retired.
-  userTheme.animal = PetStore.migrateAnimal(userTheme.animal);
 
   const state = { 
     chroma: 'normochromic', chromaGrade: '', 
@@ -4007,11 +1840,10 @@ const PetEngine = (function () {
     genBtn.classList.remove('shake');
     void genBtn.offsetWidth; 
     genBtn.classList.add('shake');
-
+    
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText("").catch(() => {});
     }
-    PetEngine.notify('error');
   }
 
   function clearError() {
@@ -4113,9 +1945,7 @@ const PetEngine = (function () {
       document.documentElement.style.setProperty('--muted', '');
     }
 
-    // The accent always follows the theme (no custom accent since v3.3).
-    const currentAccent = (palette && palette.accent) || paletteObj.accent || '#d97757';
-    userTheme.accent = currentAccent;
+    const currentAccent = userTheme.accent || (palette ? palette.accent : '#d97757');
     document.documentElement.style.setProperty('--accent', currentAccent);
     document.documentElement.style.setProperty('--accent-dim', `color-mix(in srgb, ${currentAccent} 70%, black)`);
     document.documentElement.style.setProperty('--accent-soft', `color-mix(in srgb, ${currentAccent} 15%, transparent)`);
@@ -4126,13 +1956,15 @@ const PetEngine = (function () {
     document.documentElement.style.setProperty('--font-main', FIXED_LAYOUT.fontFamily);
     document.documentElement.style.setProperty('--font-ui', FIXED_LAYOUT.fontFamily);
 
+    if ($('#theme-accent-btn')) {
+      $('#theme-accent-btn').style.backgroundColor = currentAccent;
+    }
     if ($('#theme-palette')) $('#theme-palette').value = userTheme.palette || 'claude';
     if ($('#theme-animal')) $('#theme-animal').value = userTheme.animal;
 
     autofitUI();
     applyScale();
-    PetEngine.onThemeChange();
-    syncThemeSettings();
+    PixelScene.onThemeChange();
     scheduleThemeRefit();
   }
 
@@ -4799,7 +2631,6 @@ const PetEngine = (function () {
     copyToClipboard(final);
     saveHistory(final);
     showNotification('Comment generated and copied.', 'success', 3000);
-    PetEngine.notify('generate');
   }
 
   // silent: re-measure only (the desktop app calls this while it is already refitting).
@@ -4994,7 +2825,6 @@ const PetEngine = (function () {
     isBackspaceArmed = false;
     clearTimeout(backspaceTimeout);
     $('#reset-all-btn').classList.remove('armed');
-    PetEngine.notify('reset');
   }
 
   function openModal(id) { $('#' + id).classList.add('active'); }
@@ -5052,72 +2882,137 @@ const PetEngine = (function () {
     Object.entries(bloodCodes).forEach(([key, text]) => bloodGrid.appendChild(makeQuickCodeButton(key, text)));
   }
 
-  // ---------- Theme settings (v3.2) ----------
-  // The visible controls (swatches, segmented switches, companion bar) drive the hidden
-  // #theme-palette / #theme-scale / #theme-animal selects, so every existing handler still applies.
-  const TS_ORDER = ['claude', 'ios', 'monochrome', 'space', 'aurora', 'fantasy', 'cyberpunk', 'zenless'];
-  let tsTimer = null;
-  function setRadio(b, on) { b.setAttribute('aria-checked', on ? 'true' : 'false'); b.tabIndex = on ? 0 : -1; }
-  function rovingFallback(group) { if (group && !group.querySelector('[aria-checked="true"]') && group.firstElementChild) group.firstElementChild.tabIndex = 0; }
-  function pickThemeSetting(opt) {
-    const sel = opt.classList.contains('ts-swatch') ? $('#theme-palette') : opt.closest('.ts-scale') ? $('#theme-scale') : $('#theme-animal');
-    if (!sel || sel.value === opt.dataset.value) return;
-    sel.value = opt.dataset.value;
-    sel.dispatchEvent(new Event('input', { bubbles: true }));
+  let cpH = 0, cpS = 0, cpB = 0, cpA = 100;
+
+  function hexToHsl(hex) {
+    let r = parseInt(hex.slice(1, 3), 16) / 255;
+    let g = parseInt(hex.slice(3, 5), 16) / 255;
+    let b = parseInt(hex.slice(5, 7), 16) / 255;
+    let max = Math.max(r, g, b), min = Math.min(r, g, b);
+    let h, s, l = (max + min) / 2;
+    if (max === min) { h = s = 0; } 
+    else {
+      let d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      switch (max) {
+        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+        case g: h = (b - r) / d + 2; break;
+        case b: h = (r - g) / d + 4; break;
+      }
+      h /= 6;
+    }
+    return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
   }
-  function initThemeSettings() {
-    const m = $('#theme-modal'), wrap = m && m.querySelector('.ts-swatches');
-    if (!wrap) return;
-    wrap.innerHTML = '';
-    TS_ORDER.filter(id => palettes[id]).concat(Object.keys(palettes).filter(id => !TS_ORDER.includes(id))).forEach(id => {
-      const b = document.createElement('button');
-      b.type = 'button'; b.className = 'ts-swatch'; b.dataset.value = id;
-      b.setAttribute('role', 'radio'); b.setAttribute('aria-label', palettes[id].name); b.title = palettes[id].name;
-      wrap.appendChild(b);
+
+  function initColorPicker() {
+    const dropdown = $('#color-dropdown');
+    const standardGrid = $('#cp-standard');
+    const gradientsContainer = $('#cp-gradients');
+
+    const standardColors = ['#d97757', '#e06c6c', '#f59e0b', '#10b981', '#0a84ff', '#a855f7', '#ffffff', '#000000', '#5a6b62', '#218c48'];
+    standardColors.forEach(color => {
+      const sw = document.createElement('div');
+      sw.className = 'cp-swatch';
+      sw.style.backgroundColor = color;
+      sw.dataset.color = color;
+      standardGrid.appendChild(sw);
     });
-    m.addEventListener('click', e => {
-      const opt = e.target.closest('.ts-swatch, .ts-seg button');
-      if (opt) pickThemeSetting(opt);
+
+    const gradientHues = [
+      { h: 0, name: 'Red' }, { h: 25, name: 'Orange' }, { h: 45, name: 'Yellow' },
+      { h: 130, name: 'Green' }, { h: 210, name: 'Blue' }, { h: 280, name: 'Purple' },
+      { h: null, name: 'Gray' }
+    ];
+    
+    gradientHues.forEach(item => {
+      const row = document.createElement('div');
+      row.className = 'cp-gradient-row';
+      for (let i = 0; i < 10; i++) {
+        const l = 90 - (i * 7); 
+        const sw = document.createElement('div');
+        sw.className = 'cp-swatch';
+        if (item.h === null) {
+          sw.style.backgroundColor = `hsl(0, 0%, ${l}%)`;
+          sw.dataset.color = `hsl(0, 0%, ${l}%)`;
+        } else {
+          sw.style.backgroundColor = `hsl(${item.h}, 80%, ${l}%)`;
+          sw.dataset.color = `hsl(${item.h}, 80%, ${l}%)`;
+        }
+        row.appendChild(sw);
+      }
+      gradientsContainer.appendChild(row);
     });
-    m.addEventListener('keydown', e => {
-      const opt = e.target.closest('.ts-swatch, .ts-seg button');
-      const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
-      if (!opt || !step) return;
-      e.preventDefault(); e.stopPropagation();
-      const group = [...opt.parentElement.children];
-      const next = group[(group.indexOf(opt) + step + group.length) % group.length];
-      next.focus(); pickThemeSetting(next);
+
+    document.querySelectorAll('.cp-swatch').forEach(sw => {
+      sw.onclick = () => {
+        let color = sw.dataset.color;
+        let hsl;
+        if (color.startsWith('hsl')) {
+          let m = color.match(/hsl\((\d+),\s*(\d+)%?,\s*(\d+)%?\)/);
+          if (m) {
+            cpH = parseInt(m[1]); cpS = parseInt(m[2]); cpB = parseInt(m[3]); cpA = 100;
+          }
+        } else {
+          hsl = hexToHsl(color);
+          cpH = hsl.h; cpS = hsl.s; cpB = hsl.l; cpA = 100;
+        }
+        updatePickerSliders();
+        applyPickerColor();
+        dropdown.style.display = 'none';
+      };
+    });
+
+    $('#cp-hue').oninput = (e) => { cpH = parseInt(e.target.value); updatePickerSliders(); applyPickerColor(); };
+    $('#cp-sat').oninput = (e) => { cpS = parseInt(e.target.value); updatePickerSliders(); applyPickerColor(); };
+    $('#cp-bri').oninput = (e) => { cpB = parseInt(e.target.value); updatePickerSliders(); applyPickerColor(); };
+    $('#cp-opa').oninput = (e) => { cpA = parseInt(e.target.value); updatePickerSliders(); applyPickerColor(); };
+
+    initPickerState();
+
+    $('#theme-accent-btn').onclick = (e) => {
+      e.stopPropagation();
+      dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+      if (dropdown.style.display === 'flex') {
+        initPickerState();
+        updatePickerSliders();
+      }
+    };
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.color-picker-container')) {
+        dropdown.style.display = 'none';
+      }
     });
   }
-  function syncThemeSettings() {
-    const m = $('#theme-modal'); if (!m || !m.querySelector('.ts')) return;
-    m.querySelectorAll('.ts-swatch').forEach(b => {
-      const p = palettes[b.dataset.value], mode = p.darkOnly ? 'dark' : userTheme.mode, v = (p.dark && p.light) ? p[mode] : p;
-      b.style.setProperty('--sw-rim', v.accent);
-      b.style.setProperty('--sw-center', 'color-mix(in srgb, ' + v.accent + ' 18%, ' + v.bg + ')');
-      setRadio(b, b.dataset.value === userTheme.palette);
-    });
-    rovingFallback(m.querySelector('.ts-swatches'));
-    const name = m.querySelector('.ts-palette-name'); if (name) name.textContent = (palettes[userTheme.palette] || {}).name || '';
-    const scale = String(Math.round(normalScale(userTheme.scale) * 100));
-    m.querySelectorAll('.ts-scale button').forEach(b => setRadio(b, b.dataset.value === scale));
-    rovingFallback(m.querySelector('.ts-scale'));
-    m.querySelectorAll('.ts-species button').forEach(b => setRadio(b, b.dataset.value === (userTheme.animal || 'off')));
-    rovingFallback(m.querySelector('.ts-species'));
-    updatePetBar();
+
+  function initPickerState() {
+    let currentAccent = userTheme.accent || '#d97757';
+    if (currentAccent.startsWith('hsla')) {
+      let m = currentAccent.match(/hsla\((\d+),\s*(\d+)%?,\s*(\d+)%?,\s*([\d.]+)\)/);
+      if (m) {
+        cpH = parseInt(m[1]); cpS = parseInt(m[2]); cpB = parseInt(m[3]); cpA = Math.round(parseFloat(m[4]) * 100);
+        return;
+      }
+    }
+    let h = hexToHsl(currentAccent);
+    cpH = h.h; cpS = h.s; cpB = h.l; cpA = 100;
   }
-  // The companion bar: the live pet, its name and how it's feeling. Redrawn a few times a second while open.
-  function updatePetBar() {
-    const m = $('#theme-modal'), btn = $('#pet-card-btn'); if (!m || !btn) return;
-    const info = PetEngine.summary();
-    btn.disabled = !info;
-    btn.title = info ? info.name : '';
-    btn.setAttribute('aria-label', info ? 'Open ' + info.name + '’s pet card' : 'No companion');
-    const c = m.querySelector('.ts-pet-portrait');
-    if (c) PetEngine.portrait(c);
-    clearTimeout(tsTimer);
-    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (info && !reduce && m.classList.contains('active')) tsTimer = setTimeout(updatePetBar, 120);
+
+  function updatePickerSliders() {
+    $('#cp-hue').value = cpH;
+    $('#cp-sat').value = cpS;
+    $('#cp-bri').value = cpB;
+    $('#cp-opa').value = cpA;
+    $('#cp-sat').style.background = `linear-gradient(to right, hsl(${cpH}, 0%, 50%), hsl(${cpH}, 100%, 50%))`;
+    $('#cp-bri').style.background = `linear-gradient(to right, #000, hsl(${cpH}, ${cpS}%, 50%))`;
+    $('#color-dropdown').style.setProperty('--cp-current', `hsla(${cpH}, ${cpS}%, ${cpB}%, 1)`);
+  }
+
+  function applyPickerColor() {
+    let color = `hsla(${cpH}, ${cpS}%, ${cpB}%, ${cpA / 100})`;
+    userTheme.accent = color;
+    applyTheme();
+    safeStorage.set('pbf_theme', JSON.stringify(userTheme));
   }
 
   $('#mode-toggle-btn').addEventListener('click', () => {
@@ -5183,10 +3078,6 @@ const PetEngine = (function () {
   $('#glossary-btn').addEventListener('click', () => { renderGlossary(); openModal('glossary-modal'); });
   $('#history-btn').addEventListener('click', () => { renderHistory(); openModal('history-modal'); });
   $('#theme-btn').addEventListener('click', () => { openModal('theme-modal'); applyTheme(); });
-  $('#pet-card-btn').addEventListener('click', () => {
-    if (userTheme.animal === 'off') { showNotification('Choose a companion first.', 'info', 2500); return; }
-    PetEngine.openCard();
-  });
 
   // One listener for every dialog: [data-close] buttons and backdrop clicks.
   document.addEventListener('click', e => {
@@ -5199,9 +3090,16 @@ const PetEngine = (function () {
     if (e.target.id.startsWith('theme-') || e.target.id.startsWith('mode-')) {
       if (e.target.id === 'theme-palette') {
         userTheme.palette = e.target.value;
+        const paletteObj = palettes[userTheme.palette];
+        if (paletteObj.dark && paletteObj.light) {
+          userTheme.accent = paletteObj[userTheme.mode].accent;
+        } else {
+          userTheme.accent = paletteObj.accent;
+        }
+        if ($('#theme-accent-btn')) $('#theme-accent-btn').style.backgroundColor = userTheme.accent;
       }
       if (e.target.id === 'theme-scale') userTheme.scale = normalScale(parseInt(e.target.value, 10) / 100);
-      if (e.target.id === 'theme-animal') { userTheme.animal = e.target.value; PetEngine.unhide(); }
+      if (e.target.id === 'theme-animal') userTheme.animal = e.target.value;
       applyTheme();
       safeStorage.set('pbf_theme', JSON.stringify(userTheme));
     }
@@ -5489,14 +3387,851 @@ const PetEngine = (function () {
   window.addEventListener('resize', debounce(() => {
     autofitUI();
     refreshIndicators();
-    PetEngine.resize();
+    PixelScene.resize();
   }, 100));
 
+  const PixelScene = (function () {
+    const GRID_W = 26, GRID_H = 16;
 
-  PetEngine.init();
+    function makeGrid() {
+      const g = new Array(GRID_H);
+      for (let y = 0; y < GRID_H; y++) g[y] = new Array(GRID_W).fill(null);
+      return g;
+    }
+    function setPx(g, x, y, c) {
+      x = Math.round(x); y = Math.round(y);
+      if (y >= 0 && y < GRID_H && x >= 0 && x < GRID_W) g[y][x] = c;
+    }
+    function rect(g, x, y, w, h, c) {
+      for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) setPx(g, x + i, y + j, c);
+    }
+    function ellipse(g, cx, cy, rx, ry, c) {
+      const rx2 = rx * rx, ry2 = ry * ry;
+      for (let y = -Math.ceil(ry); y <= Math.ceil(ry); y++) {
+        for (let x = -Math.ceil(rx); x <= Math.ceil(rx); x++) {
+          if ((x * x) / rx2 + (y * y) / ry2 <= 1) setPx(g, cx + x, cy + y, c);
+        }
+      }
+    }
+    function circle(g, cx, cy, r, c) { ellipse(g, cx, cy, r, r, c); }
+    function dots(g, pts, c) { pts.forEach(([x, y]) => setPx(g, x, y, c)); }
+
+    function legsTwo(g, backX, frontX, topY, footY, phase, c) {
+      if (phase === 0) {
+        rect(g, backX, topY, 2, footY - topY + 1, c);
+        rect(g, frontX, topY, 2, footY - topY + 1, c);
+      } else {
+        rect(g, backX - 1, topY + 1, 2, footY - topY, c);
+        rect(g, frontX + 1, topY, 2, footY - topY + 1, c);
+      }
+    }
+
+    function buildCat(phase, blink, isEating, isDead) {
+      const g = makeGrid();
+      const tail = phase === 0
+        ? [[4,11],[3,10],[3,9],[2,8],[2,7],[3,6]]
+        : [[4,11],[3,10],[4,9],[5,8],[5,7],[6,6]];
+      dots(g, tail, 'body');
+      dots(g, tail.map(([x,y]) => [x+1,y]), 'body');
+      ellipse(g, 14, 11, 7, 3, 'body');
+      if (isEating) {
+        rect(g, 16, 10, 4, 2, 'body');
+        circle(g, 20, 11, 3, 'body');
+        dots(g, [[18,8],[18,7],[19,8]], 'body');
+        dots(g, [[21,7],[22,8],[21,8]], 'body');
+        if (isDead) {
+          setPx(g, 20, 10, 'pupil'); setPx(g, 22, 10, 'pupil');
+          setPx(g, 21, 11, 'pupil');
+          setPx(g, 20, 12, 'pupil'); setPx(g, 22, 12, 'pupil');
+        } else {
+          setPx(g, 21, 11, blink ? 'body' : 'pupil');
+        }
+        setPx(g, 23, 12, 'nose');
+      } else {
+        circle(g, 20, 8, 3, 'body');
+        dots(g, [[18,5],[18,4],[19,5]], 'body');
+        dots(g, [[21,4],[22,5],[21,5]], 'body');
+        if (isDead) {
+          setPx(g, 20, 7, 'pupil'); setPx(g, 22, 7, 'pupil');
+          setPx(g, 21, 8, 'pupil');
+          setPx(g, 20, 9, 'pupil'); setPx(g, 22, 9, 'pupil');
+        } else {
+          setPx(g, 21, 8, blink ? 'body' : 'pupil');
+        }
+        setPx(g, 23, 9, 'nose');
+      }
+      legsTwo(g, 9, 18, 13, 15, phase, 'body');
+      return g;
+    }
+
+    function buildDog(phase, blink, isEating, isDead) {
+      const g = makeGrid();
+      const tail = phase === 0 ? [[4,8],[3,7],[3,6]] : [[4,8],[3,9],[3,10]];
+      dots(g, tail, 'body');
+      dots(g, tail.map(([x,y]) => [x+1,y]), 'body');
+      ellipse(g, 14, 11, 7, 3.2, 'body');
+      if (isEating) {
+        rect(g, 16, 10, 4, 2, 'body');
+        circle(g, 20, 11, 3.3, 'body');
+        rect(g, 22, 11, 3, 2, 'body');
+        rect(g, 18, 9, 2, 4, 'shade');
+        if (isDead) {
+          setPx(g, 20, 10, 'pupil'); setPx(g, 22, 10, 'pupil');
+          setPx(g, 21, 11, 'pupil');
+          setPx(g, 20, 12, 'pupil'); setPx(g, 22, 12, 'pupil');
+        } else {
+          setPx(g, 21, 10, blink ? 'body' : 'pupil');
+        }
+        setPx(g, 24, 12, 'nose');
+      } else {
+        circle(g, 20, 8, 3.3, 'body');
+        rect(g, 22, 8, 3, 2, 'body');
+        rect(g, 18, 6, 2, 4, 'shade');
+        if (isDead) {
+          setPx(g, 20, 7, 'pupil'); setPx(g, 22, 7, 'pupil');
+          setPx(g, 21, 8, 'pupil');
+          setPx(g, 20, 9, 'pupil'); setPx(g, 22, 9, 'pupil');
+        } else {
+          setPx(g, 21, 7, blink ? 'body' : 'pupil');
+        }
+        setPx(g, 24, 9, 'nose');
+      }
+      legsTwo(g, 9, 18, 13, 15, phase, 'body');
+      return g;
+    }
+
+    function buildCapybara(phase, blink, isEating, isDead) {
+      const g = makeGrid();
+      ellipse(g, 11, 10, 8, 3.5, 'body');
+      rect(g, 4, 7, 14, 6, 'body');
+      if (isEating) {
+        rect(g, 17, 10, 6, 4, 'body');
+        rect(g, 21, 11, 3, 3, 'shade'); 
+        setPx(g, 20, 9, 'body'); setPx(g, 19, 9, 'body');
+        if (isDead) {
+          setPx(g, 19, 10, 'pupil'); setPx(g, 21, 10, 'pupil');
+          setPx(g, 20, 11, 'pupil');
+          setPx(g, 19, 12, 'pupil'); setPx(g, 21, 12, 'pupil');
+        } else {
+          setPx(g, 20, 11, blink ? 'body' : 'pupil');
+        }
+        setPx(g, 23, 12, 'nose');
+      } else {
+        rect(g, 18, 7, 6, 5, 'body');
+        rect(g, 21, 9, 3, 3, 'shade');
+        setPx(g, 19, 6, 'body'); setPx(g, 20, 6, 'body');
+        if (isDead) {
+          setPx(g, 19, 8, 'pupil'); setPx(g, 21, 8, 'pupil');
+          setPx(g, 20, 9, 'pupil');
+          setPx(g, 19, 10, 'pupil'); setPx(g, 21, 10, 'pupil');
+        } else {
+          setPx(g, 20, 9, blink ? 'body' : 'pupil');
+        }
+        setPx(g, 23, 10, 'nose');
+      }
+      const off = phase === 1 ? 1 : 0;
+      rect(g, 6 - off, 13, 2, 3, 'body');
+      rect(g, 10 + off, 13, 2, 3, 'body');
+      rect(g, 14 - off, 13, 2, 3, 'body');
+      rect(g, 18 + off, 13, 2, 3, 'body');
+      return g;
+    }
+
+    function buildRabbit(phase, blink, isEating, isDead) {
+      const g = makeGrid();
+      circle(g, 6, 11, 1.6, 'light');
+      ellipse(g, 14, 12, 6, 3, 'body');
+      if (isEating) {
+        circle(g, 19, 11, 2.6, 'body');
+        rect(g, 18, 3, 1, 8, 'body'); 
+        rect(g, 21, 3, 1, 8, 'body');
+        rect(g, 18, 4, 1, 3, 'shade');
+        rect(g, 21, 4, 1, 3, 'shade');
+        if (isDead) {
+          setPx(g, 19, 10, 'pupil'); setPx(g, 21, 10, 'pupil');
+          setPx(g, 20, 11, 'pupil');
+          setPx(g, 19, 12, 'pupil'); setPx(g, 21, 12, 'pupil');
+        } else {
+          setPx(g, 20, 11, blink ? 'body' : 'pupil');
+        }
+        setPx(g, 22, 12, 'nose');
+      } else {
+        circle(g, 19, 9, 2.6, 'body');
+        rect(g, 18, 1, 1, 7, 'body');
+        rect(g, 21, 1, 1, 7, 'body');
+        rect(g, 18, 2, 1, 3, 'shade');
+        rect(g, 21, 2, 1, 3, 'shade');
+        if (isDead) {
+          setPx(g, 19, 8, 'pupil'); setPx(g, 21, 8, 'pupil');
+          setPx(g, 20, 9, 'pupil');
+          setPx(g, 19, 10, 'pupil'); setPx(g, 21, 10, 'pupil');
+        } else {
+          setPx(g, 20, 9, blink ? 'body' : 'pupil');
+        }
+        setPx(g, 22, 10, 'nose');
+      }
+      if (phase === 0) {
+        rect(g, 10, 14, 3, 2, 'body');
+        rect(g, 17, 15, 2, 1, 'body');
+      } else {
+        rect(g, 8, 13, 4, 1, 'body');
+        rect(g, 18, 13, 2, 1, 'body');
+      }
+      return g;
+    }
+
+    function buildCow(phase, blink, isEating, isDead) {
+      const g = makeGrid();
+      ellipse(g, 13, 10, 8, 3.5, 'body');
+      rect(g, 5, 7, 16, 6, 'body');
+      rect(g, 8, 8, 3, 2, 'shade');
+      rect(g, 14, 11, 4, 2, 'shade');
+      setPx(g, 6, 9, 'shade');
+      if (isEating) {
+        rect(g, 19, 10, 4, 4, 'body');
+        rect(g, 22, 11, 2, 3, 'nose');
+        setPx(g, 20, 4, 'shade'); setPx(g, 21, 4, 'shade');
+        setPx(g, 22, 4, 'shade'); setPx(g, 23, 4, 'shade');
+        if (isDead) {
+          setPx(g, 20, 9, 'pupil'); setPx(g, 22, 9, 'pupil');
+          setPx(g, 21, 10, 'pupil');
+          setPx(g, 20, 11, 'pupil'); setPx(g, 22, 11, 'pupil');
+        } else {
+          setPx(g, 20, 10, blink ? 'body' : 'pupil');
+        }
+      } else {
+        rect(g, 20, 7, 4, 5, 'body');
+        rect(g, 23, 9, 2, 3, 'nose');
+        setPx(g, 20, 5, 'shade'); setPx(g, 21, 5, 'shade');
+        setPx(g, 22, 5, 'shade'); setPx(g, 23, 5, 'shade');
+        if (isDead) {
+          setPx(g, 20, 7, 'pupil'); setPx(g, 22, 7, 'pupil');
+          setPx(g, 21, 8, 'pupil');
+          setPx(g, 20, 9, 'pupil'); setPx(g, 22, 9, 'pupil');
+        } else {
+          setPx(g, 21, 8, blink ? 'body' : 'pupil');
+        }
+      }
+      rect(g, 12, 13, 2, 1, 'nose');
+      legsTwo(g, 8, 17, 13, 15, phase, 'body');
+      dots(g, [[4,8],[3,9],[2,10]], 'body');
+      setPx(g, 2, 11, 'shade');
+      return g;
+    }
+
+    const BUILDERS = { cat: buildCat, dog: buildDog, capybara: buildCapybara, rabbit: buildRabbit, cow: buildCow };
+
+    const PROPS = {
+      yarn:   [[0,-2,'light'],[1,-2,'light'],[-1,-1,'light'],[0,-1,'shade'],[1,-1,'light'],[2,-1,'light'],[0,0,'light'],[1,0,'light']],
+      bone:   [[0,-1,'light'],[0,0,'light'],[1,0,'light'],[2,0,'light'],[3,0,'light'],[3,-1,'light']],
+      carrot: [[0,-3,'grass'],[0,-4,'grass'],[-1,-2,'light'],[0,-2,'light'],[1,-2,'light'],[0,-1,'light']],
+      flower: [[0,-3,'light'],[-1,-2,'body'],[0,-2,'light'],[1,-2,'body'],[0,-1,'shade']],
+      lily:   [[-1,0,'shade'],[0,0,'shade'],[1,0,'shade'],[0,-1,'shade']],
+      fence:  [[0,-4,'grass'],[0,-3,'grass'],[0,-2,'grass'],[0,-1,'grass'],[-2,-3,'grass'],[-1,-3,'grass'],[1,-3,'grass'],[2,-3,'grass']]
+    };
+    const ANIMAL_PROPS = { cat: ['yarn'], dog: ['bone'], capybara: ['lily'], rabbit: ['carrot','flower'], cow: ['flower','fence'] };
+    const PROP_POSITIONS = [0.1, 0.88];
+
+    let canvas, ctx;
+    let cssW = 0, cssH = 0, scale = 3, dpr = 1;
+    let groundY = 0, groundThickness = 2;
+    let animalX = 12, dir = 1;
+    let phase = 0, blink = false;
+    let bobOffset = 0;
+    let lastStepT = 0, lastBlinkT = 0, blinkUntil = 0;
+    let clouds = [];
+    let scenery = [];
+    let treats = [];
+    let poops = [];
+    let pointerX = null;
+    let pointerActiveUntil = 0;
+    let nextWanderT = 0;
+    let wanderTarget = null;
+    let obstacleJump = 0;
+    let jumpOffset = 0;
+    let jumpStartTime = 0;
+    let deadRotation = 0;
+    let colors = {};
+    let rafId = null;
+    let lastFrameT = 0;
+    let resizeObs = null;
+    let animalState = 'wandering'; // wandering, seeking_treat, eating, button_action, post_eat_jump, shitting, dying, dead
+    let stateTimer = 0;
+    let currentSpeed = 12;
+    let isEating = false;
+    const reducedMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+    function readVar(name, fallback) {
+      const cs = getComputedStyle(document.documentElement);
+      const v = (cs.getPropertyValue(name) || '').trim();
+      return v || fallback;
+    }
+
+    function resolveColors() {
+      colors = {
+        body: readVar('--accent', '#5fc28a'),
+        shade: readVar('--accent3', '#3d7d57'),
+        light: readVar('--accent2', '#a3d9b1'),
+        grass: readVar('--border', '#36473d'),
+        cloud: readVar('--muted', '#94a89b'),
+        pupil: '#2a2320',
+        nose: '#e2998f'
+      };
+    }
+
+    function currentAnimal() {
+      const a = (typeof userTheme !== 'undefined' && userTheme.animal) || 'off';
+      return BUILDERS[a] ? a : null;
+    }
+
+    function resize() {
+      if (!canvas) return;
+      const parent = canvas.parentElement;
+      const r = parent.getBoundingClientRect();
+      cssW = Math.max(1, Math.round(r.width));
+      cssH = Math.max(1, Math.round(r.height));
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(cssW * dpr);
+      canvas.height = Math.round(cssH * dpr);
+      canvas.style.width = cssW + 'px';
+      canvas.style.height = cssH + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      scale = Math.max(2, Math.floor((cssH - 4) / GRID_H));
+      groundThickness = Math.max(2, Math.round(scale * 0.6));
+      groundY = cssH - groundThickness - 1;
+
+      const spriteW = GRID_W * scale;
+      const margin = 4;
+      if (cssW - spriteW - margin < margin) {
+        animalX = margin;
+      } else {
+        animalX = Math.max(margin, Math.min(animalX, cssW - spriteW - margin));
+      }
+      initClouds();
+      initScenery();
+    }
+
+    function initClouds() {
+      clouds = [];
+      const headroom = groundY - GRID_H * scale;
+      if (headroom < 10) return;
+      const n = Math.max(3, Math.min(6, Math.round(cssW / 175)));
+      for (let i = 0; i < n; i++) {
+        clouds.push({
+          x: Math.random() * cssW,
+          y: 2 + Math.random() * Math.max(1, headroom - 8),
+          s: 0.8 + Math.random() * 0.5,
+          speed: 3 + Math.random() * 3
+        });
+      }
+    }
+    function initScenery() {
+      scenery = [];
+      const count = Math.max(9, Math.min(18, Math.round(cssW / 82)));
+      const kinds = ['bush', 'grass', 'flower', 'tree', 'bush', 'rock', 'mushroom'];
+      for (let i = 0; i < count; i++) {
+        const edgeBias = i < 2 ? (i === 0 ? 0.035 : 0.94) : (0.08 + Math.random() * 0.84);
+        scenery.push({
+          kind: kinds[i % kinds.length],
+          x: cssW * edgeBias,
+          s: 0.72 + Math.random() * 0.58,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+    }
+
+    function step(dtMs, animal) {
+      const now = performance.now();
+      const spriteW = GRID_W * scale;
+      const margin = 4;
+      const maxX = Math.max(margin, cssW - spriteW - margin);
+
+      if (animalState === 'dead' || animalState === 'dying') {
+        if (animalState === 'dying') {
+          const totalDur = 1500;
+          const elapsed = totalDur - (stateTimer - now);
+          const progress = Math.min(1, Math.max(0, elapsed / totalDur));
+          if (progress < 0.3) {
+            bobOffset = Math.sin(elapsed / 40) * 4;
+            deadRotation = 0;
+          } else {
+            bobOffset = -scale * 2;
+            deadRotation = Math.min(90, (progress - 0.3) * (90 / 0.7));
+          }
+          if (now > stateTimer) {
+            animalState = 'dead';
+            deadRotation = 90;
+            bobOffset = -scale * 2;
+          }
+        }
+        clouds.forEach(c => {
+          c.x += c.speed * (dtMs / 1000);
+          if (c.x > cssW + 20) c.x = -20 - Math.random() * 40;
+        });
+        return;
+      }
+
+      // 1. Button Collision (Only if not eating/jumping/shitting/dead)
+      let collidingButton = null;
+      if (animalState !== 'eating' && animalState !== 'post_eat_jump' && animalState !== 'shitting' && animalState !== 'seeking_treat' && animalState !== 'dying' && animalState !== 'dead') {
+        const hostRect = canvas.parentElement.getBoundingClientRect();
+        [document.getElementById('generate-btn'), document.getElementById('reset-all-btn')].forEach(el => {
+          if (!el) return;
+          const r = el.getBoundingClientRect();
+          const btnLeft = r.left - hostRect.left;
+          const btnRight = r.right - hostRect.left;
+          const animalCenterX = animalX + spriteW / 2;
+          if (animalCenterX > btnLeft - 10 && animalCenterX < btnRight + 10) {
+            if (obstacleJump < 5) collidingButton = { left: btnLeft, right: btnRight, el: el };
+          }
+        });
+      }
+
+      if (collidingButton && animalState !== 'button_action') {
+        animalState = 'button_action';
+        stateTimer = now + 600;
+        bobOffset = 0;
+        if (animal === 'cat' || animal === 'dog' || animal === 'rabbit') {
+          currentSpeed = 40; 
+        } else {
+            currentSpeed = 0; 
+            phase = 0;
+        }
+      }
+
+      // 2. State Machine
+      if (animalState === 'button_action') {
+        if (now > stateTimer) {
+            animalState = 'wandering';
+            if (!(animal === 'cat' || animal === 'dog' || animal === 'rabbit')) {
+                dir *= -1;
+                animalX += dir * 15; 
+            }
+            obstacleJump = 0;
+            wanderTarget = null;
+        } else if (animal === 'cat' || animal === 'dog' || animal === 'rabbit') {
+            const totalDur = 600;
+            const elapsed = totalDur - (stateTimer - now);
+            const progress = Math.min(1, Math.max(0, elapsed / totalDur));
+            const maxHeight = Math.min(cssH * 0.75, 55);
+            obstacleJump = Math.sin(progress * Math.PI) * maxHeight;
+        }
+      } 
+      else if (animalState === 'eating') {
+        currentSpeed = 0;
+        isEating = true;
+        phase = Math.floor(now / 150) % 2; 
+        if (now > stateTimer) {
+          treats.shift(); 
+          isEating = false;
+          if (Math.random() < 0.10) { // 10% chance to die
+            animalState = 'dying';
+            stateTimer = now + 1500;
+          } else {
+            animalState = 'post_eat_jump';
+            stateTimer = now + 1500; 
+            jumpStartTime = now;
+          }
+          wanderTarget = null;
+        }
+      } 
+      else if (animalState === 'post_eat_jump') {
+        if (!wanderTarget) {
+            const dist = (Math.random() - 0.5) * 200;
+            wanderTarget = Math.max(margin, Math.min(maxX, animalX + dist));
+        }
+        const delta = wanderTarget - animalX;
+        if (Math.abs(delta) > 5) {
+            dir = delta > 0 ? 1 : -1;
+            currentSpeed = 30;
+            animalX += dir * currentSpeed * (dtMs / 1000);
+        } else {
+            currentSpeed = 0;
+        }
+
+        const totalDur = 1500;
+        const elapsed = now - jumpStartTime;
+        const progress = Math.min(1, elapsed / totalDur);
+        const hopCount = 3;
+        const hopProgress = (progress * hopCount) % 1;
+        jumpOffset = Math.sin(hopProgress * Math.PI) * 30;
+
+        if (now - lastStepT > 100) { phase = phase ? 0 : 1; lastStepT = now; }
+
+        if (now > stateTimer) {
+            animalState = 'shitting';
+            stateTimer = now + 1000;
+            currentSpeed = 0;
+            jumpOffset = 0;
+            bobOffset = 0;
+        }
+      } 
+      else if (animalState === 'shitting') {
+        currentSpeed = 0;
+        phase = 0;
+        bobOffset = Math.min(scale * 2, Math.abs(Math.sin(now / 100)) * scale * 2);
+        
+        if (now > stateTimer) {
+          const backX = dir === 1 ? animalX + 4 * scale : animalX + GRID_W * scale - 4 * scale;
+          poops.push({
+            x: backX,
+            y: groundY,
+            born: now,
+            flies: [
+              { angle: Math.random() * 6.28, dist: 3 + Math.random() * 3, speed: 0.15 + Math.random() * 0.1 },
+              { angle: Math.random() * 6.28, dist: 3 + Math.random() * 3, speed: 0.15 + Math.random() * 0.1 }
+            ]
+          });
+          animalState = 'wandering';
+          wanderTarget = null;
+          bobOffset = 0;
+          dir *= -1; 
+        }
+      } 
+      else {
+        let treatTarget = treats.length > 0 ? treats[0] : null;
+        
+        if (treatTarget) {
+          animalState = 'seeking_treat';
+          currentSpeed = 35;
+          const mouthX = animalX + (dir === 1 ? (GRID_W - 3) : 3) * scale;
+          const delta = treatTarget.x - mouthX;
+          if (Math.abs(delta) > 2) {
+            dir = delta > 0 ? 1 : -1;
+            animalX += dir * currentSpeed * (dtMs / 1000);
+            const stepInterval = 100;
+            if (now - lastStepT > stepInterval) { phase = phase ? 0 : 1; lastStepT = now; }
+            if (animal === 'rabbit' || animal === 'capybara') {
+              bobOffset = Math.abs(Math.sin(now / 1000 * 8)) * Math.max(2, scale * 0.6);
+            } else {
+              bobOffset = 0;
+            }
+          } else {
+            animalState = 'eating';
+            stateTimer = now + 1200;
+            currentSpeed = 0;
+            bobOffset = 0;
+          }
+        } else {
+          if (animalState === 'seeking_treat') animalState = 'wandering';
+          let target = null;
+          if (performance.now() < pointerActiveUntil && pointerX !== null) {
+            target = Math.max(margin, Math.min(maxX, pointerX - spriteW * 0.5));
+            currentSpeed = 25; 
+          } else {
+            if (!wanderTarget || now > nextWanderT || Math.abs(animalX - wanderTarget) < 8) {
+              wanderTarget = margin + Math.random() * Math.max(1, maxX - margin);
+              nextWanderT = now + 3000 + Math.random() * 4000;
+              currentSpeed = Math.random() > 0.7 ? 25 : (8 + Math.random() * 8); 
+            }
+            target = wanderTarget;
+          }
+
+          const delta = target - animalX;
+          if (Math.abs(delta) > 1) {
+            dir = delta > 0 ? 1 : -1;
+            animalX += dir * currentSpeed * (dtMs / 1000);
+            const stepInterval = Math.max(80, 300 - currentSpeed * 5);
+            if (now - lastStepT > stepInterval) { phase = phase ? 0 : 1; lastStepT = now; }
+            if (animal === 'rabbit' || animal === 'capybara') {
+              const bs = currentSpeed > 20 ? 8 : 4;
+              const bh = Math.max(2, scale * 0.6);
+              bobOffset = Math.abs(Math.sin(now / 1000 * bs)) * bh;
+              phase = Math.sin(now / 1000 * bs) > 0 ? 1 : 0;
+            } else {
+              bobOffset = 0;
+            }
+          } else {
+            animalX = target;
+            currentSpeed = 0;
+            bobOffset = 0;
+          }
+        }
+      }
+      
+      if (animalX > maxX) { animalX = maxX; dir = -1; wanderTarget = null; }
+      if (animalX < margin) { animalX = margin; dir = 1; wanderTarget = null; }
+
+      if (!blink && now - lastBlinkT > 2600 + Math.random() * 2400) {
+        blink = true; lastBlinkT = now; blinkUntil = now + 130;
+      } else if (blink && now > blinkUntil) {
+        blink = false;
+      }
+
+      clouds.forEach(c => {
+        c.x += c.speed * (dtMs / 1000);
+        if (c.x > cssW + 20) c.x = -20 - Math.random() * 40;
+      });
+    }
+
+    function drawGround() {
+      ctx.save();
+      ctx.globalAlpha = 0.38;
+      ctx.fillStyle = colors.grass;
+      ctx.fillRect(0, groundY, cssW, groundThickness);
+      ctx.restore();
+
+      ctx.save();
+      ctx.globalAlpha = 0.5;
+      ctx.fillStyle = colors.grass;
+      const spacing = Math.max(16, scale * 6);
+      const tH = Math.max(2, scale);
+      const tW = Math.max(1, Math.round(scale * 0.6));
+      for (let x = 2; x < cssW; x += spacing) {
+        ctx.fillRect(x, groundY - tH, tW, tH);
+        ctx.fillRect(x + scale, groundY - Math.floor(tH * 0.55), tW, Math.floor(tH * 0.55));
+      }
+      ctx.restore();
+    }
+
+    function drawClouds() {
+      if (!clouds.length) return;
+      ctx.save();
+      ctx.globalAlpha = 0.42;
+      ctx.fillStyle = colors.cloud;
+      clouds.forEach(c => {
+        const s = Math.max(1, scale * c.s);
+        ctx.fillRect(c.x, c.y, s * 3, s);
+        ctx.fillRect(c.x + s, c.y - s, s * 2, s);
+      });
+      ctx.restore();
+    }
+
+    function drawScenery(ts) {
+      ctx.save();
+      ctx.globalAlpha = 0.38;
+      scenery.forEach(o => {
+        const unit = Math.max(1, scale * o.s);
+        const sway = reducedMotion ? 0 : Math.sin(ts / 900 + o.phase) * Math.max(0.5, unit * 0.22);
+        const x = Math.round(o.x + sway), y = groundY;
+        if (o.kind === 'tree') {
+          ctx.fillStyle = colors.shade; // Trunk
+          ctx.fillRect(x, y - unit * 10, unit, unit * 10);
+          
+          ctx.fillStyle = colors.shade; // Dark foliage base
+          ctx.fillRect(x - unit * 4, y - unit * 13, unit * 9, unit * 4);
+          ctx.fillRect(x - unit * 3, y - unit * 16, unit * 7, unit * 4);
+          ctx.fillRect(x - unit, y - unit * 18, unit * 3, unit * 3);
+
+          ctx.fillStyle = colors.grass; // Mid foliage
+          ctx.fillRect(x - unit * 3, y - unit * 14, unit * 7, unit * 3);
+          ctx.fillRect(x - unit * 2, y - unit * 16, unit * 5, unit * 2);
+
+          ctx.fillStyle = colors.light; // Light foliage highlights
+          ctx.fillRect(x - unit * 1, y - unit * 15, unit * 2, unit);
+          ctx.fillRect(x + unit * 1, y - unit * 13, unit, unit);
+        } else if (o.kind === 'bush') {
+          ctx.fillStyle = colors.shade;
+          ctx.fillRect(x - unit * 2, y - unit * 2, unit * 5, unit * 2);
+          ctx.fillRect(x - unit, y - unit * 3, unit * 3, unit);
+        } else if (o.kind === 'flower') {
+          ctx.fillStyle = colors.grass;
+          ctx.fillRect(x, y - unit * 3, Math.max(1, unit * .45), unit * 3);
+          ctx.fillStyle = colors.light;
+          ctx.fillRect(x - unit, y - unit * 4, unit * 2, unit);
+        } else if (o.kind === 'rock') {
+          ctx.fillStyle = colors.cloud;
+          ctx.fillRect(x - unit, y - unit * 1.4, unit * 3, unit * 1.4);
+          ctx.fillRect(x, y - unit * 2.2, unit * 1.5, unit);
+        } else if (o.kind === 'mushroom') {
+          ctx.fillStyle = colors.light;
+          ctx.fillRect(x - unit, y - unit * 3, unit * 3, unit);
+          ctx.fillRect(x, y - unit * 2, unit, unit * 2);
+        } else {
+          ctx.fillStyle = colors.grass;
+          ctx.fillRect(x, y - unit * 2, Math.max(1, unit * .45), unit * 2);
+          ctx.fillRect(x + unit, y - unit, Math.max(1, unit * .4), unit);
+        }
+      });
+      ctx.restore();
+    }
+    function drawTreats(ts) {
+      treats = treats.filter(t => ts - t.born < 15000);
+      ctx.save();
+      treats.forEach(t => {
+        const age = ts - t.born;
+        const bounce = reducedMotion ? 0 : Math.abs(Math.sin(age / 180)) * Math.max(1, scale);
+        let sizeMultiplier = 1;
+        let drawX = t.x;
+        if (animalState === 'eating' && treats[0] === t) {
+            const eatProgress = Math.max(0, (stateTimer - ts) / 1200);
+            sizeMultiplier = eatProgress;
+            drawX = animalX + (dir === 1 ? (GRID_W - 3) * scale : 3 * scale);
+        }
+        ctx.globalAlpha = Math.min(.9, Math.max(0, (15000 - age) / 4000)) * (sizeMultiplier > 0 ? 1 : 0);
+        ctx.fillStyle = colors.light;
+        const u = Math.max(3, scale * 1.35) * sizeMultiplier;
+        ctx.fillRect(drawX - u, groundY - u * 2 - bounce, u * 2, u);
+        ctx.fillStyle = colors.shade;
+        ctx.fillRect(drawX, groundY - u - bounce, u, u);
+      });
+      ctx.restore();
+    }
+    function drawPoops(ts) {
+      poops = poops.filter(p => ts - p.born < 15000);
+      ctx.save();
+      poops.forEach(p => {
+        const age = ts - p.born;
+        ctx.globalAlpha = age > 12000 ? Math.max(0, (15000 - age) / 3000) : 1;
+        ctx.fillStyle = '#3b2f2f'; // Darker brown
+        const u = Math.max(3, scale * 1.2);
+        // Poop shape (pile)
+        ctx.fillRect(p.x - u, p.y - u, u * 2, u);
+        ctx.fillRect(p.x - u/2, p.y - u*1.5, u, u/2);
+        ctx.fillRect(p.x + u/3, p.y - u*1.8, u*0.6, u*0.6);
+        ctx.fillRect(p.x - u*1.2, p.y - u*0.5, u*0.5, u*0.5);
+
+        // Flies
+        ctx.globalAlpha = 1;
+        p.flies.forEach(fly => {
+          fly.angle += fly.speed;
+          const fx = p.x + Math.cos(fly.angle) * fly.dist * scale * 0.5;
+          const fy = p.y - u * 1.5 + Math.sin(fly.angle * 1.3) * fly.dist * scale * 0.3;
+          
+          // Fly body
+          ctx.fillStyle = colors.cloud;
+          ctx.fillRect(fx, fy, 2, 2);
+          // Fly wings (blinking)
+          if (Math.floor(ts / 50) % 2 === 0) {
+            ctx.globalAlpha = 0.4;
+            ctx.fillStyle = colors.light;
+            ctx.fillRect(fx - 1, fy - 1, 4, 2);
+            ctx.globalAlpha = 1;
+          }
+        });
+      });
+      ctx.restore();
+    }
+    function drawProps(animal) {
+      const list = ANIMAL_PROPS[animal] || [];
+      if (!list.length) return;
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      list.forEach((propName, i) => {
+        const px = cssW * (PROP_POSITIONS[i % PROP_POSITIONS.length] || 0.5);
+        const py = groundY;
+        const pts = PROPS[propName] || [];
+        pts.forEach(([dx, dy, key]) => {
+          if (!key) return;
+          ctx.fillStyle = colors[key] || colors.body;
+          ctx.fillRect(Math.round(px + dx * scale), Math.round(py + dy * scale), scale, scale);
+        });
+      });
+      ctx.restore();
+    }
+
+    function drawAnimal(animal) {
+      const builder = BUILDERS[animal];
+      if (!builder) return;
+      const isDead = animalState === 'dying' || animalState === 'dead';
+      const grid = builder(phase, blink, isEating, isDead);
+      const originY = groundY - GRID_H * scale - bobOffset - obstacleJump - jumpOffset;
+      ctx.save();
+      ctx.globalAlpha = 0.94;
+      if (isDead) {
+        const rotDir = dir === 1 ? -1 : 1;
+        const rotX = animalX + (dir === 1 ? (GRID_W - 4) : 4) * scale;
+        const rotY = originY + (GRID_H - 2) * scale;
+        ctx.translate(rotX, rotY);
+        ctx.rotate(deadRotation * Math.PI / 180 * rotDir);
+        ctx.translate(-rotX, -rotY);
+      }
+      for (let y = 0; y < GRID_H; y++) {
+        for (let x = 0; x < GRID_W; x++) {
+          const key = grid[y][x];
+          if (!key) continue;
+          ctx.fillStyle = colors[key] || colors.body;
+          const gx = dir === 1 ? x : (GRID_W - 1 - x);
+          ctx.fillRect(Math.round(animalX + gx * scale), Math.round(originY + y * scale), scale, scale);
+        }
+      }
+      ctx.restore();
+    }
+
+    function tick(ts) {
+      rafId = requestAnimationFrame(tick);
+      if (!lastFrameT) lastFrameT = ts;
+      const dt = ts - lastFrameT;
+      if (dt < 80) return;
+      lastFrameT = ts;
+
+      const animal = currentAnimal();
+      ctx.clearRect(0, 0, cssW, cssH);
+      if (!animal) return;
+
+      step(dt, animal);
+      drawGround();
+      drawClouds();
+      drawScenery(ts);
+      drawProps(animal);
+      drawPoops(ts);
+      drawTreats(ts);
+      drawAnimal(animal);
+    }
+
+    function start() {
+      if (rafId) return;
+      lastFrameT = 0;
+      rafId = requestAnimationFrame(tick);
+    }
+    function stop() {
+      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+      if (ctx) ctx.clearRect(0, 0, cssW, cssH);
+    }
+
+    function onThemeChange() {
+      if (!canvas) return;
+      resolveColors();
+      resize();
+      const animal = currentAnimal();
+      if (animal) start(); else stop();
+    }
+
+    function init() {
+      canvas = document.getElementById('pixel-scene-canvas');
+      if (!canvas) return;
+      ctx = canvas.getContext('2d');
+      resolveColors();
+      resize();
+
+      if (window.ResizeObserver) {
+        resizeObs = new ResizeObserver(() => resize());
+        resizeObs.observe(canvas.parentElement);
+      }
+      const sceneHost = canvas.parentElement;
+      sceneHost.addEventListener('pointermove', e => {
+        const r = sceneHost.getBoundingClientRect();
+        pointerX = Math.max(4, Math.min(cssW - 4, e.clientX - r.left));
+        pointerActiveUntil = performance.now() + 1400;
+      }, { passive: true });
+      sceneHost.addEventListener('pointerleave', () => { pointerActiveUntil = 0; });
+      const placeTreat = e => {
+        if (!currentAnimal()) return;
+        if (e.target.closest('button, select, input, label, textarea, .modal, .card-content')) return;
+        const r = sceneHost.getBoundingClientRect();
+        const x = Math.max(8, Math.min(cssW - 8, e.clientX - r.left));
+        treats.push({ x, born: performance.now() });
+        pointerX = x;
+        pointerActiveUntil = performance.now() + 15000;
+      };
+      sceneHost.addEventListener('pointerdown', placeTreat, true);
+      document.addEventListener('pointerdown', e => {
+        if (sceneHost.contains(e.target)) return;
+        if (e.target !== document.body && !e.target.classList.contains('app') && !e.target.classList.contains('main-layout') && !e.target.classList.contains('main-content')) return;
+        placeTreat(e);
+      }, true);
+
+      const animal = currentAnimal();
+      if (animal) start();
+    }
+
+    return { init, resize, onThemeChange };
+  })();
+
+  PixelScene.init();
   applyTheme();
-  initThemeSettings();
-  syncThemeSettings();
+  initColorPicker();
   buildSecretMenu();
   renderMatrix();
   renderDynamicSections();

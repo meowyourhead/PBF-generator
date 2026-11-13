@@ -1,5 +1,5 @@
 //! Build step:
-//!  1. Picks the newest "PBF generator vX.Y.html" from the project root.
+//!  1. Picks the newest "PBF generator vX.Y.html" from `ui/`.
 //!  2. Replaces the Google Fonts <link> tags with the locally cached fonts
 //!     (assets/fonts.css + assets/fonts/*.woff2) inlined as base64, so the app
 //!     works fully offline.
@@ -15,8 +15,13 @@ fn main() {
     let out = PathBuf::from(env::var("OUT_DIR").unwrap());
 
     // ---- 1. newest HTML -------------------------------------------------
+    // Only `ui/`, `owl.jpg` and `assets/` are watched. Watching the project root
+    // would include `app/target`, which every build touches, so every build
+    // would rerun this script and relink from scratch.
+    let ui = root.join("ui");
+    println!("cargo:rerun-if-changed={}", ui.display());
     let mut best: Option<(Vec<u32>, PathBuf)> = None;
-    for entry in fs::read_dir(&root).unwrap().flatten() {
+    for entry in fs::read_dir(&ui).expect("ui/ folder not found").flatten() {
         let name = entry.file_name().to_string_lossy().to_string();
         let lower = name.to_lowercase();
         if let Some(rest) = lower.strip_prefix("pbf generator v") {
@@ -28,16 +33,14 @@ fn main() {
             }
         }
     }
-    let (_, html_path) = best.expect("no 'PBF generator vX.Y.html' found in project root");
-    println!("cargo:rerun-if-changed={}", root.display());
-    println!("cargo:rerun-if-changed={}", html_path.display());
+    let (_, html_path) = best.expect("no 'PBF generator vX.Y.html' found in ui/");
     println!("cargo:warning=Embedding {}", html_path.file_name().unwrap().to_string_lossy());
     let html = fs::read_to_string(&html_path).unwrap();
 
     // ---- 2. inline fonts ------------------------------------------------
     let assets = manifest.join("assets");
     println!("cargo:rerun-if-changed={}", assets.display());
-    let mut css = fs::read_to_string(assets.join("fonts.css")).unwrap();
+    let mut css = merge_font_faces(&fs::read_to_string(assets.join("fonts.css")).unwrap());
     let mut fonts: Vec<_> = fs::read_dir(assets.join("fonts")).unwrap().flatten().collect();
     fonts.sort_by_key(|e| e.file_name());
     for f in fonts {
@@ -92,6 +95,55 @@ fn main() {
         res.set_icon(ico_path.to_str().unwrap());
         res.compile().expect("failed to compile Windows resources");
     }
+}
+
+/// Google's CSS repeats one @font-face per weight even when every weight points at
+/// the same (variable) font file, so inlining it as-is embeds that file once per
+/// weight. Faces that differ only in `font-weight` are merged into one face with a
+/// weight range ("400 700"), which browsers treat the same way.
+fn merge_font_faces(css: &str) -> String {
+    struct Face { key: String, body: String, min: u32, max: u32 }
+    fn prop<'a>(body: &'a str, name: &str) -> &'a str {
+        body.split(';')
+            .find_map(|d| d.trim().strip_prefix(name).and_then(|r| r.trim_start().strip_prefix(':')))
+            .map_or("", str::trim)
+    }
+    let mut faces: Vec<Face> = Vec::new();
+    for block in css.split("@font-face").skip(1) {
+        let Some((body, _)) = block.split_once('}') else { continue };
+        let body = body.trim_start_matches(|c: char| c == '{' || c.is_whitespace());
+        let weight = prop(body, "font-weight");
+        let mut ws = weight.split_whitespace().filter_map(|w| w.parse::<u32>().ok());
+        let (Some(lo), hi) = (ws.next(), ws.next()) else {
+            faces.push(Face { key: body.to_owned(), body: body.to_owned(), min: 0, max: 0 });
+            continue;
+        };
+        let hi = hi.unwrap_or(lo);
+        let key = ["font-family", "font-style", "src", "unicode-range"]
+            .map(|n| prop(body, n))
+            .join("|");
+        match faces.iter_mut().find(|f| f.key == key) {
+            Some(f) => { f.min = f.min.min(lo); f.max = f.max.max(hi); }
+            None => faces.push(Face { key, body: body.to_owned(), min: lo, max: hi }),
+        }
+    }
+    let mut out = String::with_capacity(css.len());
+    for f in faces {
+        let body = if f.max == 0 {
+            f.body
+        } else {
+            let range = if f.min == f.max { f.min.to_string() } else { format!("{} {}", f.min, f.max) };
+            f.body
+                .split(';')
+                .map(|d| if d.trim().starts_with("font-weight") { format!("\n  font-weight: {range}") } else { d.to_owned() })
+                .collect::<Vec<_>>()
+                .join(";")
+        };
+        out.push_str("@font-face {\n  ");
+        out.push_str(body.trim());
+        out.push_str("\n}\n");
+    }
+    out
 }
 
 /// Lifts the green background a little brighter, leaving the owl alone.

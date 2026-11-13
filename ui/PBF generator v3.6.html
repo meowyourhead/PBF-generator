@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>PBF Comment Generator v3.4</title>
+<title>PBF Comment Generator v3.6</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@1,600;1,700;1,800&family=JetBrains+Mono:wght@400;500&family=Lato:wght@400;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Merriweather:wght@400;700&family=Open+Sans:wght@400;600&family=Playfair+Display:wght@400;600&family=Rajdhani:wght@500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@1,600;1,700;1,800&family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
 <style>
   /* Dark Mode (Default) */
   :root {
@@ -208,9 +208,11 @@
   .dock .dock-comment { margin-bottom: 0; }
   .dock .dock-comment .card-content { padding-top: var(--space-2); padding-bottom: var(--space-2); }
   /* Equal side columns keep Generate / Reset all centred whatever sits left and right. */
+  /* The gap under the buttons matches the gap above them (dock margin + its top padding),
+     so Generate sits evenly between the last card and the comment. */
   .button-row.dock-actions {
     display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-    margin: 0 0 var(--space-2);
+    margin: 0 0 calc(max(var(--space-3), var(--card-marg, 0px)) + var(--space-2));
   }
   .button-row.dock-actions .brand { justify-self: start; min-width: 0; }
   .button-row.dock-actions .center-btns { flex: none; }
@@ -501,7 +503,6 @@
     background: var(--card); border: 1px solid var(--border); border-radius: 20px; width: 100%; 
     max-width: 520px; padding: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); max-height: 90vh; overflow-y: auto;
   }
-  #admin-modal .modal { max-width: 520px; }
   #glossary-modal .modal { max-width: 960px; } 
   #history-modal .modal { max-width: 840px; }
   #secret-menu .modal { max-width: 400px; text-align: center; }
@@ -531,26 +532,11 @@
     color: var(--fg); font-family: var(--font-ui); font-size: calc(var(--base-font) * 0.9); margin-bottom: 10px; outline: none;
   }
   .modal input:focus, .modal select:focus { border-color: var(--accent-dim); }
-  .form-row { display: flex; gap: 10px; margin-bottom: 10px; }
-  .form-row input { margin-bottom: 0; }
   .modal .btn { width: 100%; margin-top: 4px; }
 
   .settings-slider { -webkit-appearance: none; appearance: none; width: 100%; height: 8px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 4px; outline: none; margin-top: 4px; }
   .settings-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; background: var(--accent); border: 2px solid var(--bg); border-radius: 50%; cursor: pointer; }
   .settings-slider::-moz-range-thumb { width: 18px; height: 18px; background: var(--accent); border: 2px solid var(--bg); border-radius: 50%; cursor: pointer; }
-
-  .current-list { background: var(--bg-2); border: 1px solid var(--border); border-radius: 10px; padding: 8px; margin-bottom: 12px; font-family: var(--font-ui); font-size: calc(var(--base-font) * 0.85); color: var(--muted); max-height: 100px; overflow-y: auto; } 
-  .pill { display: inline-flex; align-items: center; gap: 8px; background: var(--card-2); padding: 5px 8px; border-radius: 8px; margin: 2px; font-family: var(--font-ui); font-size: calc(var(--base-font) * 0.85); color: var(--fg); } 
-  .pill button { background: none; border: none; color: var(--muted); cursor: pointer; font-weight: bold; font-size: calc(var(--base-font) * 0.9); display: flex; align-items: center; }
-  .pill button:hover { color: var(--accent); }
-  .pill .remove-btn:hover { color: var(--danger); }
-  .pill .rare-btn {
-    font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 6px;
-    border: 1px dashed var(--border); color: var(--muted);
-  }
-  .pill .rare-btn[aria-pressed="true"] { border-style: solid; border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
-  .modal .btn.admin-export { margin-top: var(--space-4); }
-  .modal .btn.admin-logout { margin-top: var(--space-2); }
 
   .settings-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; gap: 10px; }
   .settings-row label { font-family: var(--font-ui); font-size: calc(var(--base-font) * 0.9); color: var(--fg); }
@@ -561,7 +547,7 @@
   .scale-setting select { font-variant-numeric: tabular-nums; cursor: pointer; }
   .modal select:focus-visible { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
   /* ---------- Theme settings (v3.2): a quiet list, then one companion bar ---------- */
-  #theme-modal .modal { max-width: 488px; padding: 20px 22px 22px; }
+  #theme-modal .modal { max-width: 508px; padding: 20px 22px 22px; }
   #theme-modal .modal-header { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
   .ts { display: flex; flex-direction: column; gap: 16px; font-family: var(--font-ui); }
   .ts-row { position: relative; display: grid; grid-template-columns: 92px minmax(0, 1fr); align-items: center; column-gap: 16px; min-height: 32px; }
@@ -569,21 +555,33 @@
   .ts-control { display: flex; align-items: center; gap: 12px; min-width: 0; }
   #theme-modal .ts-hidden { position: absolute; width: 1px; height: 1px; margin: 0; padding: 0; opacity: 0; pointer-events: none; overflow: hidden; }
 
-  /* Theme swatches: each theme as a tiny red cell on a film, its accent rim around a pale centre. */
-  .ts-swatches { display: flex; flex-wrap: wrap; gap: 6px; }
+  /* Theme palette (v3.5): each theme is a rounded tile painted in its own colours —
+     page background, a card with its three accents, and its name in its text colour. */
+  .ts-row.ts-row-stack { grid-template-columns: 1fr; row-gap: 10px; }
+  .ts-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 8px; }
   .ts-swatch {
-    width: 22px; height: 22px; padding: 0; border: 0; border-radius: 50%; cursor: pointer;
-    background: radial-gradient(circle, var(--sw-center) 0 30%, var(--sw-rim) 46% 100%);
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--fg) 14%, transparent);
-    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    position: relative; aspect-ratio: 1; min-width: 0; padding: 7px 6px; cursor: pointer;
+    display: flex; flex-direction: column; justify-content: space-between; gap: 6px;
+    border: 1px solid var(--sw-border); border-radius: 14px; background: var(--sw-bg);
+    font: 600 11px/1.15 'Inter', system-ui, sans-serif; letter-spacing: -0.01em; color: var(--sw-fg); text-align: left;
+    transition: transform 0.14s ease, box-shadow 0.14s ease;
   }
-  .ts-swatch:hover { transform: scale(1.12); }
-  .ts-swatch[aria-checked="true"] { box-shadow: 0 0 0 2px var(--card), 0 0 0 3.5px var(--fg); }
+  .ts-swatch:hover { transform: translateY(-2px); box-shadow: 0 4px 12px color-mix(in srgb, #000 18%, transparent); }
+  .ts-swatch[aria-checked="true"] { box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--fg); }
   .ts-swatch:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--accent); }
-  .ts-palette-name { font-size: 13px; color: var(--fg); white-space: nowrap; }
+  .ts-sw-card {
+    display: flex; flex-direction: column; gap: 4px; padding: 6px;
+    border-radius: 7px; background: var(--sw-card); box-shadow: inset 0 0 0 1px var(--sw-border);
+  }
+  .ts-sw-card i { display: block; height: 5px; border-radius: 3px; }
+  .ts-sw-card i:nth-child(1) { width: 100%; background: var(--sw-a1); }
+  .ts-sw-card i:nth-child(2) { width: 72%; background: var(--sw-a2); }
+  .ts-sw-card i:nth-child(3) { width: 46%; background: var(--sw-a3); }
+  /* Same label font in every theme (Genshin's wider font would clip "Monochrome"). */
+  #theme-modal .ts-sw-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: 'Inter', system-ui, sans-serif; }
 
 
-  /* Segmented switch (display size, animal). */
+  /* Segmented switch (display scale, animal). */
   .ts-seg { display: inline-flex; gap: 2px; padding: 3px; border-radius: 10px; background: var(--bg-2); border: 1px solid var(--border); }
   .ts-seg button {
     padding: 5px 11px; border: 0; border-radius: 7px; background: transparent; cursor: pointer;
@@ -626,11 +624,6 @@
   .preview-box { background: var(--bg-2); border: 1px dashed var(--border); border-radius: 12px; padding: 16px; margin-top: 10px; margin-bottom: 20px; text-align: center; } 
   .preview-text { margin-bottom: 12px; color: var(--fg); }
   
-  .admin-grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .admin-sub-label { font-family: var(--font-ui); font-size: calc(var(--base-font) * 0.8); color: var(--muted); margin-bottom: 6px; letter-spacing: 0; font-weight: 600; }
-  .admin-grid-2col .current-list { max-height: 80px; }
-  .admin-grid-2col .btn { width: 100%; margin-top: 4px; }
-
   .glossary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
   .glossary-item { display: flex; align-items: center; gap: 8px; background: var(--bg-2); border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px; font-family: var(--font-ui); font-size: 12px; }
   .g-code { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--accent2); min-width: 40px; font-size: 11px; }
@@ -689,7 +682,6 @@
     .main-layout { flex-direction: column; }
     .row-container { flex-direction: column; }
     .red-cell-grid { gap: 8px; }
-    .admin-grid-2col { grid-template-columns: 1fr; }
     .settings-2col { grid-template-columns: 1fr; }
     .button-row { justify-content: center; }
     .button-row .brand, .button-row .header-actions { width: 100%; justify-content: center; margin-bottom: 8px; }
@@ -852,7 +844,7 @@
   }
   :root[data-palette="zenless"] .modal textarea { background: #1c1c1c; color: #fff; border: 1px solid #000; border-radius: 16px; box-shadow: inset 0 0 0 3px #323232; }
   :root[data-palette="zenless"] .modal input:focus, :root[data-palette="zenless"] .modal select:focus { outline: 2px solid #ffea00; }
-  :root[data-palette="zenless"] .pill, :root[data-palette="zenless"] .current-list, :root[data-palette="zenless"] .preview-box { background: #1c1c1c; border-color: #000; color: #fff; }
+  :root[data-palette="zenless"] .preview-box { background: #1c1c1c; border-color: #000; color: #fff; }
   :root[data-palette="zenless"] .settings-slider { background: #1c1c1c; border-color: #000; }
   :root[data-palette="zenless"] .settings-slider::-webkit-slider-thumb { background: #ffea00; border-color: #000; }
 
@@ -1099,7 +1091,6 @@
     color: var(--cp-red); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; border-bottom-color: var(--cp-red-dim);
   }
   :root[data-palette="cyberpunk"] .modal-desc { color: #9fb0b6; }
-  :root[data-palette="cyberpunk"] .admin-sub-label,
   :root[data-palette="cyberpunk"] .settings-row label { text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255, 95, 87, 0.85); }
   :root[data-palette="cyberpunk"] .modal input,
   :root[data-palette="cyberpunk"] .modal select,
@@ -1109,8 +1100,6 @@
   :root[data-palette="cyberpunk"] .modal input:focus,
   :root[data-palette="cyberpunk"] .modal select:focus,
   :root[data-palette="cyberpunk"] .modal textarea:focus { border-color: var(--cp-cyan); box-shadow: 0 0 0 1px var(--cp-cyan); }
-  :root[data-palette="cyberpunk"] .pill,
-  :root[data-palette="cyberpunk"] .current-list,
   :root[data-palette="cyberpunk"] .preview-box,
   :root[data-palette="cyberpunk"] .glossary-item,
   :root[data-palette="cyberpunk"] .history-item {
@@ -1396,7 +1385,6 @@
   }
   :root[data-palette="genshin"] .modal h3 { color: var(--gi-gold-text); font-weight: 400; border-bottom-color: rgba(201, 174, 120, 0.55); }
   :root[data-palette="genshin"] .modal-desc { color: #6c7486; }
-  :root[data-palette="genshin"] .admin-sub-label,
   :root[data-palette="genshin"] .settings-row label { color: var(--gi-ink); }
   :root[data-palette="genshin"] .modal input,
   :root[data-palette="genshin"] .modal select,
@@ -1407,8 +1395,6 @@
   :root[data-palette="genshin"] .modal input:focus,
   :root[data-palette="genshin"] .modal select:focus,
   :root[data-palette="genshin"] .modal textarea:focus { border-color: var(--gi-gold-line); box-shadow: 0 0 0 2px rgba(211, 188, 142, 0.45); }
-  :root[data-palette="genshin"] .pill,
-  :root[data-palette="genshin"] .current-list,
   :root[data-palette="genshin"] .preview-box,
   :root[data-palette="genshin"] .glossary-item,
   :root[data-palette="genshin"] .history-item {
@@ -1732,12 +1718,9 @@
       </div>
     </h2>
     <div class="ts">
-      <div class="ts-row">
+      <div class="ts-row ts-row-stack">
         <span class="ts-label" id="ts-theme-label">Theme</span>
-        <div class="ts-control">
-          <div class="ts-swatches" role="radiogroup" aria-labelledby="ts-theme-label"></div>
-          <span class="ts-palette-name" aria-hidden="true"></span>
-        </div>
+        <div class="ts-swatches" role="radiogroup" aria-labelledby="ts-theme-label"></div>
         <select id="theme-palette" class="ts-hidden" tabindex="-1" aria-hidden="true">
           <option value="monochrome">Monochrome</option>
           <option value="space">Space</option>
@@ -1753,17 +1736,17 @@
 
       <!-- One setting scales text, buttons and spacing together; the window refits to match. -->
       <div class="ts-row">
-        <span class="ts-label" id="ts-scale-label">Display size</span>
+        <span class="ts-label" id="ts-scale-label">Display scale</span>
         <div class="ts-control">
           <div class="ts-seg ts-scale" role="radiogroup" aria-labelledby="ts-scale-label">
-            <button type="button" role="radio" data-value="80">80%</button>
+            <button type="button" role="radio" data-value="90">90%</button>
             <button type="button" role="radio" data-value="100">100%</button>
             <button type="button" role="radio" data-value="120">120%</button>
             <button type="button" role="radio" data-value="140">140%</button>
           </div>
         </div>
         <select id="theme-scale" class="ts-hidden" tabindex="-1" aria-hidden="true">
-          <option value="80">80%</option>
+          <option value="90">90%</option>
           <option value="100">100%</option>
           <option value="120">120%</option>
           <option value="140">140%</option>
@@ -1789,114 +1772,6 @@
         </select>
       </div>
     </div>
-  </div>
-</div>
-
-<!-- Admin Settings Modal -->
-<div class="modal-overlay" id="admin-modal">
-  <div class="modal">
-    <h2 class="modal-header">
-      <span id="modal-title">Admin login</span>
-      <button type="button" class="icon-btn icon-btn-sm modal-close" data-close="admin-modal" aria-label="Close">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </h2>
-    
-    <div id="login-view">
-      <input type="text" id="admin-user" placeholder="Username" autocomplete="off">
-      <input type="password" id="admin-pass" placeholder="Password" autocomplete="off">
-      <button class="btn btn-primary" onclick="attemptLogin()">Login</button>
-    </div>
-
-    <div id="admin-view" style="display: none;">
-      <h3>Cell types</h3>
-      <div class="current-list" id="cell-list"></div>
-      <div class="admin-sub-label">Add a cell type</div>
-      <div class="form-row">
-        <input type="text" id="new-cell-label" placeholder="Label (Ova)">
-        <input type="text" id="new-cell-key" placeholder="Output (ovalocytes)">
-      </div>
-      <button type="button" class="btn btn-secondary" onclick="addCellType()">Add cell type</button>
-
-      <h3>Platelets</h3>
-      <p class="modal-desc">Mark a code as <strong>rare</strong> to tuck it behind "+N more" in sections that collapse (Special, today).</p>
-      <div class="admin-grid-2col">
-        <div class="admin-col">
-          <div class="admin-sub-label">Primary (one at a time)</div>
-          <div class="current-list" id="plat-primary-list"></div>
-          <div class="form-row">
-            <input type="text" id="plat-primary-key" placeholder="Code (NPCS)">
-            <input type="text" id="plat-primary-text" placeholder="Output text">
-          </div>
-          <button type="button" class="btn btn-secondary" onclick="addCode(['platelets', 'primary'])">Add primary</button>
-        </div>
-        <div class="admin-col">
-          <div class="admin-sub-label">Optional add-ons</div>
-          <div class="current-list" id="plat-optional-list"></div>
-          <div class="form-row">
-            <input type="text" id="plat-optional-key" placeholder="Code (OLPS)">
-            <input type="text" id="plat-optional-text" placeholder="Output text">
-          </div>
-          <button type="button" class="btn btn-secondary" onclick="addCode(['platelets', 'optional'])">Add optional</button>
-        </div>
-      </div>
-
-      <h3>Early cells</h3>
-      <div class="admin-grid-2col">
-        <div class="admin-col">
-          <div class="admin-sub-label">Primary (one at a time)</div>
-          <div class="current-list" id="early-primary-list"></div>
-          <div class="form-row">
-            <input type="text" id="early-primary-key" placeholder="Code (OLS)">
-            <input type="text" id="early-primary-text" placeholder="Output text">
-          </div>
-          <button type="button" class="btn btn-secondary" onclick="addCode(['earlyCells', 'primary'])">Add primary</button>
-        </div>
-        <div class="admin-col">
-          <div class="admin-sub-label">Optional add-ons</div>
-          <div class="current-list" id="early-optional-list"></div>
-          <div class="form-row">
-            <input type="text" id="early-optional-key" placeholder="Code (BLAST)">
-            <input type="text" id="early-optional-text" placeholder="Output text">
-          </div>
-          <button type="button" class="btn btn-secondary" onclick="addCode(['earlyCells', 'optional'])">Add optional</button>
-        </div>
-      </div>
-
-      <h3>Special</h3>
-      <div class="current-list" id="special-list"></div>
-      <div class="form-row">
-        <input type="text" id="special-key" placeholder="Code (NRBC)">
-        <input type="text" id="special-text" placeholder="Output text">
-      </div>
-      <button type="button" class="btn btn-secondary" onclick="addCode(['abnormalFindings'])">Add special code</button>
-
-      <button type="button" class="btn btn-primary admin-export" onclick="exportGlobalConfig()">Apply changes for everyone (export)</button>
-      <button type="button" class="btn btn-secondary admin-logout" onclick="adminLogout()">Log out</button>
-    </div>
-  </div>
-</div>
-
-<!-- Export Modal -->
-<div class="modal-overlay" id="export-modal">
-  <div class="modal">
-    <h2 class="modal-header">
-      <span>Apply to all users</span>
-      <button type="button" class="icon-btn icon-btn-sm modal-close" data-close="export-modal" aria-label="Close">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </h2>
-    <p style="font-family: var(--font-ui); font-size: 13px; margin-bottom: 16px; color: var(--muted); line-height: 1.6;">
-      To make these changes permanent for everyone using this shared file:
-      <br>1. Copy the code below.<br>
-      2. Close this window, then open the HTML file in Notepad.<br>
-      <!-- &#32; keeps these two phrases from matching a Notepad search; only the real block should. -->
-      3. Search (Ctrl+F) for <code class="inline-code">let SHARED_DATA&#32;= {</code> — there is only one match.<br>
-      4. Select from that line down to the line just before <code class="inline-code">const&#32;defaultConfig</code> (the block ends with <code class="inline-code">};</code>).<br>
-      5. Paste the copied code over the selection, then save the file.
-    </p>
-    <textarea id="export-text" readonly style="height: 150px; font-family: monospace;"></textarea>
-    <button type="button" class="btn btn-primary" onclick="copyExport()">Copy to clipboard</button>
   </div>
 </div>
 
@@ -2542,8 +2417,17 @@ const PetWorld = (function () {
   function setEnv() { /* nothing configurable since v3.1 */ }
   function origin() { const r = overlay ? overlay.getBoundingClientRect() : { left: 0, top: 0, width: 0 }; return r; }
 
-  // Surfaces in overlay coordinates. Floor = the action bar's ground line (2px above its bottom).
+  // Within one animation frame the layout can't change, so measure once per frame
+  // (each measure reads four element rects). Outside a frame it is always live.
+  let inFrame = false, frameS = null;
+  function beginFrame() { inFrame = true; frameS = null; }
+  function endFrame() { inFrame = false; frameS = null; }
   function measure() {
+    if (inFrame) return frameS || (frameS = measureNow());
+    return measureNow();
+  }
+  // Surfaces in overlay coordinates. Floor = the action bar's ground line (2px above its bottom).
+  function measureNow() {
     const o = origin(), strip = rectOf('.dock-actions');
     if (!strip) return [];
     const S = [{ id: 'floor', x0: strip.left - o.left + 4, x1: strip.right - o.left - 4, y: strip.bottom - o.top - 2 }];
@@ -2658,7 +2542,7 @@ const PetWorld = (function () {
   }
   function clearProps() { toys.length = 0; treats.length = 0; laser = null; }
 
-  return { attach, setEnv, measure, blocks, clearOfBlocks, centreBand, homeSpot,
+  return { attach, setEnv, measure, beginFrame, endFrame, blocks, clearOfBlocks, centreBand, homeSpot,
     spawnToy, spawnTreat, startLaser, stopLaser, moveLaser, stepToys, clearProps,
     toys, treats, get laser() { return laser; }, get propClock() { return propClock; } };
 })();
@@ -3745,12 +3629,18 @@ const PetEngine = (function () {
 
   let lastError = 0;
   function guard(fn) { try { fn(); } catch (err) { const t = Date.now(); if (t - lastError > 10000 && window.console) console.warn('PetEngine:', err); lastError = t; } }
-  // One frame: fixed 30 Hz logic steps then a render; a failure never escapes or piles up steps.
+  // One frame: fixed 30 Hz logic steps, then a render only if something stepped.
+  // Nothing moves between steps, so drawing on every display refresh (60–144 Hz)
+  // would only repaint the same picture. A failure never escapes or piles up steps.
   function frame(ts) {
     const dt = Math.min(50, lastT ? ts - lastT : STEP_MS); lastT = ts;
     acc = Math.min(250, acc + dt);
-    while (acc >= STEP_MS) { acc -= STEP_MS; guard(logicStep); }
-    guard(() => render(ts));
+    if (acc < STEP_MS) return;
+    PetWorld.beginFrame();
+    try {
+      while (acc >= STEP_MS) { acc -= STEP_MS; guard(logicStep); }
+      guard(() => render(ts));
+    } finally { PetWorld.endFrame(); }
   }
   function tick(ts) { rafId = requestAnimationFrame(tick); frame(ts); }
   function isHidden() {
@@ -4224,7 +4114,7 @@ const PetEngine = (function () {
   };
   // Font, button size and spacing are fixed at these; Display scale sizes everything together.
   const FIXED_LAYOUT = { fontSlider: 3, btnSlider: 2, padding: 1, fontFamily: "'Inter', sans-serif" };
-  const SCALE_STOPS = [0.8, 1, 1.2, 1.4];
+  const SCALE_STOPS = [0.9, 1, 1.2, 1.4];
   function normalScale(s) {
     s = Number(s);
     return SCALE_STOPS.reduce((best, v) => Math.abs(v - s) < Math.abs(best - s) ? v : best, 1);
@@ -4596,7 +4486,7 @@ const PetEngine = (function () {
       box.appendChild(more);
     });
 
-    // Whenever the visible set changes (toggle, reset, admin edits), the desktop app
+    // Whenever the visible set changes (toggle, reset), the desktop app
     // refits its window to the new width.
     const sig = hidden.join('|') + '/' + showToggle + '/' + collapsed;
     if (lastCellFoldSig !== null && sig !== lastCellFoldSig &&
@@ -5382,7 +5272,9 @@ const PetEngine = (function () {
     TS_ORDER.filter(id => palettes[id]).concat(Object.keys(palettes).filter(id => !TS_ORDER.includes(id))).forEach(id => {
       const b = document.createElement('button');
       b.type = 'button'; b.className = 'ts-swatch'; b.dataset.value = id;
-      b.setAttribute('role', 'radio'); b.setAttribute('aria-label', palettes[id].name); b.title = palettes[id].name;
+      b.setAttribute('role', 'radio'); b.setAttribute('aria-label', palettes[id].name);
+      b.innerHTML = '<span class="ts-sw-card" aria-hidden="true"><i></i><i></i><i></i></span><span class="ts-sw-name"></span>';
+      b.querySelector('.ts-sw-name').textContent = palettes[id].name;
       wrap.appendChild(b);
     });
     m.addEventListener('click', e => {
@@ -5395,20 +5287,40 @@ const PetEngine = (function () {
       if (!opt || !step) return;
       e.preventDefault(); e.stopPropagation();
       const group = [...opt.parentElement.children];
-      const next = group[(group.indexOf(opt) + step + group.length) % group.length];
+      // In the theme grid, Up/Down move a whole row.
+      const cols = opt.classList.contains('ts-swatch') && /Arrow(Up|Down)/.test(e.key)
+        ? getComputedStyle(opt.parentElement).gridTemplateColumns.split(' ').filter(Boolean).length : 1;
+      let i = group.indexOf(opt) + step * cols;
+      if (cols > 1) i = Math.max(0, Math.min(group.length - 1, i));
+      const next = group[(i + group.length) % group.length];
       next.focus(); pickThemeSetting(next);
     });
+  }
+  // WCAG contrast between two #rrggbb colours; anything else (rgba) counts as 0.
+  function contrastRatio(a, b) {
+    const lum = c => {
+      const m = /^#([0-9a-f]{6})$/i.exec(String(c).trim()); if (!m) return null;
+      const n = parseInt(m[1], 16);
+      return [n >> 16, (n >> 8) & 255, n & 255].map(x => { x /= 255; return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); })
+        .reduce((s, x, i) => s + x * [0.2126, 0.7152, 0.0722][i], 0);
+    };
+    const la = lum(a), lb = lum(b);
+    if (la == null || lb == null) return 0;
+    return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
   }
   function syncThemeSettings() {
     const m = $('#theme-modal'); if (!m || !m.querySelector('.ts')) return;
     m.querySelectorAll('.ts-swatch').forEach(b => {
       const p = palettes[b.dataset.value], mode = fixedMode(p) || userTheme.mode, v = (p.dark && p.light) ? p[mode] : p;
-      b.style.setProperty('--sw-rim', v.accent);
-      b.style.setProperty('--sw-center', 'color-mix(in srgb, ' + v.accent + ' 18%, ' + v.bg + ')');
+      // Translucent cards (Glass) composite over the tile's own background, as in the app.
+      // The name sits on the page background; some themes (Genshin) keep their text colour
+      // for light panels, so use whichever of text / card colour reads better there.
+      const nameColor = contrastRatio(v.card, v.bg) > contrastRatio(v.fg, v.bg) ? v.card : v.fg;
+      [['--sw-bg', v.bg], ['--sw-card', v.card], ['--sw-border', v.border], ['--sw-fg', nameColor],
+       ['--sw-a1', v.accent], ['--sw-a2', v.accent2], ['--sw-a3', v.accent3]].forEach(([k, c]) => b.style.setProperty(k, c));
       setRadio(b, b.dataset.value === userTheme.palette);
     });
     rovingFallback(m.querySelector('.ts-swatches'));
-    const name = m.querySelector('.ts-palette-name'); if (name) name.textContent = (palettes[userTheme.palette] || {}).name || '';
     const scale = String(Math.round(normalScale(userTheme.scale) * 100));
     m.querySelectorAll('.ts-scale button').forEach(b => setRadio(b, b.dataset.value === scale));
     rovingFallback(m.querySelector('.ts-scale'));
@@ -5516,178 +5428,7 @@ const PetEngine = (function () {
       safeStorage.set('pbf_theme', JSON.stringify(userTheme));
     }
   });
-  let isAdmin = false;
-
-  $('#admin-user').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); $('#admin-pass').focus(); } });
-  $('#admin-pass').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); attemptLogin(); } });
-
-  function attemptLogin() {
-    if ($('#admin-user').value === 'meow' && $('#admin-pass').value === 'meow') {
-      isAdmin = true;
-      $('#login-view').style.display = 'none';
-      $('#admin-view').style.display = 'block';
-      $('#modal-title').textContent = 'Admin settings';
-      renderAdminView();
-    } else alert('Invalid credentials');
-  }
-  function adminLogout() {
-    isAdmin = false;
-    $('#login-view').style.display = 'block';
-    $('#admin-view').style.display = 'none';
-    $('#modal-title').textContent = 'Admin login';
-    $('#admin-user').value = ''; $('#admin-pass').value = '';
-  }
-
-  // Admin code lists. `path` points into appConfig; `stateKey` is the matching selection array.
-  const ADMIN_LISTS = [
-    { listId: 'plat-primary-list', path: ['platelets', 'primary'], keyInput: 'plat-primary-key', textInput: 'plat-primary-text', stateKey: 'plateletPrimary' },
-    { listId: 'plat-optional-list', path: ['platelets', 'optional'], keyInput: 'plat-optional-key', textInput: 'plat-optional-text', stateKey: 'plateletOptional' },
-    { listId: 'early-primary-list', path: ['earlyCells', 'primary'], keyInput: 'early-primary-key', textInput: 'early-primary-text', stateKey: 'earlyCellPrimary' },
-    { listId: 'early-optional-list', path: ['earlyCells', 'optional'], keyInput: 'early-optional-key', textInput: 'early-optional-text', stateKey: 'earlyCellOptional' },
-    { listId: 'special-list', path: ['abnormalFindings'], keyInput: 'special-key', textInput: 'special-text', stateKey: 'abnormalFindings' }
-  ];
-
-  function groupAt(path) { return path.reduce((o, k) => o[k], appConfig); }
-  function adminListFor(path) { return ADMIN_LISTS.find(d => d.path.join('.') === path.join('.')); }
-
-  function pillButton(label, title, onClick, className) {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.textContent = label;
-    b.title = title;
-    if (className) b.className = className;
-    b.addEventListener('click', onClick);
-    return b;
-  }
-
-  function refreshAfterConfigChange() {
-    renderDynamicSections();
-    renderAdminView();
-    updatePreview();
-  }
-
-  function renderAdminView() {
-    const cellList = $('#cell-list');
-    cellList.innerHTML = '';
-    Object.entries(cellTypes).forEach(([key, label], index) => {
-      const pill = document.createElement('div');
-      pill.className = 'pill';
-      pill.dataset.key = key;
-      pill.append(document.createTextNode(label));
-      pill.append(
-        pillButton('↑', 'Move up', () => moveItem('cellTypes', index, 'up')),
-        pillButton('↓', 'Move down', () => moveItem('cellTypes', index, 'down')),
-        pillButton('✕', 'Remove', () => removeCellType(key), 'remove-btn')
-      );
-      cellList.appendChild(pill);
-    });
-    ADMIN_LISTS.forEach(renderAdminCodeList);
-  }
-
-  function renderAdminCodeList(def) {
-    const list = document.getElementById(def.listId);
-    if (!list) return;
-    list.innerHTML = '';
-    Object.entries(groupAt(def.path).codes).forEach(([key, entry], index) => {
-      const pill = document.createElement('div');
-      pill.className = 'pill';
-      pill.dataset.key = key;
-      pill.title = codeText(entry);
-      pill.append(document.createTextNode(key));
-      const rare = pillButton('rare', 'Mark as rarely used', () => toggleRare(def.path, key), 'rare-btn');
-      rare.setAttribute('aria-pressed', String(isRare(entry)));
-      pill.append(
-        rare,
-        pillButton('↑', 'Move up', () => moveCode(def.path, index, 'up')),
-        pillButton('↓', 'Move down', () => moveCode(def.path, index, 'down')),
-        pillButton('✕', 'Remove', () => removeCode(def.path, key), 'remove-btn')
-      );
-      list.appendChild(pill);
-    });
-  }
-
-  function moveItem(category, index, direction) {
-    let arr = Object.entries(cellTypes);
-    if (direction === 'up' && index > 0) [arr[index], arr[index - 1]] = [arr[index - 1], arr[index]];
-    else if (direction === 'down' && index < arr.length - 1) [arr[index], arr[index + 1]] = [arr[index + 1], arr[index]];
-    cellTypes = Object.fromEntries(arr); renderMatrix(); renderAdminView();
-  }
-
-  function moveCode(path, index, direction) {
-    const group = groupAt(path);
-    let arr = Object.entries(group.codes);
-    if (direction === 'up' && index > 0) [arr[index], arr[index - 1]] = [arr[index - 1], arr[index]];
-    else if (direction === 'down' && index < arr.length - 1) [arr[index], arr[index + 1]] = [arr[index + 1], arr[index]];
-    group.codes = Object.fromEntries(arr);
-    refreshAfterConfigChange();
-  }
-
-  function addCellType() {
-    const key = $('#new-cell-key').value.trim(); const label = $('#new-cell-label').value.trim();
-    if (key && label && !cellTypes[key]) {
-      cellTypes[key] = label; initStateCells(); renderMatrix(); renderAdminView();
-      $('#new-cell-key').value = ''; $('#new-cell-label').value = '';
-    } else alert('Invalid input or cell type already exists.');
-  }
-
-  function removeCellType(key) {
-    if (confirm(`Remove ${cellTypes[key]}?`)) {
-      delete cellTypes[key];
-      ['occasional', 'moderate', 'marked'].forEach(sev => state.cells[sev] = state.cells[sev].filter(x => x !== key));
-      renderMatrix(); renderAdminView(); updatePreview();
-    }
-  }
-
-  function addCode(path) {
-    const def = adminListFor(path);
-    const keyEl = document.getElementById(def.keyInput);
-    const textEl = document.getElementById(def.textInput);
-    const key = keyEl.value.trim(); const text = textEl.value.trim();
-    const codes = groupAt(path).codes;
-    if (key && text && !Object.prototype.hasOwnProperty.call(codes, key)) {
-      codes[key] = text;
-      refreshAfterConfigChange();
-      keyEl.value = ''; textEl.value = '';
-    } else alert('Invalid input or code already exists.');
-  }
-
-  function removeCode(path, key) {
-    if (confirm(`Remove code ${key}?`)) {
-      delete groupAt(path).codes[key];
-      const def = adminListFor(path);
-      if (def) state[def.stateKey] = state[def.stateKey].filter(k => k !== key);
-      refreshAfterConfigChange();
-    }
-  }
-
-  // Stores rare codes as { text, rare: true }; un-marking returns them to a plain string.
-  function toggleRare(path, key) {
-    const codes = groupAt(path).codes;
-    const entry = codes[key];
-    codes[key] = isRare(entry) ? codeText(entry) : { text: codeText(entry), rare: true };
-    refreshAfterConfigChange();
-  }
-
-  function exportGlobalConfig() {
-    // Split so this line never matches a search for the real SHARED_DATA block.
-    const dataStr = 'let SHARED' + `_DATA = {\n  appConfig: ${JSON.stringify(appConfig, null, 2)},\n  cellTypes: ${JSON.stringify(cellTypes, null, 2)}\n};`;
-    $('#export-text').value = dataStr;
-    openModal('export-modal');
-  }
-  function copyExport() {
-    const ta = $('#export-text');
-    ta.focus(); ta.select(); ta.setSelectionRange(0, 99999);
-    try {
-      document.execCommand('copy');
-      alert('Copied! Now paste it into the HTML file as instructed.');
-    } catch (err) {
-      navigator.clipboard.writeText(ta.value).then(() => {
-        alert('Copied! Now paste it into the HTML file as instructed.');
-      }).catch(() => alert('Please manually copy the text (Ctrl+C).'));
-    }
-  }
-
-  // Admin-entered codes are text, not markup.
+  // Config codes are text, not markup.
   function escapeHtml(s) {
     return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
@@ -5743,12 +5484,6 @@ const PetEngine = (function () {
       // A confirm dialog closes on its own, leaving the dialog under it open.
       if ($('#confirm-modal').classList.contains('active')) { finishConfirm(false); return; }
       document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
-      return;
-    }
-
-    if (e.altKey && (e.key === 'a' || e.key === 'A')) {
-      e.preventDefault();
-      openModal('admin-modal');
       return;
     }
 

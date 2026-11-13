@@ -128,7 +128,7 @@
   }
 
   // Live baseline: runs this harness inside the untouched v2.4 file in a hidden iframe.
-  async function baseline(path = '/PBF%20generator%20v2.4.html') {
+  async function baseline(path = '/tests/baselines/PBF%20generator%20v2.4.html') {
     const src = await (await fetch('/tests/harness.js', { cache: 'no-store' })).text();
     const frame = document.createElement('iframe');
     frame.style.cssText = 'position:absolute;width:1280px;height:900px;left:-9999px;top:0';
@@ -178,74 +178,6 @@
   function key(target, k, extra = {}) {
     const ev = new KeyboardEvent('keydown', Object.assign({ key: k, bubbles: true, cancelable: true }, extra));
     target.dispatchEvent(ev);
-  }
-
-  function specialChecks() {
-    const savedUi = localStorage.getItem('pbf_ui');
-    const savedCodes = JSON.stringify(appConfig.abnormalFindings.codes);
-    return withSandbox(() => check(expect => {
-      const bar = () => document.getElementById('special-bar');
-      const body = () => document.getElementById('special-body');
-      try {
-        localStorage.removeItem('pbf_ui');
-        uiPrefs.reload();
-        renderSpecialBar();
-        expect(bar(), '#special-bar missing');
-        if (!bar()) return;
-        expect(bar().getAttribute('aria-expanded') === 'false', 'not collapsed by default');
-        expect(body().hidden === true, 'body not hidden when collapsed');
-        const ghost = bar().querySelector('.special-ghost');
-        expect(!ghost, 'greyed code names still in the bar');
-        expect(!/OVER|LIP|COLD|NRBC/.test(document.getElementById('special-section').innerText), 'Special code names visible while closed');
-
-        freshStart();
-        click('abnormal-group:LIP');
-        const sel = bar().querySelector('.special-selected');
-        expect(sel && sel.textContent.includes('LIP'), 'selected LIP not shown on collapsed bar');
-        expect(getComputedStyle(sel).display !== 'none', 'selected chips hidden while collapsed');
-        expect(getCommentText().includes('Haemoglobin value was corrected'), 'LIP text missing');
-
-        document.getElementById('output').value = 'UNCHANGED';
-        bar().focus();
-        key(bar(), 'Enter');
-        expect(bar().getAttribute('aria-expanded') === 'true', 'Enter on bar did not expand');
-        expect(document.getElementById('output').value === 'UNCHANGED', 'Enter on bar triggered Generate');
-        key(bar(), ' ');
-        expect(bar().getAttribute('aria-expanded') === 'false', 'Space on bar did not collapse');
-
-        bar().click();
-        expect(bar().getAttribute('aria-expanded') === 'true', 'clicking the bar did not expand');
-        key(document.body, 'q', { altKey: true });
-        expect(document.getElementById('secret-menu').classList.contains('active'), 'Alt+Q no longer opens quick codes');
-        closeModal('secret-menu');
-
-        localStorage.setItem('pbf_ui', '{bad');
-        const prefs = uiPrefs.reload();
-        expect(JSON.stringify(prefs) === JSON.stringify({ collapsed: { abnormalFindings: true } }), 'bad pbf_ui not defaulted: ' + JSON.stringify(prefs));
-
-        freshStart();
-        expect(!document.querySelector('#abnormal-group .chip-more'), '+N more shown with no rare codes');
-        appConfig.abnormalFindings.codes.COLD = { text: codeText(appConfig.abnormalFindings.codes.COLD), rare: true };
-        renderDynamicSections();
-        const more = document.querySelector('#abnormal-group .chip-more');
-        expect(more && more.textContent === '+1 more', '+1 more chip missing: ' + (more && more.textContent));
-        const cold = resolve('abnormal-group:COLD');
-        expect(cold.classList.contains('is-rare-hidden'), 'rare COLD not hidden');
-        more && more.click();
-        expect(!resolve('abnormal-group:COLD').classList.contains('is-rare-hidden'), '+N more did not reveal');
-        click('abnormal-group:COLD');
-        resetSection('abnormal');
-        expect(resolve('abnormal-group:COLD').classList.contains('is-rare-hidden'), 'reset did not re-hide rare code');
-        click('abnormal-group:COLD');
-        expect(!resolve('abnormal-group:COLD').classList.contains('is-rare-hidden'), 'selected rare code hidden');
-      } finally {
-        appConfig.abnormalFindings.codes = JSON.parse(savedCodes);
-        renderDynamicSections();
-        if (savedUi === null) localStorage.removeItem('pbf_ui'); else localStorage.setItem('pbf_ui', savedUi);
-        if (typeof uiPrefs !== 'undefined' && uiPrefs.reload) uiPrefs.reload();
-        if (typeof renderSpecialBar === 'function') renderSpecialBar();
-      }
-    }));
   }
 
   // Full code text follows the cursor (or sits beside the keyboard-focused code).
@@ -344,7 +276,7 @@
     }));
   }
 
-  const MODALS = ['history-modal', 'secret-menu', 'mogps-modal', 'glossary-modal', 'theme-modal', 'admin-modal', 'export-modal'];
+  const MODALS = ['history-modal', 'secret-menu', 'mogps-modal', 'glossary-modal', 'theme-modal'];
 
   function modalChecks() {
     return check(expect => {
@@ -368,58 +300,17 @@
     });
   }
 
+  // The admin panel was removed in v3.6: no modal, no login code, and Alt+A does nothing.
   function adminChecks() {
-    const saved = JSON.stringify(appConfig);
-    return withSandbox(() => check(expect => {
-      const K = "O'X";
-      try {
-        renderAdminView();
-        const list = document.getElementById('special-list');
-        expect(list, '#special-list missing');
-        if (!list) return;
-        document.getElementById('special-key').value = K;
-        document.getElementById('special-text').value = 'Test.';
-        addCode(['abnormalFindings']);
-        expect(resolve('abnormal-group:' + K), 'new Special chip missing');
-        expect(Array.from(list.querySelectorAll('[data-key]')).some(p => p.dataset.key === K), 'admin pill missing');
-        freshStart();
-        click('abnormal-group:' + K);
-        expect(getCommentText().endsWith('Test.'), 'new code text not generated: ' + getCommentText());
-        freshStart();
-        toggleRare(['abnormalFindings'], K);
-        expect(isRare(appConfig.abnormalFindings.codes[K]), 'toggleRare did not mark rare');
-        const more = document.querySelector('#abnormal-group .chip-more');
-        expect(more && more.textContent === '+1 more', '+1 more not shown after marking rare');
-        const pill = Array.from(list.querySelectorAll('[data-key]')).find(p => p.dataset.key === K);
-        const rb = pill && pill.querySelector('.rare-btn');
-        expect(rb && rb.getAttribute('aria-pressed') === 'true', 'rare toggle not pressed in admin');
-        rb && rb.click();
-        expect(typeof appConfig.abnormalFindings.codes[K] === 'string', 'un-marking rare did not restore plain string');
-        const plat = document.getElementById('plat-optional-list').querySelector('[data-key] .rare-btn');
-        expect(plat, 'rare toggle missing on platelet optional list');
-        click('abnormal-group:' + K);
-        removeCode(['abnormalFindings'], K);
-        expect(!(K in appConfig.abnormalFindings.codes), 'code not removed from config');
-        expect(!resolve('abnormal-group:' + K), 'code chip not removed');
-        expect(!state.abnormalFindings.includes(K), 'code not removed from state');
-        Object.keys(appConfig.abnormalFindings.codes).forEach(k => removeCode(['abnormalFindings'], k));
-        expect(document.getElementById('special-section').hidden, 'empty Special section still shown');
-        appConfig.abnormalFindings.codes = JSON.parse(saved).abnormalFindings.codes;
-        renderDynamicSections();
-        exportGlobalConfig();
-        const txt = document.getElementById('export-text').value.replace(/^let SHARED_DATA = /, '').replace(/;\s*$/, '').replace(/^\{\s*appConfig:/, '{"appConfig":').replace(/,\s*cellTypes:/, ',"cellTypes":');
-        let parsed = null;
-        try { parsed = JSON.parse(txt); } catch (e) { expect(false, 'export not parseable: ' + e.message); }
-        expect(parsed && parsed.appConfig.abnormalFindings.collapsible === true, 'export lacks collapsible');
-        closeModal('export-modal');
-      } finally {
-        appConfig = JSON.parse(saved);
-        renderDynamicSections();
-        renderAdminView();
-      }
-    }));
+    return check(expect => {
+      expect(!document.getElementById('admin-modal'), '#admin-modal still in the page');
+      expect(!document.getElementById('export-modal'), '#export-modal still in the page');
+      ['attemptLogin', 'renderAdminView', 'addCode', 'exportGlobalConfig'].forEach(f =>
+        expect(typeof window[f] === 'undefined', f + ' still defined'));
+      document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'a', altKey: true, bubbles: true }));
+      expect(!document.querySelector('.modal-overlay.active'), 'Alt+A opened a dialog');
+    });
   }
-
   // Storage that refuses writes, and a corrupt saved theme, must not break the app.
   async function storageChecks() {
     const results = check(expect => {
@@ -474,14 +365,14 @@
       // 2. Enter / Backspace while a dialog is open must not act on the page behind it.
       freshStart();
       out.value = 'UNCHANGED';
-      openModal('admin-modal');
+      openModal('glossary-modal');
       key(document.body, 'Enter');
       expect(out.value === 'UNCHANGED', 'bug2: Enter in a dialog ran Generate');
       key(document.body, 'Backspace');
       expect(!document.getElementById('reset-all-btn').classList.contains('armed'), 'bug2: Backspace in a dialog armed Reset all');
-      closeModal('admin-modal');
+      closeModal('glossary-modal');
 
-      // 3. Glossary shows admin codes containing < and & literally.
+      // 3. Glossary shows config codes containing < and & literally.
       try {
         appConfig.abnormalFindings.codes['<5%'] = 'a & b <i>x</i>';
         renderGlossary();
@@ -494,13 +385,7 @@
         renderDynamicSections();
       }
 
-      // 4. Export gives a complete statement and instructions that match the file.
-      exportGlobalConfig();
-      const ex = document.getElementById('export-text').value;
-      expect(ex.startsWith('let SHARED_DATA = {') && ex.trim().endsWith('};'), 'bug4: export is not a full "let SHARED_DATA = {...};" statement');
-      const instr = document.getElementById('export-modal').textContent;
-      expect(!instr.includes('let SHARED_DATA = null;'), 'bug4: instructions still reference "let SHARED_DATA = null;"');
-      expect(instr.includes('const defaultConfig'), 'bug4: instructions do not say where the block ends');
+      // 4. (Admin export was removed in v3.6; the SHARED_DATA block must still be unique.)
       const raw = window.__rawHtml || '';
       if (raw) {
         expect((raw.match(/let SHARED_DATA = \{/g) || []).length === 1, 'bug4: "let SHARED_DATA = {" appears more than once in the file');
@@ -508,7 +393,6 @@
       } else {
         expect(false, 'bug4: set window.__rawHtml to the file text before running');
       }
-      closeModal('export-modal');
 
       // 5. OVAL then a red-cell choice restores Normo defaults instead of a broken sentence.
       freshStart();
@@ -582,43 +466,6 @@
       navigator.clipboard.writeText = clip;
     }
     return res;
-  }
-
-  // Follow-up 5: centred actions, original cell chip size, Early/Special side by side, theme list.
-  function round5Checks() {
-    return withSandbox(() => check(expect => {
-      const dock = document.querySelector('.dock').getBoundingClientRect();
-      const btns = document.querySelector('.dock-actions .center-btns').getBoundingClientRect();
-      const mid = (btns.left + btns.right) / 2, dmid = (dock.left + dock.right) / 2;
-      expect(Math.abs(mid - dmid) <= 4, 'Generate/Reset not centred: off by ' + Math.round(mid - dmid) + 'px');
-
-      const cells = Array.from(document.querySelectorAll('#cell-matrix .chip-cell'));
-      const tooBig = cells.filter(c => { const r = c.getBoundingClientRect(); return Math.round(r.height) !== 28 || r.width > 47.5 || r.width < 45.5; });
-      expect(tooBig.length === 0, 'cell chips not original size (28px tall, 46px wide like v2.4): e.g. ' + (tooBig[0] ? Math.round(tooBig[0].getBoundingClientRect().width) + 'x' + Math.round(tooBig[0].getBoundingClientRect().height) : ''));
-
-      const early = document.getElementById('title-early').closest('.card');
-      const special = document.getElementById('special-section');
-      const main = document.querySelector('.main-content').getBoundingClientRect().width;
-      const ew = early.getBoundingClientRect().width;
-      const ocsm = resolve('early-optional-group:OCSM').getBoundingClientRect();
-      const gap = early.getBoundingClientRect().right - ocsm.right;
-      expect(gap >= 0 && gap <= 32, 'Early cell should end right after OCSM: ' + Math.round(gap) + 'px after it');
-      expect(Math.abs(special.getBoundingClientRect().right - document.querySelector('.main-content').getBoundingClientRect().right) < 2, 'Special does not fill the rest of the row');
-      expect(special.classList.contains('card') && special.parentElement === early.parentElement, 'Special is not a card beside Early cell');
-      expect(Math.abs(special.getBoundingClientRect().top - early.getBoundingClientRect().top) < 2, 'Special not on the same row as Early cell');
-      const t = special.querySelector(':scope > .card-rail .card-title');
-      expect(t && t.textContent.trim() === 'Special', 'Special has no side-rail title like other sections');
-      toggleSpecial(true);
-      expect(resolve('abnormal-group:OVER').getBoundingClientRect().width > 0, 'Special codes not visible when opened');
-      click('abnormal-group:NRBC');
-      expect(getComputedStyle(special.querySelector('.special-selected')).display === 'none', 'open Special still shows duplicate selected tags in the bar');
-      click('abnormal-group:NRBC');
-      toggleSpecial(false);
-
-      const opts = Array.from(document.querySelectorAll('#theme-palette option')).map(o => o.value);
-      ['forest', 'sunset', 'ocean'].forEach(p => expect(!opts.includes(p) && !(p in palettes), p + ' theme still present'));
-      expect(opts.includes('zenless') && palettes.zenless, 'zenless theme missing');
-    }));
   }
 
   // Zenless theme must actually look like zenless-ui.
@@ -1119,10 +966,10 @@
       return { pass: failures.length === 0, failures };
     },
     async parityV29() {
-      const diff = compare(await baseline('/PBF%20generator%20v2.9.html'));
+      const diff = compare(await baseline('/tests/baselines/PBF%20generator%20v2.9.html'));
       return { pass: diff.length === 0, failures: diff };
     }
   };
 
-  window.PBFTest = Object.assign(window.PBFTest || {}, { pet, CASES, VALIDATION, run, compare, baseline, parity, check, legacyCheck, specialChecks, tooltipChecks, layoutChecks, dockChecks, modalChecks, adminChecks, storageChecks, dockHeightCheck, bugfixChecks, removalChecks, tweakChecks, round5Checks, zenlessChecks, key, click, resolve, freshStart, withSandbox });
+  window.PBFTest = Object.assign(window.PBFTest || {}, { pet, CASES, VALIDATION, run, compare, baseline, parity, check, legacyCheck, tooltipChecks, layoutChecks, dockChecks, modalChecks, adminChecks, storageChecks, dockHeightCheck, bugfixChecks, removalChecks, tweakChecks, zenlessChecks, key, click, resolve, freshStart, withSandbox });
 })();

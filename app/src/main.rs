@@ -58,11 +58,20 @@ fn parse_message(msg: &str) -> Option<UserEvent> {
         let z: f64 = z.parse().ok()?;
         return (0.5..=2.0).contains(&z).then_some(UserEvent::Zoom(z));
     }
+    // Page-supplied sizes are bounded so a bad message can't overflow the i32
+    // maths in the Fit handler or request an absurd window.
+    const MAX_PX: u32 = 32_768;
     let mut it = msg.strip_prefix("fit:")?.split(':');
-    let w = it.next()?.parse().ok()?;
-    let h = it.next()?.parse().ok()?;
-    let avail_w = it.next()?.parse().ok()?;
-    let avail_h = it.next()?.parse().ok()?;
+    let w: u32 = it.next()?.parse().ok()?;
+    let h: u32 = it.next()?.parse().ok()?;
+    let avail_w: i32 = it.next()?.parse().ok()?;
+    let avail_h: i32 = it.next()?.parse().ok()?;
+    let max = MAX_PX as i32;
+    if !(1..=MAX_PX).contains(&w) || !(1..=MAX_PX).contains(&h)
+        || !(1..=max).contains(&avail_w) || !(1..=max).contains(&avail_h)
+    {
+        return None;
+    }
     let place = match it.next() {
         Some("center") => Placement::Center,
         Some("keep") => Placement::Keep,
@@ -144,8 +153,14 @@ fn main() -> wry::Result<()> {
             Response::builder()
                 .header(CONTENT_TYPE, "text/html; charset=utf-8")
                 .body(Cow::Borrowed(INDEX_HTML))
-                .unwrap()
+                .expect("static response headers are valid")
         })
+        // Only the embedded page may load. Blocks e.g. a file or link dropped on the
+        // window from replacing the app with a page that could reach `window.ipc`.
+        .with_navigation_handler(|url| {
+            url.starts_with("pbf://localhost") || url.starts_with("https://pbf.localhost")
+        })
+        .with_new_window_req_handler(|_, _| wry::NewWindowResponse::Deny)
         .with_initialization_script(TITLEBAR_JS)
         // Generate copies the comment; allow it without WebView2's clipboard prompt.
         .with_clipboard(true)
@@ -175,6 +190,7 @@ fn main() -> wry::Result<()> {
         .build_as_child(&window)?;
 
     let mut was_maximized = false;
+    let mut was_minimized = false;
     let mut shown = false;
     let mut anim: Option<Anim> = None;
     // Show anyway if the page never reports its size.
@@ -278,6 +294,9 @@ fn main() -> wry::Result<()> {
             }
             Event::WindowEvent { event: WindowEvent::Moved(_), .. } => {
                 // Keeps dropdowns and tooltips anchored after the window moves.
+                // SAFETY: `controller()` returns a live ICoreWebView2Controller owned by
+                // `webview`, which outlives this call; the method takes no arguments and
+                // we are on the UI thread that created it, as WebView2 requires.
                 let _ = unsafe { webview.controller().NotifyParentWindowPositionChanged() };
             }
             Event::UserEvent(UserEvent::Minimize) => window.set_minimized(true),
@@ -288,6 +307,14 @@ fn main() -> wry::Result<()> {
                 let _ = window.drag_resize_window(dir);
             }
             Event::WindowEvent { event: WindowEvent::Resized(size), .. } => {
+                // Hide the webview while minimised so the page sees `document.hidden`
+                // and pauses its animation (the companion pet) instead of drawing
+                // into a window nobody can see.
+                let min = window.is_minimized();
+                if min != was_minimized {
+                    was_minimized = min;
+                    let _ = webview.set_visible(!min);
+                }
                 let m = window.is_maximized();
                 if m {
                     anim = None;

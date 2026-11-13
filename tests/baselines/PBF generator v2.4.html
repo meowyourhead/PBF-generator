@@ -1,0 +1,3596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PBF Comment Generator v2.3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Lato:wght@400;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Merriweather:wght@400;700&family=Open+Sans:wght@400;600&family=Playfair+Display:wght@400;600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  /* Dark Mode (Default) */
+  :root {
+    --bg: #1a2421;
+    --bg-2: #1f2a26;
+    --card: #243029;
+    --card-2: #2a3830;
+    --border: #36473d;
+    --fg: #e6efe9;
+    --muted: #94a89b;
+    --accent: #5fc28a;
+    --accent-dim: #3d7d57;
+    --accent-soft: rgba(95, 194, 138, 0.12);
+    --accent2: #a3d9b1;
+    --accent3: #3d7d57;
+    --accent-text: #ffffff;
+    --danger: #e06c6c;
+    --radius: 16px; 
+    
+    --base-font: 15px;
+    --font-main: 'Inter', sans-serif;
+    --font-ui: 'Inter', sans-serif;
+    
+    --btn-font: calc(var(--base-font) * 0.85);
+    --seg-font: calc(var(--base-font) * 0.85);
+    --card-title-font: calc(var(--base-font) * 0.85);
+    --label-font: calc(var(--base-font) * 0.95);
+    
+    --btn-py: 12px; --btn-px: 24px;
+    --seg-py: 8px; --seg-px: 18px;
+    
+    --shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+    
+    --card-pad-y: 20px;
+    --card-pad-x: 24px;
+    --card-marg: 16px;
+  }
+
+  /* Light Mode */
+  :root[data-theme="light"] {
+    --bg: #f4f7f5;
+    --bg-2: #ffffff;
+    --card: #ffffff;
+    --card-2: #f0f4f1;
+    --border: #d1dad6;
+    --fg: #1a2421;
+    --muted: #5a6b62;
+    --accent: #2a9d54;
+    --accent-dim: #218c48;
+    --accent-soft: rgba(42, 157, 84, 0.12);
+    --accent2: #1a8c40;
+    --accent3: #6abf82;
+    --danger: #d32f2f;
+    --shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    font-family: var(--font-main);
+    background-color: var(--bg);
+    color: var(--fg);
+    font-size: var(--base-font);
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  body {
+    min-height: 100vh;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+    background-image: 
+      radial-gradient(circle at 10% 10%, var(--accent-soft), transparent 40%),
+      radial-gradient(circle at 90% 90%, color-mix(in srgb, var(--accent3) 15%, transparent), transparent 40%);
+  }
+
+  html[data-palette="ios"][data-theme="dark"] body { background: radial-gradient(circle at 100% 0%, #2c3e50, #000 60%); }
+  html[data-palette="ios"][data-theme="light"] body { background: radial-gradient(circle at 100% 0%, #a1c4fd, #f2f2f7 60%); }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+  }
+  .shake { animation: shake 0.3s ease-in-out; }
+
+  html[data-palette="monochrome"] body { background-image: radial-gradient(var(--muted) 0.5px, transparent 0.5px); background-size: 16px 16px; }
+  html[data-palette="forest"] body { background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%235fc28a' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='15'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+  html[data-palette="space"] body { background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='1' fill='%23ffffff' fill-opacity='0.2'/%3E%3Ccircle cx='40' cy='30' r='1.5' fill='%23bf616a' fill-opacity='0.3'/%3E%3Ccircle cx='80' cy='50' r='1' fill='%23ebcb8b' fill-opacity='0.4'/%3E%3Ccircle cx='20' cy='70' r='0.5' fill='%23ffffff' fill-opacity='0.2'/%3E%3C/svg%3E"); }
+  html[data-palette="cyberpunk"] body { background-image: linear-gradient(rgba(255, 0, 127, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px); background-size: 40px 40px; }
+  html[data-palette="fantasy"] body { background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0 L25 20 L20 40 L15 20 Z' fill='%23d4af37' fill-opacity='0.05'/%3E%3C/svg%3E"); }
+  html[data-palette="sunset"] body { background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 20 L20 0' stroke='%23ff7e5f' stroke-opacity='0.1' stroke-width='2'/%3E%3C/svg%3E"); }
+  html[data-palette="aurora"] body { background-image: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 60 Q 30 30 60 60 T 120 60' fill='none' stroke='%2300f5d4' stroke-opacity='0.1' stroke-width='2'/%3E%3C/svg%3E"); }
+  html[data-palette="ocean"] body { background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%2300bcd4' stroke-opacity='0.1'%3E%3Ccircle cx='20' cy='20' r='8'/%3E%3Ccircle cx='10' cy='10' r='3'/%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/svg%3E"); }
+  html[data-palette="claude"] body, html[data-palette="ios"] body { background-image: none; }
+
+  .app { max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
+
+  .brand { display: flex; align-items: center; gap: 12px; min-width: 180px; }
+
+  .mode-toggle {
+    width: 46px; height: 24px; background: var(--bg-2); border: 1px solid var(--border);
+    border-radius: 12px; position: relative; cursor: pointer; display: flex; align-items: center;
+    padding: 0 5px; justify-content: space-between; transition: background 0.3s;
+  }
+  .mode-slider {
+    position: absolute; top: 2px; left: 2px; width: 18px; height: 18px;
+    background: var(--accent); border-radius: 50%; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1;
+  }
+  :root[data-theme="dark"] .mode-slider { transform: translateX(0); }
+  :root[data-theme="light"] .mode-slider { transform: translateX(22px); }
+  .mode-icon { font-size: 11px; color: var(--muted); z-index: 0; }
+
+  .toggle-switch {
+    position: relative; display: inline-block; width: 40px; height: 24px;
+  }
+  .toggle-switch input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider {
+    position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+    background-color: var(--border); transition: .3s; border-radius: 24px;
+  }
+  .toggle-slider:before {
+    position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
+    background-color: var(--bg); transition: .3s; border-radius: 50%;
+  }
+  input:checked + .toggle-slider { background-color: var(--accent); }
+  input:checked + .toggle-slider:before { transform: translateX(16px); }
+
+  .icon-btn {
+    background: var(--bg-2); border: 1px solid var(--border); color: var(--muted);
+    border-radius: 10px; cursor: pointer; display: grid; place-items: center; 
+    transition: transform 0.15s cubic-bezier(0.2, 0, 0, 1), background-color 0.15s, box-shadow 0.15s, border-color 0.15s, color 0.15s;
+    width: 36px; height: 36px; padding: 0; 
+  }
+  .icon-btn:hover { color: var(--accent); border-color: var(--accent-dim); transform: scale(1.05); }
+  .icon-btn:active { transform: scale(0.92); }
+  .icon-btn.active { color: var(--accent); border-color: var(--accent-dim); background-color: var(--accent-soft); }
+
+  .main-layout { display: flex; gap: var(--card-marg); align-items: flex-start; }
+  .main-content { flex: 1; min-width: 0; }
+
+  .card {
+    display: flex; background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); margin-bottom: var(--card-marg); box-shadow: var(--shadow);
+    overflow: hidden; transition: margin 0.3s, padding 0.3s;
+  }
+  
+  .row-container { display: flex; gap: var(--card-marg); margin-bottom: var(--card-marg); align-items: stretch; flex-wrap: nowrap; }
+  .row-container > .card { margin-bottom: 0; flex: 1 1 0; min-width: 0; height: auto; }
+  .row-container > .card .card-content { height: 100%; justify-content: center; }
+
+  .card-sidebar {
+    display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 2px;
+    padding: max(5px, calc(var(--card-pad-y) * 0.72)) 6px;
+    background: var(--card-2); border-right: 1px solid var(--border);
+    width: 72px; min-width: 72px; flex: 0 0 72px;
+  }
+
+  .card-content { flex: 1; padding: var(--card-pad-y) var(--card-pad-x); display: flex; flex-direction: column; justify-content: center; gap: 12px; }
+  .card-title-left { font-family: var(--font-ui); font-size: min(var(--card-title-font), 12px); font-weight: 700; text-transform: capitalize; letter-spacing: 0; color: var(--accent2); white-space: normal; text-align: center; max-width: 100%; line-height: 1.05; }
+
+  .mini-reset {
+    display: inline-flex; align-items: center; justify-content: center; gap: 4px; 
+    background: none; border: 1px solid var(--border); color: var(--muted);
+    font-family: var(--font-ui); font-size: 10px; padding: 0 6px; border-radius: 7px; cursor: pointer;
+    text-transform: capitalize; letter-spacing: 0; width: fit-content; align-self: center;
+    height: 23px;
+    transform-origin: center;
+    transition: transform 0.15s cubic-bezier(0.2, 0, 0, 1), filter 0.15s, border-color 0.15s, color 0.15s;
+  }
+  .mini-reset:hover { color: var(--danger); border-color: var(--danger); transform: scale(1.05); }
+  .mini-reset:active { transform: scale(0.92); filter: brightness(0.9); }
+  .mini-reset svg { width: 10px; height: 10px; }
+
+  .comment-sidebar { justify-content: center; gap: 6px; }
+  .comment-sidebar .card-title-left { order: 1; max-width: 62px !important; line-height: 1.08 !important; }
+  .comment-separator { order: 2; width: 100%; border: 0; border-top: 1px solid var(--border); margin: 0; }
+  .comment-tools { order: 3; display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%; }
+  .edit-mode-toggle { position: relative; width: 38px; height: 21px; display: inline-block; cursor: pointer; }
+  .edit-mode-toggle input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .edit-toggle-track { position: absolute; inset: 0; border-radius: 999px; background: var(--border); border: 1px solid color-mix(in srgb, var(--fg) 12%, transparent); transition: background .2s, border-color .2s, box-shadow .2s; display: flex; align-items: center; justify-content: flex-start; }
+  .edit-toggle-track::before { content: ''; position: absolute; width: 15px; height: 15px; left: 2px; top: 2px; border-radius: 50%; background: var(--bg-2); box-shadow: 0 1px 3px rgba(0,0,0,.28); transition: transform .2s ease, background .2s; z-index: 1; }
+  .edit-mode-toggle input:checked + .edit-toggle-track { background: var(--accent); border-color: var(--accent3); box-shadow: 0 0 0 2px var(--accent-soft); }
+  .edit-mode-toggle input:checked + .edit-toggle-track::before { transform: translateX(17px); background: var(--accent-text); }
+  .edit-mode-toggle input:focus-visible + .edit-toggle-track { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .edit-toggle-icon {
+    position: absolute;
+    left: 4.5px;
+    top: 4.5px;
+    width: 10px;
+    height: 10px;
+    color: var(--muted);
+    z-index: 2;
+    transition: transform 0.2s ease, color 0.2s;
+    pointer-events: none;
+  }
+  .edit-mode-toggle input:checked + .edit-toggle-track .edit-toggle-icon {
+    transform: translateX(17px);
+    color: var(--accent);
+  }
+  .comment-tools #copy-output-btn { width: 30px; height: 27px; border-radius: 8px; }
+
+  .red-cell-grid { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  .red-cell-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .red-cell-divider { width: 1px; align-self: stretch; min-height: 28px; background: var(--border); flex-shrink: 0; }
+  
+  .seg-container { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .seg-group { display: flex; gap: 4px; flex-wrap: wrap; }
+  .divider { width: 1px; height: 32px; background: var(--border); }
+
+  .seg {
+    padding: var(--seg-py) var(--seg-px); border: 1px solid var(--border); background: var(--bg-2);
+    color: var(--fg); border-radius: 10px; cursor: pointer; font-family: var(--font-ui); font-size: var(--seg-font); 
+    font-weight: 500; transition: all 0.15s; user-select: none; white-space: nowrap;
+  }
+  .seg:hover { border-color: var(--accent3); background: var(--card-2); }
+  .seg.active { background: var(--accent); border-color: var(--accent); color: var(--accent-text); box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 40%, transparent); }
+
+  .slider-group {
+    display: flex; position: relative; background: var(--bg-2); padding: 3px; gap: 2px; 
+    border-radius: 10px; border: 1px solid var(--border); width: fit-content; 
+    flex-wrap: wrap; white-space: nowrap;
+  }
+  .slider-btn {
+    padding: var(--seg-py) var(--seg-px); border: none; background: none; color: var(--muted);
+    border-radius: 6px; cursor: pointer; font-family: var(--font-ui); font-size: var(--seg-font); 
+    font-weight: 500; transition: color 0.3s; z-index: 2; position: relative; white-space: nowrap;
+  }
+  .slider-btn.active { color: var(--accent-text); }
+  .slider-indicator {
+    position: absolute; top: 3px; left: 3px; height: calc(100% - 6px);
+    background: var(--accent); border-radius: 6px; z-index: 1; opacity: 0; 
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 40%, transparent);
+  }
+
+  .cell-row {
+    display: flex; align-items: center; gap: 2px; 
+    width: 100%; max-width: 100%;
+    border: none;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--border) 50%, transparent);
+    border-radius: 10px; 
+    padding: 2px; 
+    background: var(--bg-2);
+    margin-bottom: 6px;
+  }
+  .cell-row:last-child { margin-bottom: 0; }
+  .cell-row[data-severity="moderate"] { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent3) 50%, transparent); background: var(--accent-soft); }
+  .cell-row[data-severity="marked"] { 
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--danger) 40%, transparent); 
+    background: hsl(0, 35%, 40%); 
+  }
+  :root[data-theme="light"] .cell-row[data-severity="marked"] { 
+    background: hsl(0, 45%, 88%); 
+  }
+
+  .severity-label {
+    font-family: var(--font-ui); font-size: calc(var(--base-font) * 0.75);
+    font-weight: 600; flex-shrink: 0; padding: 0 2px 0 8px; height: 28px;
+    width: 72px; 
+    border-radius: 6px; display: flex; align-items: center; 
+    background: transparent; color: var(--muted);
+    text-transform: capitalize; letter-spacing: 0;
+  }
+  .cell-row[data-severity="moderate"] .severity-label { color: var(--accent); }
+  .cell-row[data-severity="marked"] .severity-label { color: #ffffff; }
+  :root[data-theme="light"] .cell-row[data-severity="marked"] .severity-label { color: #5c1818; }
+
+  .cell-btns { display: flex; flex-wrap: wrap; gap: 2px; flex: 1 1 auto; padding: 0 2px; width: 100%; }
+  .cell-btns::-webkit-scrollbar { height: 4px; }
+  .cell-btns::-webkit-scrollbar-track { background: transparent; }
+  .cell-btns::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  height: 28px;
+
+  /* Prevent stretching on large screens */
+  flex: 0 0 auto;
+  width: fit-content;
+  min-width: 46px;
+  max-width: 70px;
+
+  padding: 0 10px;
+  border-radius: 8px;
+
+  background: color-mix(in srgb, var(--card-2) 75%, transparent);
+  border: 1px solid color-mix(in srgb, var(--fg) 10%, transparent);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+
+  font-family: var(--font-ui);
+  font-size: var(--seg-font);
+  font-weight: 500;
+  color: var(--fg);
+
+  transition: all 0.15s;
+  user-select: none;
+  white-space: nowrap;
+  margin: 0;
+}	
+  .check:hover { 
+    background: color-mix(in srgb, var(--card-2) 90%, transparent); 
+    border-color: color-mix(in srgb, var(--fg) 20%, transparent);
+  }
+  .check.active { 
+    background: var(--accent); 
+    color: var(--accent-text); 
+    border-color: var(--accent3);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 40%, transparent);
+  }
+
+  .button-row { display: flex; align-items: center; justify-content: space-between; margin: 20px 0; flex-wrap: wrap; gap: 12px; position: relative; }
+  .button-row .center-btns { flex: 1; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .header-actions { display: flex; gap: 8px; align-items: center; position: static; margin: 0; }
+  .button-row .brand, .button-row .center-btns, .button-row .header-actions { position: relative; z-index: 1; }
+
+  #pixel-scene-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.88;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+
+  .btn {
+    padding: var(--btn-py) var(--btn-px); border: none; border-radius: 12px; cursor: pointer; 
+    font-family: var(--font-ui); font-size: var(--btn-font); font-weight: 600; 
+    transition: transform 0.15s cubic-bezier(0.2, 0, 0, 1), filter 0.15s, background-color 0.15s, box-shadow 0.15s, border-color 0.15s;
+    display: inline-flex; align-items: center; gap: 8px; justify-content: center;
+  }
+  .btn-primary {
+    background: var(--accent); color: var(--accent-text);
+    box-shadow: 0 4px 14px color-mix(in srgb, var(--accent) 25%, transparent); border: 1px solid var(--accent3);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px color-mix(in srgb, var(--accent) 35%, transparent); }
+  .btn-primary:active { transform: scale(0.96); filter: brightness(0.9); box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 25%, transparent); }
+  
+  .btn-secondary { background: var(--bg-2); color: var(--accent2); border: 1px solid var(--accent3); }
+  .btn-secondary:hover { background: var(--card-2); transform: translateY(-2px); }
+  .btn-secondary:active { transform: scale(0.96); filter: brightness(0.95); }
+  .btn-secondary.armed { border-color: var(--danger) !important; color: var(--danger) !important; box-shadow: 0 0 0 2px color-mix(in srgb, var(--danger) 30%, transparent) !important; }
+
+  .output-wrap { position: relative; width: 100%; }
+  .output {
+    width: 100%; min-height: 52px; background: var(--bg-2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px; color: var(--fg); font-family: 'Tiempos Text', 'Tiempos', Georgia, 'Times New Roman', serif !important; 
+    font-size: calc(var(--base-font) * 1.05); 
+    line-height: 1.6; resize: none; outline: none; overflow: hidden;
+    transition: filter 0.2s ease, color 0.2s ease;
+    box-sizing: border-box;
+  }
+  .output:focus { border-color: var(--accent-dim); }
+  .output.blurred { filter: blur(5px); pointer-events: none; user-select: none; }
+  .output.has-preview { color: transparent; }
+  
+  .preview-overlay {
+    position: absolute;
+    top: 1px; left: 1px; right: 1px; bottom: 1px; 
+    padding: 16px;
+    color: var(--accent2);
+    opacity: 0.2;
+    pointer-events: none;
+    font-family: 'Tiempos Text', 'Tiempos', Georgia, 'Times New Roman', serif !important;
+    font-size: calc(var(--base-font) * 1.05);
+    line-height: 1.6;
+    white-space: pre-wrap;
+    display: none;
+    border-radius: 11px;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+  .preview-overlay.active { display: block; }
+
+  #notification-area { width: 100%; display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+  .notif {
+    width: 100%; text-align: center; 
+    font-family: var(--font-ui); font-size: calc(var(--base-font) * 0.85); font-weight: 500;
+    opacity: 1; 
+    transition: opacity 2s ease-in-out, max-height 1s ease-in-out 2s, margin 1s ease-in-out 2s, padding 1s ease-in-out 2s;
+    max-height: 30px; overflow: hidden; 
+    margin: 0; padding: 0;
+  }
+  .notif-fade { 
+    opacity: 0; 
+    max-height: 0; 
+    margin: 0; 
+    padding: 0; 
+  }
+  .notif-error { color: var(--danger); }
+  .notif-success { color: var(--accent2); }
+  
+  .notif-persistent {
+    width: fit-content;
+    margin: 0 auto;
+    padding: 8px 16px;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--accent) 15%, var(--bg-2));
+    border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    color: var(--accent2);
+    max-height: 50px;
+    transition: opacity 0.3s ease, max-height 0.3s ease, margin 0.3s ease, padding 0.3s ease;
+  }
+  .notif-persistent.notif-fade {
+    opacity: 0;
+    max-height: 0;
+    padding: 0;
+    margin: 0;
+    border-width: 0;
+  }
+
+  .hint { font-family: var(--font-ui); font-size: calc(var(--base-font) * 0.8); color: var(--muted); margin-top: 10px; display: flex; align-items: center; gap: 8px; position: relative; flex-wrap: wrap; }
+  kbd { background: var(--bg-2); border: 1px solid var(--border); border-bottom-width: 2px; padding: 2px 7px; border-radius: 6px; font-family: var(--font-ui); font-size: calc(var(--base-font) * 0.75); color: var(--fg); } 
+  .hint-divider { width: 1px; height: 14px; background: var(--border); }
+  .hint-right { margin-left: auto; }
+
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 100; backdrop-filter: blur(4px); }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: var(--card); border: 1px solid var(--border); border-radius: 20px; width: 100%; 
+    max-width: 520px; padding: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); max-height: 90vh; overflow-y: auto;
+  }
+  #admin-modal .modal { max-width: 520px; }
+  #glossary-modal .modal { max-width: 960px; } 
+  #history-modal .modal { max-width: 840px; }
+  #secret-menu .modal { max-width: 340px; text-align: center; }
+  
+  .modal h2 { font-family: var(--font-ui); font-size: calc(var(--base-font) * 1.2); margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .modal h3 { font-family: var(--font-ui); font-size: calc(var(--base-font) * 0.9); color: var(--accent2); margin-top: 16px; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+
+  .modal input, .modal select, .modal textarea {
+    width: 100%; padding: 10px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 10px; 
+    color: var(--fg); font-family: var(--font-ui); font-size: calc(var(--base-font) * 0.9); margin-bottom: 10px; outline: none;
+  }
+  .modal input:focus, .modal select:focus { border-color: var(--accent-dim); }
+  .form-row { display: flex; gap: 10px; margin-bottom: 10px; }
+  .form-row input { margin-bottom: 0; }
+  .modal .btn { width: 100%; margin-top: 4px; }
+
+  .color-picker-container { position: relative; display: flex; flex-direction: column; gap: 6px; align-items: center; }
+  #theme-accent-btn {
+    width: 38px; height: 38px; border-radius: 8px; 
+    border: 2px solid var(--border); cursor: pointer; 
+    background-color: #d97757; transition: transform 0.2s;
+    margin-bottom: 10px; 
+  }
+  #theme-accent-btn:hover { transform: scale(1.05); }
+  #color-dropdown {
+    display: none; position: absolute; top: 68px; right: 0; 
+    background: var(--bg-2); border: 1px solid var(--border); border-radius: 12px; 
+    padding: 12px; z-index: 200; box-shadow: 0 4px 14px rgba(0,0,0,0.3); 
+    flex-direction: column; gap: 12px; width: 260px;
+  }
+  .cp-section { display: flex; flex-direction: column; gap: 8px; }
+  .cp-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 2px; }
+  .cp-gradient-row { display: grid; grid-template-columns: repeat(10, 1fr); gap: 0; border-radius: 4px; overflow: hidden; height: 16px; }
+  .cp-swatch { height: 16px; cursor: pointer; transition: transform 0.1s; }
+  .cp-swatch:hover { transform: scale(1.2); z-index: 1; }
+  .cp-grid .cp-swatch { height: 20px; border-radius: 3px; }
+  
+  .cp-slider-row { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .cp-slider-row label { width: 60px; font-size: 11px; text-align: right; color: var(--muted); margin: 0; flex-shrink: 0; }
+  .cp-slider { 
+    -webkit-appearance: none; appearance: none; flex: 1; min-width: 0; height: 10px; 
+    border-radius: 5px; outline: none; background: var(--bg); border: 1px solid var(--border); 
+    margin: 0; cursor: pointer;
+  }
+  .cp-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 1px solid #000; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+  .cp-slider::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 1px solid #000; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+  
+  .cp-hue-slider { 
+    background: linear-gradient(to right, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%) !important; 
+    border: 1px solid var(--border);
+  }
+  .cp-opa-slider { 
+    background-image: 
+        linear-gradient(to right, transparent, var(--cp-current, #fff)),
+        repeating-conic-gradient(#ccc 0% 25%, transparent 0% 50%);
+    background-size: 100% 100%, 8px 8px;
+  }
+
+  .settings-slider { -webkit-appearance: none; appearance: none; width: 100%; height: 8px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 4px; outline: none; margin-top: 4px; }
+  .settings-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; background: var(--accent); border: 2px solid var(--bg); border-radius: 50%; cursor: pointer; }
+  .settings-slider::-moz-range-thumb { width: 18px; height: 18px; background: var(--accent); border: 2px solid var(--bg); border-radius: 50%; cursor: pointer; }
+
+  .current-list { background: var(--bg-2); border: 1px solid var(--border); border-radius: 10px; padding: 8px; margin-bottom: 12px; font-family: var(--font-ui); font-size: calc(var(--base-font) * 0.85); color: var(--muted); max-height: 100px; overflow-y: auto; } 
+  .pill { display: inline-flex; align-items: center; gap: 8px; background: var(--card-2); padding: 5px 8px; border-radius: 8px; margin: 2px; font-family: var(--font-ui); font-size: calc(var(--base-font) * 0.85); color: var(--fg); } 
+  .pill button { background: none; border: none; color: var(--muted); cursor: pointer; font-weight: bold; font-size: calc(var(--base-font) * 0.9); display: flex; align-items: center; }
+  .pill button:hover { color: var(--accent); }
+  .pill .remove-btn:hover { color: var(--danger); }
+
+  .settings-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; gap: 10px; }
+  .settings-row label { font-family: var(--font-ui); font-size: calc(var(--base-font) * 0.9); color: var(--fg); }
+  .settings-row input[type="checkbox"] { width: 18px; height: 18px; }
+
+  .settings-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .settings-2col .settings-col { display: flex; flex-direction: column; gap: 6px; margin-bottom: 0; }
+
+  .preview-box { background: var(--bg-2); border: 1px dashed var(--border); border-radius: 12px; padding: 16px; margin-top: 10px; margin-bottom: 20px; text-align: center; } 
+  .preview-text { margin-bottom: 12px; color: var(--fg); }
+  
+  .admin-grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .admin-sub-label { font-family: var(--font-ui); font-size: calc(var(--base-font) * 0.8); color: var(--muted); margin-bottom: 6px; text-transform: capitalize; letter-spacing: 0; font-weight: 600; }
+  .admin-grid-2col .current-list { max-height: 80px; }
+  .admin-grid-2col .btn { width: 100%; margin-top: 4px; }
+
+  .glossary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
+  .glossary-item { display: flex; align-items: center; gap: 8px; background: var(--bg-2); border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px; font-family: var(--font-ui); font-size: 12px; }
+  .g-code { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--accent2); min-width: 40px; font-size: 11px; }
+  .g-arrow { color: var(--muted); font-size: 11px; }
+  .g-out { color: var(--fg); white-space: normal; word-break: break-word; line-height: 1.3; }
+
+  .history-item {
+    background: var(--bg-2); border: 1px solid var(--border); padding: 12px; border-radius: 10px; 
+    margin-bottom: 8px; cursor: pointer; font-family: 'Tiempos Text', Georgia, serif; 
+    font-size: calc(var(--base-font) * 0.95); color: var(--fg); transition: all 0.15s;
+    line-height: 1.5;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .history-item:hover { border-color: var(--accent-dim); background: var(--card-2); transform: translateY(-1px); }
+  .history-item.secret-copied { 
+    background: var(--accent) !important; 
+    color: var(--accent-text) !important; 
+    border-color: var(--accent) !important;
+  }
+  .history-item.secret-copied .history-time { 
+    color: var(--accent-text) !important; 
+    border-color: color-mix(in srgb, var(--accent-text) 30%, transparent) !important;
+  }
+  .history-time {
+    font-family: var(--font-ui); font-size: 11px; color: var(--muted); 
+    text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); padding-bottom: 4px;
+  }
+  .history-text {
+    white-space: pre-wrap;
+  }
+
+  .secret-main-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; justify-content: center; }
+  .secret-main-grid .btn { width: fit-content; padding: 6px 12px; font-size: 12px; margin: 0; border-radius: 8px; }
+  .secret-divider { border: 0; border-top: 1px solid var(--border); margin: 12px 0; }
+  .secret-blood-grid { display: flex; justify-content: center; gap: 8px; }
+  .secret-blood-grid .btn { width: 36px; height: 36px; padding: 0; font-size: 14px; font-weight: 700; border-radius: 8px; display: flex; align-items: center; justify-content: center; } 
+  .secret-copied { background: var(--accent) !important; color: var(--accent-text) !important; border-color: var(--accent) !important; }
+
+  @media (max-width: 600px) {
+    .main-layout { flex-direction: column; }
+    .row-container { flex-direction: column; }
+    .red-cell-grid { gap: 8px; }
+    .admin-grid-2col { grid-template-columns: 1fr; }
+    .settings-2col { grid-template-columns: 1fr; }
+    .button-row { justify-content: center; }
+    .button-row .brand, .button-row .header-actions { width: 100%; justify-content: center; margin-bottom: 8px; }
+    .button-row .center-btns { flex: 1 1 100%; }
+    .card { flex-direction: column; }
+    .card-sidebar { border-right: none; border-bottom: 1px solid var(--border); padding: 8px 12px; flex-direction: row; align-items: center; justify-content: space-between; width: 100%; min-width: 100%; flex-basis: auto; }
+    .card-content { padding: 16px; width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="main-layout">
+    <div class="main-content">
+      <div class="card">
+        <div class="card-sidebar">
+          <div class="card-title-left">Red Cell</div>
+          <button class="mini-reset" onclick="resetSection('red')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            Reset
+          </button>
+        </div>
+        <div class="card-content">
+          <div class="red-cell-grid">
+            <div class="red-cell-row">
+              <div class="slider-group" id="chroma-grade">
+                <div class="slider-indicator"></div>
+                <button class="slider-btn" data-value="slightly">Slightly</button>
+                <button class="slider-btn" data-value="moderately">Moderately</button>
+                <button class="slider-btn" data-value="markedly">Markedly</button>
+              </div>
+              <div class="slider-group" id="chroma-type">
+                <div class="slider-indicator"></div>
+                <button class="slider-btn" data-value="hypochromic">Hypo</button>
+                <button class="slider-btn active" data-value="normochromic">Normo</button>
+              </div>
+            </div>
+
+            <div class="red-cell-row">
+              <div class="slider-group" id="size-grade">
+                <div class="slider-indicator"></div>
+                <button class="slider-btn" data-value="slightly">Slightly</button>
+                <button class="slider-btn" data-value="moderately">Moderately</button>
+                <button class="slider-btn" data-value="markedly">Markedly</button>
+              </div>
+              <div class="slider-group" id="size-type">
+                <div class="slider-indicator"></div>
+                <button class="slider-btn" data-value="microcytic">Micro</button>
+                <button class="slider-btn active" data-value="normocytic">Normo</button>
+                <button class="slider-btn" data-value="macrocytic">Macro</button>
+                <button class="slider-btn" data-value="anisocytotic">Aniso</button>
+              </div>
+              <div class="red-cell-divider"></div>
+              <div class="slider-group" id="oval-toggle">
+                <div class="slider-indicator"></div>
+                <button class="slider-btn" data-value="oval">OVAL</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-sidebar">
+          <div class="card-title-left">Cell Type</div>
+          <button class="mini-reset" onclick="resetSection('cells')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            Reset
+          </button>
+        </div>
+        <div class="card-content">
+          <div id="cell-matrix"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-sidebar">
+          <div class="card-title-left">Platelet</div>
+          <button class="mini-reset" onclick="resetSection('platelet')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            Reset
+          </button>
+        </div>
+        <div class="card-content" style="min-height: 80px; justify-content: center;">
+          <div class="seg-container" style="flex-direction: column; align-items: flex-start; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="currentColor" style="color: var(--accent3); flex-shrink: 0;" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 4 C 7 4, 8 5, 8 6 C 8 7, 7 8, 6 8 C 5 8, 4 7, 4 6 C 4 5, 5 4, 6 4 Z" />
+                <path d="M20 8 C 21 8, 22 9, 22 10 C 22 11, 21 12, 20 12 C 19 12, 18 11, 18 10 C 18 9, 19 8, 20 8 Z" />
+                <path d="M12 18 C 13 18, 14 19, 14 20 C 14 21, 13 22, 12 22 C 11 22, 10 21, 10 20 C 10 19, 11 18, 12 18 Z" />
+                <path d="M22 20 C 23 20, 24 21, 24 22 C 24 23, 23 24, 22 24 C 21 24, 20 23, 20 22 C 20 21, 21 20, 22 20 Z" />
+                <path d="M4 16 C 5 16, 6 17, 6 18 C 6 19, 5 20, 4 20 C 3 20, 2 19, 2 18 C 2 17, 3 16, 4 16 Z" />
+              </svg>
+              <div class="slider-group" id="platelet-no-clumps-slider">
+                <div class="slider-indicator"></div>
+              </div>
+              <div class="divider"></div>
+              <div class="seg-group" id="platelet-optional-group"></div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="currentColor" style="color: var(--accent3); flex-shrink: 0;" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14 6 C 17 6, 20 9, 20 12 C 20 15, 17 18, 14 18 C 11 18, 8 15, 8 12 C 8 9, 11 6, 14 6 Z" />
+                <path d="M10 10 C 11 10, 12 11, 12 12 C 12 13, 11 14, 10 14 C 9 14, 8 13, 8 12 C 8 11, 9 10, 10 10 Z" />
+                <path d="M18 14 C 19 14, 20 15, 20 16 C 20 17, 19 18, 18 18 C 17 18, 16 17, 16 16 C 16 15, 17 14, 18 14 Z" />
+                <path d="M14 18 C 15 18, 16 19, 16 20 C 16 21, 15 22, 14 22 C 13 22, 12 21, 12 20 C 12 19, 13 18, 14 18 Z" />
+              </svg>
+              <div class="slider-group" id="platelet-clumps-slider">
+                <div class="slider-indicator"></div>
+              </div>
+              <div class="divider"></div>
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="currentColor" style="color: var(--accent3); flex-shrink: 0;" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="14" cy="14" r="5" opacity="0.5" />
+                <circle cx="6" cy="6" r="2" />
+                <circle cx="22" cy="6" r="2" />
+                <circle cx="6" cy="22" r="2" />
+                <circle cx="22" cy="22" r="2" />
+                <circle cx="3" cy="14" r="1.5" />
+                <circle cx="25" cy="14" r="1.5" />
+                <circle cx="14" cy="3" r="1.5" />
+                <circle cx="14" cy="25" r="1.5" />
+              </svg>
+              <div class="slider-group" id="platelet-satellitism-slider">
+                <div class="slider-indicator"></div>
+              </div>
+              <div class="divider"></div>
+              <div class="seg-group" id="platelet-extra-group"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-container">
+        <div class="card">
+          <div class="card-sidebar">
+            <div class="card-title-left">Early Cell</div>
+            <button class="mini-reset" onclick="resetSection('early')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              Reset
+            </button>
+          </div>
+          <div class="card-content" style="justify-content: center;">
+            <div class="seg-container">
+              <div class="slider-group" id="early-primary-slider">
+                <div class="slider-indicator"></div>
+              </div>
+              <div class="divider"></div>
+              <div class="seg-group" id="early-optional-group"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-sidebar">
+            <div class="card-title-left">Special</div>
+            <button class="mini-reset" onclick="resetSection('abnormal')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+              Reset
+            </button>
+          </div>
+          <div class="card-content" style="justify-content: center;">
+            <div class="seg-container">
+              <div class="seg-group" id="abnormal-group"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="button-row">
+        <canvas id="pixel-scene-canvas" aria-hidden="true"></canvas>
+        <div class="brand" id="app-brand"></div>
+        <div class="center-btns">
+          <button class="btn btn-primary" id="generate-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+            <span class="btn-text">Generate</span>
+          </button>
+          <button class="btn btn-secondary" id="reset-all-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            Reset All
+          </button>
+        </div>
+        <div class="header-actions">
+          <div class="mode-toggle" id="mode-toggle-btn" title="Toggle Dark/Light Mode">
+            <span class="mode-icon">☀</span>
+            <span class="mode-icon">☾</span>
+            <div class="mode-slider"></div>
+          </div>
+          <button class="icon-btn" id="glossary-btn" title="Glossary & Help">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          </button>
+          <button class="icon-btn" id="history-btn" title="Comment History">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v5h5"/><path d="M3.05 13A9 9 0 1 0 6 5.3L3 8"/><path d="M12 7v5l4 2"/></svg>
+          </button>
+          <button class="icon-btn" id="theme-btn" title="Theme Settings">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-sidebar comment-sidebar">
+          <div class="card-title-left" style="white-space: normal;">Generated Comment</div>
+          <hr class="comment-separator">
+          <div class="comment-tools">
+            <label class="edit-mode-toggle" id="edit-toggle-btn" title="Toggle Free Text Mode" aria-label="Toggle Free Text Mode">
+              <input type="checkbox" id="edit-mode-checkbox" role="switch" aria-label="Toggle Free Text Mode">
+              <span class="edit-toggle-track" aria-hidden="true">
+                <svg class="edit-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              </span>
+            </label>
+            <button class="icon-btn" id="copy-output-btn" title="Copy to Clipboard" aria-label="Copy to Clipboard">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="output-wrap">
+            <textarea class="output" id="output" readonly></textarea>
+            <div class="preview-overlay" id="preview-overlay"></div>
+          </div>
+          <div class="hint">
+            Press <kbd>Enter</kbd> to generate
+            <span class="hint-divider"></span>
+            Press <kbd>Backspace</kbd> twice to reset all fields
+            <span class="hint-right">
+              Press <kbd>Alt</kbd> + <kbd>Q</kbd> for quick codes
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div id="notification-area"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- History Modal -->
+<div class="modal-overlay" id="history-modal">
+  <div class="modal">
+    <h2>
+      <span>Comment History</span>
+      <button class="icon-btn" onclick="closeModal('history-modal')" style="padding: 4px; width: 32px; height: 32px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </h2>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <p style="font-family: var(--font-ui); font-size: 13px; color: var(--muted); margin: 0;">Recent 10 comments generated. Click to reuse.</p>
+      <button class="btn btn-secondary" id="clear-history-btn" style="width: auto; margin: 0; padding: 6px 12px; font-size: 12px;">Clear History</button>
+    </div>
+    <div id="history-content"></div>
+  </div>
+</div>
+
+<!-- Secret Menu Modal -->
+<div class="modal-overlay" id="secret-menu">
+  <div class="modal">
+    <h2 style="justify-content: center;">
+      <span>Quick Codes</span>
+    </h2>
+    <p style="font-family: var(--font-ui); font-size: 12px; color: var(--muted); margin-bottom: 8px;">Click a button to instantly copy the text/code to your clipboard.</p>
+    <div class="secret-main-grid" id="secret-main-grid"></div>
+    <hr class="secret-divider">
+    <div class="secret-blood-grid" id="secret-blood-grid"></div>
+  </div>
+</div>
+
+<!-- MOGPS Info Modal -->
+<div class="modal-overlay" id="mogps-modal">
+  <div class="modal">
+    <h2>
+      <span>MOGPS: Selection Criteria</span>
+      <button class="icon-btn" onclick="closeModal('mogps-modal')" style="padding: 4px; width: 32px; height: 32px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </h2>
+    <div style="font-family: var(--font-ui); font-size: 13px; line-height: 1.6; color: var(--fg);">
+      <svg viewBox="0 0 400 150" width="100%" style="max-width: 400px; display: block; margin: 0 auto 14px;" role="img" aria-label="Size comparison: normal platelet, normal RBC, and giant platelet, which is equal to or larger than an RBC">
+        <!-- Normal platelet -->
+        <circle cx="70" cy="60" r="11" fill="#b9a2e0" stroke="#7d5fb5" stroke-width="1.5"/>
+        <circle cx="67" cy="58" r="1.6" fill="#6a4a9e"/><circle cx="73" cy="63" r="1.6" fill="#6a4a9e"/><circle cx="72" cy="56" r="1.2" fill="#6a4a9e"/>
+        <!-- Normal RBC -->
+        <circle cx="200" cy="60" r="34" fill="#e88a8a" stroke="#c25a5a" stroke-width="2"/>
+        <circle cx="200" cy="60" r="12" fill="#f6c9c9" opacity="0.9"/>
+        <!-- Giant platelet with dashed RBC-size reference ring -->
+        <circle cx="330" cy="60" r="38" fill="#b9a2e0" stroke="#7d5fb5" stroke-width="2"/>
+        <circle cx="330" cy="60" r="34" fill="none" stroke="#c25a5a" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <g fill="#6a4a9e"><circle cx="318" cy="50" r="2.2"/><circle cx="336" cy="46" r="2.2"/><circle cx="344" cy="62" r="2.2"/><circle cx="322" cy="70" r="2.2"/><circle cx="334" cy="74" r="2"/><circle cx="326" cy="60" r="2"/><circle cx="312" cy="62" r="1.8"/></g>
+        <g font-family="var(--font-ui)" text-anchor="middle">
+          <text x="70" y="115" font-size="12" font-weight="600" fill="var(--fg)">Normal platelet</text>
+          <text x="70" y="131" font-size="11" fill="var(--muted)">much smaller than RBC</text>
+          <text x="200" y="115" font-size="12" font-weight="600" fill="var(--fg)">Normal RBC</text>
+          <text x="200" y="131" font-size="11" fill="var(--muted)">reference size</text>
+          <text x="330" y="115" font-size="12" font-weight="600" fill="var(--fg)">Giant platelet</text>
+          <text x="330" y="131" font-size="11" fill="var(--muted)">&#8805; RBC (dashed ring)</text>
+        </g>
+      </svg>
+      <p style="margin-bottom: 10px;">Use this code only if <strong>both</strong> criteria are met:</p>
+      <ul style="margin: 0 0 12px 20px;">
+        <li><strong>Size:</strong> Giant platelets are equal to or larger than a normal RBC.</li>
+        <li><strong>Grade (moderate):</strong> At least 3 to 5 giant platelets per oil immersion field.</li>
+      </ul>
+      <p style="color: var(--muted);">The phrase &ldquo;total platelet count may be underestimated&rdquo; will be added to the final comment.</p>
+    </div>
+    <button class="btn" style="margin-top: 16px;" onclick="closeModal('mogps-modal')">Got it</button>
+  </div>
+</div>
+
+<!-- Glossary Modal -->
+<div class="modal-overlay" id="glossary-modal">
+  <div class="modal">
+    <h2>
+      <span>Glossary & Help Guide</span>
+      <button class="icon-btn" onclick="closeModal('glossary-modal')" style="padding: 4px; width: 32px; height: 32px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </h2>
+    <p style="font-family: var(--font-ui); font-size: 13px; color: var(--muted); margin-bottom: 20px;">A quick reference guide showing exactly what text each code generates in the final comment.</p>
+    <div id="glossary-content"></div>
+  </div>
+</div>
+
+<!-- Global Theme Modal -->
+<div class="modal-overlay" id="theme-modal">
+  <div class="modal">
+    <h2>
+      <span>Theme Settings</span>
+      <div style="display: flex; gap: 8px;">
+        <button class="icon-btn" id="reset-defaults-btn" title="Restore Defaults" style="padding: 4px; width: 32px; height: 32px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+        </button>
+        <button class="icon-btn" onclick="closeModal('theme-modal')" style="padding: 4px; width: 32px; height: 32px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </h2>
+    
+    <div class="settings-row" style="gap: 12px; margin-bottom: 20px; align-items: flex-end;">
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+        <label>Theme</label>
+        <select id="theme-palette">
+          <option value="monochrome">Monochrome</option>
+          <option value="forest">Forest</option>
+          <option value="space">Space</option>
+          <option value="cyberpunk">Cyberpunk</option>
+          <option value="fantasy">Fantasy</option>
+          <option value="sunset">Sunset</option>
+          <option value="aurora">Aurora</option>
+          <option value="ocean">Ocean</option>
+          <option value="claude">Claude</option>
+          <option value="ios">iOS</option>
+        </select>
+      </div>
+      <div class="color-picker-container">
+        <label style="opacity: 0; font-size: calc(var(--base-font) * 0.9); height: 19px;">Color</label>
+        <div id="theme-accent-btn"></div>
+        <div id="color-dropdown">
+          <div class="cp-section">
+             <div class="cp-grid" id="cp-standard"></div>
+          </div>
+          <div class="cp-section" id="cp-gradients"></div>
+          <div class="cp-section">
+             <div class="cp-slider-row">
+                <label>Hue</label>
+                <input type="range" id="cp-hue" min="0" max="360" value="0" class="cp-slider cp-hue-slider">
+             </div>
+             <div class="cp-slider-row">
+                <label>Saturation</label>
+                <input type="range" id="cp-sat" min="0" max="100" value="100" class="cp-slider cp-sat-slider">
+             </div>
+             <div class="cp-slider-row">
+                <label>Brightness</label>
+                <input type="range" id="cp-bri" min="0" max="100" value="50" class="cp-slider cp-bri-slider">
+             </div>
+             <div class="cp-slider-row">
+                <label>Opacity</label>
+                <input type="range" id="cp-opa" min="0" max="100" value="100" class="cp-slider cp-opa-slider">
+             </div>
+          </div>
+        </div>
+      </div>
+      <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+        <label>Companion Animal</label>
+        <select id="theme-animal">
+          <option value="off">Off</option>
+          <option value="cat">Cat</option>
+          <option value="dog">Dog</option>
+          <option value="capybara">Capybara</option>
+          <option value="rabbit">Rabbit</option>
+          <option value="cow">Cow</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="settings-2col">
+      <div class="settings-col">
+        <label>Font Family</label>
+        <select id="theme-fontfamily">
+          <option value="'Inter', sans-serif">Inter</option>
+          <option value="'Helvetica Neue', Helvetica, Arial, sans-serif">Helvetica Neue</option>
+          <option value="Georgia, 'Times New Roman', serif">Georgia / Times (Serif)</option>
+          <option value="'Merriweather', Georgia, serif">Merriweather (Serif)</option>
+          <option value="'Playfair Display', Georgia, serif">Playfair Display (Serif)</option>
+          <option value="'Roboto', sans-serif">Roboto</option>
+          <option value="'Lato', sans-serif">Lato</option>
+          <option value="'Open Sans', sans-serif">Open Sans</option>
+        </select>
+      </div>
+      <div class="settings-col">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <label>Font Size</label>
+          <span id="fontsize-label" style="font-family: var(--font-ui); font-size: 13px; color: var(--muted);">Medium</span>
+        </div>
+        <input type="range" min="1" max="5" step="1" value="3" id="theme-fontsize" class="settings-slider">
+      </div>
+    </div>
+
+    <div class="settings-2col">
+      <div class="settings-col">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <label>Button Size</label>
+          <span id="btnsize-label" style="font-family: var(--font-ui); font-size: 13px; color: var(--muted);">Medium</span>
+        </div>
+        <input type="range" min="1" max="5" step="1" value="2" id="theme-btnsize" class="settings-slider">
+      </div>
+      <div class="settings-col">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <label>Section Spacing</label>
+          <span id="padding-value-label" style="font-family: var(--font-ui); font-size: 13px; color: var(--muted);">XS</span>
+        </div>
+        <input type="range" min="1" max="5" step="1" value="1" id="theme-padding" class="settings-slider">
+      </div>
+    </div>
+
+    <h3>Preview</h3>
+    <div class="preview-box">
+      <div class="preview-text" id="preview-text">The quick brown fox jumps over the lazy dog.</div>
+      <button class="btn btn-primary" id="preview-btn">Preview Button</button>
+    </div>
+  </div>
+</div>
+
+<!-- Admin Settings Modal -->
+<div class="modal-overlay" id="admin-modal">
+  <div class="modal">
+    <h2>
+      <span id="modal-title">Admin Login</span>
+      <button class="icon-btn" onclick="closeModal('admin-modal')" style="padding: 4px; width: 32px; height: 32px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </h2>
+    
+    <div id="login-view">
+      <input type="text" id="admin-user" placeholder="Username" autocomplete="off">
+      <input type="password" id="admin-pass" placeholder="Password" autocomplete="off">
+      <button class="btn btn-primary" onclick="attemptLogin()">Login</button>
+    </div>
+
+    <div id="admin-view" style="display: none;">
+      <h3>Cell Type Findings</h3>
+      <div class="current-list" id="cell-list"></div>
+      <div class="admin-sub-label">Add New Cell Type</div>
+      <div class="form-row">
+        <input type="text" id="new-cell-label" placeholder="Label (e.g. Oval)">
+        <input type="text" id="new-cell-key" placeholder="Output (e.g. ovalocytes)">
+      </div>
+      <button class="btn btn-secondary" onclick="addCellType()">Add Cell Type</button>
+
+      <h3>Platelets Settings</h3>
+      <div class="admin-grid-2col">
+        <div class="admin-col">
+          <div class="admin-sub-label">Primary (Exclusive)</div>
+          <div class="current-list" id="plat-primary-list"></div>
+          <div class="form-row">
+            <input type="text" id="plat-primary-key" placeholder="Code (e.g. NPCS)">
+            <input type="text" id="plat-primary-text" placeholder="Output Text">
+          </div>
+          <button class="btn btn-secondary" onclick="addCode('platelets', 'primary')">Add Primary</button>
+        </div>
+        <div class="admin-col">
+          <div class="admin-sub-label">Optional Add-ons</div>
+          <div class="current-list" id="plat-optional-list"></div>
+          <div class="form-row">
+            <input type="text" id="plat-optional-key" placeholder="Code (e.g. OLPS)">
+            <input type="text" id="plat-optional-text" placeholder="Output Text">
+          </div>
+          <button class="btn btn-secondary" onclick="addCode('platelets', 'optional')">Add Optional</button>
+        </div>
+      </div>
+
+      <h3>Early Cells Settings</h3>
+      <div class="admin-grid-2col">
+        <div class="admin-col">
+          <div class="admin-sub-label">Primary (Exclusive)</div>
+          <div class="current-list" id="early-primary-list"></div>
+          <div class="form-row">
+            <input type="text" id="early-primary-key" placeholder="Code (e.g. OLS)">
+            <input type="text" id="early-primary-text" placeholder="Output Text">
+          </div>
+          <button class="btn btn-secondary" onclick="addCode('earlyCells', 'primary')">Add Primary</button>
+        </div>
+        <div class="admin-col">
+          <div class="admin-sub-label">Optional Add-ons</div>
+          <div class="current-list" id="early-optional-list"></div>
+          <div class="form-row">
+            <input type="text" id="early-optional-key" placeholder="Code (e.g. BLAST)">
+            <input type="text" id="early-optional-text" placeholder="Output Text">
+          </div>
+          <button class="btn btn-secondary" onclick="addCode('earlyCells', 'optional')">Add Optional</button>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" style="margin-top: 16px;" onclick="exportGlobalConfig()">Apply Changes Globally (Export)</button>
+      <button class="btn btn-secondary" style="margin-top: 8px;" onclick="adminLogout()">Logout</button>
+    </div>
+  </div>
+</div>
+
+<!-- Export Modal -->
+<div class="modal-overlay" id="export-modal">
+  <div class="modal">
+    <h2>
+      <span>Apply to All Users</span>
+      <button class="icon-btn" onclick="closeModal('export-modal')" style="padding: 4px; width: 32px; height: 32px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </h2>
+    <p style="font-family: var(--font-ui); font-size: 13px; margin-bottom: 16px; color: var(--muted); line-height: 1.6;">
+      To make these changes permanent for everyone using this shared file:
+      <br>1. Copy the code below.<br>
+      2. Close this window.<br>
+      3. Open the HTML file with Notepad.<br>
+      4. Find the line <code style="background:var(--bg-2);padding:2px 4px;border-radius:4px;">let SHARED_DATA = null;</code><br>
+      5. Replace <code style="background:var(--bg-2);padding:2px 4px;border-radius:4px;">null</code> with the copied code.<br>
+      6. Save the file.
+    </p>
+    <textarea id="export-text" readonly style="height: 150px; font-family: monospace;"></textarea>
+    <button class="btn btn-primary" onclick="copyExport()">Copy to Clipboard</button>
+  </div>
+</div>
+
+<script>
+  let SHARED_DATA = {
+    appConfig: {
+      platelets: {
+        primary: {
+          exclusive: true,
+          codes: {
+            "NPCS": "No platelet clumps seen.",
+            "CLD": "Platelet clumps present on film, platelet numbers appear decreased. Suggest to repeat with new EDTA and sodium citrate tube.",
+            "CLN": "Platelet clumps present on film, platelet numbers appear normal.",
+            "MITHRO": "Mild thrombocytopenia with no platelet clumps seen.",
+            "MOTHRO": "Moderate thrombocytopenia with no platelet clumps seen.",
+            "SETHRO": "Severe thrombocytopenia with no platelet clumps seen.",
+            "CLI": "Platelet clumps present on film, platelet numbers appear increased."
+          }
+        },
+        optional: {
+          exclusive: false,
+          codes: {
+            "OLPS": "Occasional large platelets seen.",
+            "MOLPS": "Moderate large platelets seen.",
+            "OGPS": "Occasional giant platelets seen.",
+            "MOGPS": "Moderate giant platelets seen, total platelet count may be underestimated."
+          }
+        },
+        extra: {
+          exclusive: false,
+          codes: {
+            "CIT": "Platelet count is derived from sodium citrate tube.",
+            "PCEC": "Platelet count is derived from EDTA tube. Platelet count from sodium citrate is ."
+          }
+        },
+        satellitism: {
+          exclusive: true,
+          codes: {
+            "SATD": "Platelet satellitism present on film, platelet numbers appear decreased.",
+            "SATN": "Platelet satellitism present on film, platelet numbers appear normal.",
+            "SATI": "Platelet satellitism present on film, platelet numbers appear increased."
+          }
+        }
+      },
+      earlyCells: {
+        primary: {
+          exclusive: true,
+          codes: {
+            "NECS": "No early cells seen.",
+            "OLS": "Occasional number of neutrophils show a shift to the left.",
+            "MOLS": "Moderate number of neutrophils show a shift to the left.",
+            "MALS": "Majority number of neutrophils show a shift to the left."
+          }
+        },
+        optional: {
+          exclusive: false,
+          codes: {
+            "OCSM": "Occasional number of smudge cells seen."
+          }
+        }
+      },
+      abnormalFindings: {
+        exclusive: false,
+        codes: {
+          "OVER": "Severely lysed leukocytes and crenated erythrocytes observed. Please repeat with a fresh sample.",
+          "LIP": "Haemoglobin value was corrected by saline replacement technique due to lipaemic sample.",
+          "COLD": "Result based on a pre warmed sample after erythrocyte agglutination observed on smear.",
+          "NRBC": "WBC corrected for the presence of NRBC's."
+        }
+      }
+    },
+    cellTypes: {
+      "echinocytes": "Ech",
+      "elliptocytes": "Ell",
+      "fragmented cells": "Fra",
+      "target cells": "Tar",
+      "polychromatic cells": "Pol",
+      "teardrop cells": "Tea",
+      "stomatocytes": "Sto",
+      "atypical lymphocytes": "Aty",
+      "ovalocytes": "Ova",
+      "spherocytes": "Sph",
+      "macrocytes": "Mac",
+      "basophilic stippling": "Bas",
+      "myelocytes": "Mye",
+      "blast cells": "Bla",
+      "acanthocytes": "Aca"
+    }
+  };
+
+  const defaultConfig = {
+    platelets: {
+      primary: { exclusive: true, codes: { "NPCS": "No platelet clumps seen.", "CLD": "Platelet clumps present on film, platelet numbers appear decreased. Suggest to repeat with new EDTA and sodium citrate tube.", "CLN": "Platelet clumps present on film, platelet numbers appear normal.", "MITHRO": "Mild thrombocytopenia with no platelet clumps seen.", "MOTHRO": "Moderate thrombocytopenia with no platelet clumps seen.", "SETHRO": "Severe thrombocytopenia with no platelet clumps seen.", "CLI": "Platelet clumps present on film, platelet numbers appear increased." } },
+      optional: { exclusive: false, codes: { "OLPS": "Occasional large platelets seen.", "MOLPS": "Moderate large platelets seen.", "OGPS": "Occasional giant platelets seen.", "MOGPS": "Moderate giant platelets seen, total platelet count may be underestimated." } },
+      extra: { exclusive: false, codes: { "CIT": "Platelet count is derived from sodium citrate tube.", "PCEC": "Platelet count is derived from EDTA tube. Platelet count from sodium citrate is ." } },
+      satellitism: { exclusive: true, codes: { "SATD": "Platelet satellitism present on film, platelet numbers appear decreased.", "SATN": "Platelet satellitism present on film, platelet numbers appear normal.", "SATI": "Platelet satellitism present on film, platelet numbers appear increased." } }
+    },
+    earlyCells: {
+      primary: { exclusive: true, codes: { "NECS": "No early cells seen.", "OLS": "Occasional number of neutrophils show a shift to the left.", "MOLS": "Moderate number of neutrophils show a shift to the left.", "MALS": "Majority number of neutrophils show a shift to the left." } },
+      optional: { exclusive: false, codes: { "OCSM": "Occasional number of smudge cells seen." } }
+    },
+    abnormalFindings: {
+      exclusive: false, codes: { "OVER": "Severely lysed leukocytes and crenated erythrocytes observed. Please repeat with a fresh sample.", "LIP": "Haemoglobin value was corrected by saline replacement technique due to lipaemic sample.", "COLD": "Result based on a pre warmed sample after erythrocyte agglutination observed on smear.", "NRBC": "WBC corrected for the presence of NRBC's." }
+    }
+  };
+  const defaultCells = { 'echinocytes': 'Ech', 'elliptocytes': 'Ell', 'fragmented cells': 'Fra', 'target cells': 'Tar', 'polychromatic cells': 'Pol', 'teardrop cells': 'Tea', 'stomatocytes': 'Sto', 'atypical lymphocytes': 'Aty', 'ovalocytes': 'Ova', 'spherocytes': 'Sph', 'macrocytes': 'Mac', 'basophilic stippling': 'Bas', 'myelocytes': 'Mye', 'blast cells': 'Bla', 'acanthocytes': 'Aca' };
+
+  let appConfig = SHARED_DATA ? SHARED_DATA.appConfig : JSON.parse(JSON.stringify(defaultConfig));
+  let cellTypes = SHARED_DATA ? SHARED_DATA.cellTypes : JSON.parse(JSON.stringify(defaultCells));
+
+  const palettes = {
+    monochrome: { name: 'Monochrome', bg: '#1a1a1a', bg2: '#242424', card: '#2a2a2a', card2: '#333333', border: '#444444', fg: '#ffffff', muted: '#aaaaaa', accent: '#ffffff', accent2: '#dddddd', accent3: '#888888' },
+    forest: { name: 'Forest', bg: '#1a2421', bg2: '#1f2a26', card: '#243029', card2: '#2a3830', border: '#36473d', fg: '#e6efe9', muted: '#94a89b', accent: '#5fc28a', accent2: '#a3d9b1', accent3: '#3d7d57' },
+    space: { name: 'Space', bg: '#0b0d17', bg2: '#14172a', card: '#1a1e33', card2: '#232845', border: '#2e344e', fg: '#e5e9f0', muted: '#8893b2', accent: '#88c0d0', accent2: '#bf616a', accent3: '#ebcb8b' },
+    cyberpunk: { name: 'Cyberpunk', bg: '#0a0a12', bg2: '#14141f', card: '#1c1c2b', card2: '#262638', border: '#3a3a52', fg: '#f0f0f5', muted: '#8888aa', accent: '#ff007f', accent2: '#00ffff', accent3: '#ffff00' },
+    fantasy: { name: 'Fantasy', bg: '#1a1418', bg2: '#241b22', card: '#2e232b', card2: '#3a2c35', border: '#4d3a47', fg: '#f4e8e8', muted: '#a89090', accent: '#d4af37', accent2: '#c792ea', accent3: '#ff5874' },
+    sunset: { name: 'Sunset', bg: '#2a1a1f', bg2: '#3a222a', card: '#462a33', card2: '#53313c', border: '#6b4150', fg: '#fff0f0', muted: '#c5a0a0', accent: '#ff7e5f', accent2: '#feb47b', accent3: '#d94646' },
+    aurora: { name: 'Aurora', bg: '#0d1b2a', bg2: '#1b263b', card: '#243447', card2: '#2e435b', border: '#415a77', fg: '#e0e1dd', muted: '#778da9', accent: '#00f5d4', accent2: '#9b5de5', accent3: '#f15bb5' },
+    ocean: { name: 'Ocean', bg: '#0d1f2d', bg2: '#142838', card: '#1b3346', card2: '#243f54', border: '#345466', fg: '#e0f2f7', muted: '#8fa5b0', accent: '#00bcd4', accent2: '#3f88c5', accent3: '#a23b72' },
+    claude: {
+      name: 'Claude',
+      dark: { bg: '#262624', bg2: '#30302e', card: '#30302e', card2: '#3a3a37', border: '#454542', fg: '#f4f4ef', muted: '#a0a09a', accent: '#d97757', accent2: '#e89b7b', accent3: '#c26347' },
+      light: { bg: '#f9f9f7', bg2: '#ffffff', card: '#ffffff', card2: '#f0f0ec', border: '#e5e5e0', fg: '#1a1a18', muted: '#6b6b66', accent: '#d97757', accent2: '#c26347', accent3: '#d97757' }
+    },
+    ios: {
+      name: 'iOS',
+      dark: { bg: '#0b0b0b', bg2: 'rgba(30,30,30,0.5)', card: 'rgba(40,40,40,0.6)', card2: 'rgba(50,50,50,0.5)', border: 'rgba(255,255,255,0.15)', fg: '#ffffff', muted: '#bbbbbb', accent: '#0a84ff', accent2: '#409cff', accent3: '#006edc' },
+      light: { bg: '#f2f2f7', bg2: 'rgba(255,255,255,0.6)', card: 'rgba(255,255,255,0.75)', card2: 'rgba(240,240,245,0.9)', border: 'rgba(0,0,0,0.1)', fg: '#000000', muted: '#3c3c43', accent: '#0a84ff', accent2: '#006edc', accent3: '#007aff' }
+    }
+  };
+
+  const paddingLevels = {
+    1: { py: '6px', px: '8px', marg: '6px', name: 'XS (1)' },
+    2: { py: '10px', px: '14px', marg: '8px', name: 'S (2)' },
+    3: { py: '16px', px: '20px', marg: '12px', name: 'M (3)' },
+    4: { py: '24px', px: '28px', marg: '18px', name: 'L (4)' },
+    5: { py: '32px', px: '36px', marg: '24px', name: 'XL (5)' }
+  };
+
+  const fontSizes = {
+    1: { size: '13px', name: 'XS (1)' },
+    2: { size: '14px', name: 'S (2)' },
+    3: { size: '15px', name: 'M (3)' },
+    4: { size: '16px', name: 'L (4)' },
+    5: { size: '18px', name: 'XL (5)' }
+  };
+
+  const buttonSizes = {
+    1: { py: '6px', px: '12px', font: '11px', spy: '4px', spx: '8px', spfont: '10px' },
+    2: { py: '8px', px: '16px', font: '12px', spy: '6px', spx: '12px', spfont: '11px' },
+    3: { py: '12px', px: '24px', font: '13px', spy: '8px', spx: '16px', spfont: '12px' },
+    4: { py: '16px', px: '32px', font: '15px', spy: '10px', spx: '20px', spfont: '14px' },
+    5: { py: '20px', px: '40px', font: '17px', spy: '12px', spx: '24px', spfont: '16px' }
+  };
+
+  const defaultUserTheme = { 
+    mode: 'light', palette: 'claude', accent: '#d97757', fontSlider: 3, btnSlider: 2, 
+    fontFamily: "'Inter', sans-serif", animal: 'off', 
+    padding: 1 
+  };
+
+  let userTheme = JSON.parse(localStorage.getItem('pbf_theme')) || defaultUserTheme;
+  if (userTheme.hasOwnProperty('screensize')) delete userTheme.screensize;
+  if (userTheme.hasOwnProperty('logWidth')) delete userTheme.logWidth;
+  if (userTheme.hasOwnProperty('logEnabled')) delete userTheme.logEnabled;
+
+  const state = { 
+    chroma: 'normochromic', chromaGrade: '', 
+    size: 'normocytic', sizeGrade: '', 
+    ovalState: '', 
+    plateletPrimary: ['NPCS'], plateletOptional: [], plateletExtra: [], plateletSatellitism: [], 
+    earlyCellPrimary: ['NECS'], earlyCellOptional: [], 
+    abnormalFindings: [],
+    cells: { occasional: [], moderate: [], marked: [] } 
+  };
+
+  function initStateCells() { state.cells = { occasional: [], moderate: [], marked: [] }; }
+  initStateCells();
+
+  const $ = (s, p = document) => p.querySelector(s);
+  const $$ = (s, p = document) => Array.from(p.querySelectorAll(s));
+
+  function showNotification(msg, type = 'success', duration = 4000, persistent = false) {
+    const area = $('#notification-area');
+    area.querySelectorAll('.notif').forEach(n => {
+      if (n.dataset.persistent === 'true') return; 
+      if (n.dataset.timeoutId) clearTimeout(n.dataset.timeoutId);
+      const newDuration = 1500;
+      n.dataset.timeoutId = setTimeout(() => {
+        n.classList.add('notif-fade');
+        setTimeout(() => n.remove(), 3000); 
+      }, newDuration);
+    });
+
+    const div = document.createElement('div');
+    div.className = `notif notif-${type}`;
+    div.textContent = msg;
+    
+    if (persistent) {
+      div.dataset.persistent = 'true';
+      div.classList.add('notif-persistent');
+      area.prepend(div);
+    } else {
+      const persistentEl = area.querySelector('.notif-persistent');
+      if (persistentEl) {
+          persistentEl.after(div);
+      } else {
+          area.prepend(div);
+      }
+      
+      const timeoutId = setTimeout(() => {
+        div.classList.add('notif-fade');
+        setTimeout(() => div.remove(), 3000); 
+      }, duration);
+      div.dataset.timeoutId = timeoutId;
+    }
+    
+    return div; 
+  }
+
+  function showError(msg) {
+    const genBtn = $('#generate-btn');
+    const output = $('#output');
+    
+    showNotification(msg, 'error', 4000);
+    output.classList.add('blurred');
+    
+    genBtn.classList.remove('shake');
+    void genBtn.offsetWidth; 
+    genBtn.classList.add('shake');
+    
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText("").catch(() => {});
+    }
+  }
+
+  function clearError() {
+    const output = $('#output');
+    output.classList.remove('blurred');
+  }
+
+  function hslToRgb(h, s, l) {
+    let r, g, b;
+    if (s === 0) { r = g = b = l; }
+    else {
+      const hue2rgb = (p, q, t) => {
+        if (t < 0) t += 1;
+        if (t > 1) t -= 1;
+        if (t < 1 / 6) return p + (q - p) * 6 * t;
+        if (t < 1 / 2) return q;
+        if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+        return p;
+      };
+      const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+      const p = 2 * l - q;
+      r = hue2rgb(p, q, h + 1 / 3);
+      g = hue2rgb(p, q, h);
+      b = hue2rgb(p, q, h - 1 / 3);
+    }
+    return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+  }
+
+  function parseColorToRgb(str) {
+    if (!str) return [217, 119, 87];
+    str = str.trim();
+    if (str.startsWith('#')) {
+      let hex = str.replace('#', '');
+      if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+      return [parseInt(hex.substr(0, 2), 16), parseInt(hex.substr(2, 2), 16), parseInt(hex.substr(4, 2), 16)];
+    }
+    const m = str.match(/hsla?\(\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)%?\s*,\s*(\d+(?:\.\d+)?)%?/);
+    if (m) {
+      return hslToRgb(parseFloat(m[1]) / 360, parseFloat(m[2]) / 100, parseFloat(m[3]) / 100);
+    }
+    return [217, 119, 87];
+  }
+
+  function getContrastTextColor(colorStr) {
+    const [r, g, b] = parseColorToRgb(colorStr);
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    return luminance > 0.6 ? '#1a1a1a' : '#ffffff';
+  }
+
+  function applyTheme() {
+    document.documentElement.setAttribute('data-theme', userTheme.mode);
+    document.documentElement.setAttribute('data-palette', userTheme.palette || 'claude');
+    
+    const paletteName = userTheme.palette || 'claude';
+    const paletteObj = palettes[paletteName];
+    const palette = (paletteObj.dark && paletteObj.light) ? paletteObj[userTheme.mode] : (userTheme.mode === 'dark' ? paletteObj : null);
+    
+    if (palette) {
+      document.documentElement.style.setProperty('--bg', palette.bg);
+      document.documentElement.style.setProperty('--bg-2', palette.bg2);
+      document.documentElement.style.setProperty('--card', palette.card);
+      document.documentElement.style.setProperty('--card-2', palette.card2);
+      document.documentElement.style.setProperty('--border', palette.border);
+      document.documentElement.style.setProperty('--fg', palette.fg);
+      document.documentElement.style.setProperty('--muted', palette.muted);
+    } else {
+      document.documentElement.style.setProperty('--bg', '');
+      document.documentElement.style.setProperty('--bg-2', '');
+      document.documentElement.style.setProperty('--card', '');
+      document.documentElement.style.setProperty('--card-2', '');
+      document.documentElement.style.setProperty('--border', '');
+      document.documentElement.style.setProperty('--fg', '');
+      document.documentElement.style.setProperty('--muted', '');
+    }
+
+    const currentAccent = userTheme.accent || (palette ? palette.accent : '#d97757');
+    document.documentElement.style.setProperty('--accent', currentAccent);
+    document.documentElement.style.setProperty('--accent-dim', `color-mix(in srgb, ${currentAccent} 70%, black)`);
+    document.documentElement.style.setProperty('--accent-soft', `color-mix(in srgb, ${currentAccent} 15%, transparent)`);
+    document.documentElement.style.setProperty('--accent2', palette ? palette.accent2 : '');
+    document.documentElement.style.setProperty('--accent3', palette ? palette.accent3 : '');
+    document.documentElement.style.setProperty('--accent-text', getContrastTextColor(currentAccent));
+    
+    document.documentElement.style.setProperty('--font-main', userTheme.fontFamily);
+    document.documentElement.style.setProperty('--font-ui', userTheme.fontFamily);
+
+    if ($('#theme-accent-btn')) {
+      $('#theme-accent-btn').style.backgroundColor = currentAccent;
+    }
+    if ($('#theme-palette')) $('#theme-palette').value = userTheme.palette || 'claude';
+    if ($('#theme-fontfamily')) $('#theme-fontfamily').value = userTheme.fontFamily;
+    if ($('#theme-animal')) $('#theme-animal').value = userTheme.animal;
+    
+    if ($('#theme-fontsize')) $('#theme-fontsize').value = userTheme.fontSlider || 3;
+    if ($('#fontsize-label')) $('#fontsize-label').textContent = fontSizes[userTheme.fontSlider || 3].name;
+    
+    if ($('#theme-btnsize')) $('#theme-btnsize').value = userTheme.btnSlider || 2;
+    if ($('#btnsize-label')) $('#btnsize-label').textContent = `Size ${userTheme.btnSlider || 2}`;
+    
+    if ($('#theme-padding')) $('#theme-padding').value = userTheme.padding || 1;
+    if ($('#padding-value-label')) $('#padding-value-label').textContent = paddingLevels[userTheme.padding || 1].name;
+    
+    autofitUI();
+    PixelScene.onThemeChange();
+  }
+
+  function autofitUI() {
+    const baseFsVal = userTheme.fontSlider || 3;
+    let baseSize = parseInt(fontSizes[baseFsVal].size);
+    document.documentElement.style.setProperty('--base-font', baseSize + 'px');
+
+    const padLevel = paddingLevels[userTheme.padding || 1];
+    document.documentElement.style.setProperty('--card-pad-y', padLevel.py);
+    document.documentElement.style.setProperty('--card-pad-x', padLevel.px);
+    document.documentElement.style.setProperty('--card-marg', padLevel.marg);
+
+    const bsVal = userTheme.btnSlider || 2;
+    const bsData = buttonSizes[bsVal];
+    document.documentElement.style.setProperty('--btn-py', bsData.py); 
+    document.documentElement.style.setProperty('--btn-px', bsData.px); 
+    document.documentElement.style.setProperty('--btn-font', bsData.font);
+    document.documentElement.style.setProperty('--seg-py', bsData.spy); 
+    document.documentElement.style.setProperty('--seg-px', bsData.spx); 
+    document.documentElement.style.setProperty('--seg-font', bsData.spfont);
+
+    if ($('#preview-text')) {
+      $('#preview-text').style.fontSize = baseSize + 'px';
+      $('#preview-text').style.fontFamily = userTheme.fontFamily;
+    }
+    if ($('#preview-btn')) {
+      $('#preview-btn').style.fontSize = bsData.font + 'px';
+      $('#preview-btn').style.padding = `${bsData.py}px ${bsData.px}px`;
+    }
+  }
+
+  function renderMatrix() {
+    const matrix = $('#cell-matrix');
+    matrix.innerHTML = '';
+    ['occasional', 'moderate', 'marked'].forEach(sev => {
+      const row = document.createElement('div');
+      row.className = 'cell-row';
+      row.dataset.severity = sev;
+      const label = document.createElement('div');
+      label.className = 'severity-label';
+      label.textContent = sev.charAt(0).toUpperCase() + sev.slice(1);
+      row.appendChild(label);
+
+      const btnsContainer = document.createElement('div');
+      btnsContainer.className = 'cell-btns';
+
+      Object.keys(cellTypes).forEach(ct => {
+        const check = document.createElement('label');
+        check.className = 'check';
+        check.dataset.severity = sev;
+        check.dataset.cell = ct;
+        check.textContent = cellTypes[ct].substring(0, 3);
+        check.title = ct; 
+        if (state.cells[sev].includes(ct)) check.classList.add('active');
+        
+        check.addEventListener('click', e => {
+          e.preventDefault();
+          clearError();
+          const isActive = check.classList.contains('active');
+          
+          ['occasional', 'moderate', 'marked'].forEach(s => {
+            state.cells[s] = state.cells[s].filter(x => x !== ct);
+            const otherCheck = document.querySelector(`#cell-matrix .check[data-cell="${ct}"][data-severity="${s}"]`);
+            if (otherCheck) otherCheck.classList.remove('active');
+          });
+          
+          if (!isActive) {
+            state.cells[sev].push(ct);
+            check.classList.add('active');
+          }
+          updatePreview();
+        });
+        btnsContainer.appendChild(check);
+      });
+      row.appendChild(btnsContainer);
+      matrix.appendChild(row);
+    });
+  }
+
+  function renderDynamicSections() {
+    const noClumpsSlider = $('#platelet-no-clumps-slider');
+    const clumpsSlider = $('#platelet-clumps-slider');
+    const satSlider = $('#platelet-satellitism-slider');
+    
+    noClumpsSlider.querySelectorAll('.slider-btn').forEach(b => b.remove());
+    clumpsSlider.querySelectorAll('.slider-btn').forEach(b => b.remove());
+    satSlider.querySelectorAll('.slider-btn').forEach(b => b.remove());
+    
+    const noClumpsKeys = ["NPCS", "MITHRO", "MOTHRO", "SETHRO"];
+    const clumpsKeys = ["CLD", "CLN", "CLI"];
+    
+    Object.entries(appConfig.platelets.primary.codes).forEach(([key, text]) => {
+      const btn = document.createElement('button');
+      btn.className = 'slider-btn';
+      btn.dataset.value = key;
+      btn.textContent = key;
+      btn.title = text; 
+      
+      if (noClumpsKeys.includes(key)) noClumpsSlider.appendChild(btn);
+      else if (clumpsKeys.includes(key)) clumpsSlider.appendChild(btn);
+      else noClumpsSlider.appendChild(btn);
+      
+      if (state.plateletPrimary.includes(key)) btn.classList.add('active');
+    });
+
+    Object.entries(appConfig.platelets.satellitism.codes).forEach(([key, text]) => {
+      const btn = document.createElement('button');
+      btn.className = 'slider-btn';
+      btn.dataset.value = key;
+      btn.textContent = key;
+      btn.title = text; 
+      if (state.plateletSatellitism.includes(key)) btn.classList.add('active');
+      satSlider.appendChild(btn);
+    });
+    
+    const updateIndicator = (slider) => {
+      const activeBtn = $('.slider-btn.active', slider);
+      const indicator = $('.slider-indicator', slider);
+      if (activeBtn) {
+        indicator.style.opacity = '1';
+        indicator.style.width = `${activeBtn.offsetWidth}px`;
+        indicator.style.transform = `translateX(${activeBtn.offsetLeft - 3}px)`;
+      } else {
+        indicator.style.opacity = '0';
+      }
+    };
+    
+    noClumpsSlider._updateIndicator = () => updateIndicator(noClumpsSlider);
+    clumpsSlider._updateIndicator = () => updateIndicator(clumpsSlider);
+    satSlider._updateIndicator = () => updateIndicator(satSlider);
+    
+    const platPrimHandler = (e) => {
+      const btn = e.target.closest('.slider-btn');
+      if (!btn) return;
+      clearError();
+      
+      const val = btn.dataset.value;
+      const wasActive = btn.classList.contains('active');
+      
+      noClumpsSlider.querySelectorAll('.slider-btn').forEach(b => b.classList.remove('active'));
+      clumpsSlider.querySelectorAll('.slider-btn').forEach(b => b.classList.remove('active'));
+      satSlider.querySelectorAll('.slider-btn').forEach(b => b.classList.remove('active'));
+      
+      if (!wasActive) {
+        btn.classList.add('active');
+        state.plateletPrimary = [val];
+        state.plateletSatellitism = [];
+      } else {
+        btn.classList.add('active'); 
+      }
+      
+      noClumpsSlider._updateIndicator();
+      clumpsSlider._updateIndicator();
+      satSlider._updateIndicator();
+      updatePreview();
+    };
+    
+    noClumpsSlider.onclick = platPrimHandler;
+    clumpsSlider.onclick = platPrimHandler;
+
+    satSlider.onclick = (e) => {
+      const btn = e.target.closest('.slider-btn');
+      if (!btn) return;
+      clearError();
+      const val = btn.dataset.value;
+      const wasActive = btn.classList.contains('active');
+      
+      noClumpsSlider.querySelectorAll('.slider-btn').forEach(b => b.classList.remove('active'));
+      clumpsSlider.querySelectorAll('.slider-btn').forEach(b => b.classList.remove('active'));
+      satSlider.querySelectorAll('.slider-btn').forEach(b => b.classList.remove('active'));
+      
+      if (!wasActive) {
+        btn.classList.add('active');
+        state.plateletSatellitism = [val];
+        state.plateletPrimary = [];
+      } else {
+        state.plateletSatellitism = [];
+      }
+      noClumpsSlider._updateIndicator();
+      clumpsSlider._updateIndicator();
+      satSlider._updateIndicator();
+      updatePreview();
+    };
+    
+    setTimeout(() => {
+      noClumpsSlider._updateIndicator();
+      clumpsSlider._updateIndicator();
+      satSlider._updateIndicator();
+    }, 50);
+
+    const platOpt = $('#platelet-optional-group');
+    platOpt.innerHTML = '';
+    Object.entries(appConfig.platelets.optional.codes).forEach(([key, text]) => {
+      const btn = document.createElement('button');
+      btn.className = 'seg opt-btn';
+      btn.dataset.value = key;
+      btn.textContent = key;
+      btn.title = text; 
+      if (state.plateletOptional.includes(key)) btn.classList.add('active');
+      platOpt.appendChild(btn);
+    });
+    platOpt.onclick = (e) => {
+      const btn = e.target.closest('.seg'); if (!btn) return;
+      clearError();
+      const val = btn.dataset.value;
+      if (state.plateletOptional.includes(val)) {
+        state.plateletOptional = state.plateletOptional.filter(x => x !== val);
+        btn.classList.remove('active');
+      } else {
+        state.plateletOptional = [...state.plateletOptional, val];
+        btn.classList.add('active');
+        if (val === 'MOGPS') openModal('mogps-modal');
+      }
+      updatePreview();
+    };
+
+    const platExtra = $('#platelet-extra-group');
+    platExtra.innerHTML = '';
+    Object.entries(appConfig.platelets.extra.codes).forEach(([key, text]) => {
+      const btn = document.createElement('button');
+      btn.className = 'seg opt-btn';
+      btn.dataset.value = key;
+      btn.textContent = key;
+      btn.title = text; 
+      if (state.plateletExtra.includes(key)) btn.classList.add('active');
+      platExtra.appendChild(btn);
+    });
+    platExtra.onclick = (e) => {
+      const btn = e.target.closest('.seg'); if (!btn) return;
+      clearError();
+      const val = btn.dataset.value;
+      if (state.plateletExtra.includes(val)) {
+        state.plateletExtra = state.plateletExtra.filter(x => x !== val);
+        btn.classList.remove('active');
+      } else {
+        state.plateletExtra = [...state.plateletExtra, val];
+        btn.classList.add('active');
+      }
+      updatePreview();
+    };
+
+    const earlyPrimSlider = $('#early-primary-slider');
+    earlyPrimSlider.querySelectorAll('.slider-btn').forEach(b => b.remove());
+    
+    Object.entries(appConfig.earlyCells.primary.codes).forEach(([key, text]) => {
+      const btn = document.createElement('button');
+      btn.className = 'slider-btn';
+      btn.dataset.value = key;
+      btn.textContent = key;
+      btn.title = text; 
+      if (state.earlyCellPrimary.includes(key)) btn.classList.add('active');
+      earlyPrimSlider.appendChild(btn);
+    });
+
+    const earlyPrimHandler = (e) => {
+      const btn = e.target.closest('.slider-btn');
+      if (!btn) return;
+      clearError();
+      
+      const val = btn.dataset.value;
+      const wasActive = btn.classList.contains('active');
+      
+      earlyPrimSlider.querySelectorAll('.slider-btn').forEach(b => b.classList.remove('active'));
+      
+      if (!wasActive) {
+        btn.classList.add('active');
+        state.earlyCellPrimary = [val];
+      } else {
+        btn.classList.add('active'); 
+      }
+      earlyPrimSlider._updateIndicator();
+      updatePreview();
+    };
+    
+    earlyPrimSlider.onclick = earlyPrimHandler;
+    earlyPrimSlider._updateIndicator = () => updateIndicator(earlyPrimSlider);
+    setTimeout(() => earlyPrimSlider._updateIndicator(), 50);
+
+    const earlyOpt = $('#early-optional-group');
+    earlyOpt.innerHTML = '';
+    Object.entries(appConfig.earlyCells.optional.codes).forEach(([key, text]) => {
+      const btn = document.createElement('button');
+      btn.className = 'seg opt-btn';
+      btn.dataset.value = key;
+      btn.textContent = key;
+      btn.title = text; 
+      if (state.earlyCellOptional.includes(key)) btn.classList.add('active');
+      earlyOpt.appendChild(btn);
+    });
+    earlyOpt.onclick = (e) => {
+      const btn = e.target.closest('.seg'); if (!btn) return;
+      clearError();
+      const val = btn.dataset.value;
+      if (state.earlyCellOptional.includes(val)) {
+        state.earlyCellOptional = state.earlyCellOptional.filter(x => x !== val);
+        btn.classList.remove('active');
+      } else {
+        state.earlyCellOptional = [...state.earlyCellOptional, val];
+        btn.classList.add('active');
+      }
+      updatePreview();
+    };
+
+    const abnormalGroup = $('#abnormal-group');
+    abnormalGroup.innerHTML = '';
+    Object.entries(appConfig.abnormalFindings.codes).forEach(([key, text]) => {
+      const btn = document.createElement('button');
+      btn.className = 'seg opt-btn';
+      btn.dataset.value = key;
+      btn.textContent = key;
+      btn.title = text; 
+      if (state.abnormalFindings.includes(key)) btn.classList.add('active');
+      abnormalGroup.appendChild(btn);
+    });
+    abnormalGroup.onclick = (e) => {
+      const btn = e.target.closest('.seg'); if (!btn) return;
+      clearError();
+      const val = btn.dataset.value;
+      if (state.abnormalFindings.includes(val)) {
+        state.abnormalFindings = state.abnormalFindings.filter(x => x !== val);
+        btn.classList.remove('active');
+      } else {
+        state.abnormalFindings = [...state.abnormalFindings, val];
+        btn.classList.add('active');
+      }
+      updatePreview();
+    };
+  }
+
+  function setupSliderGroup(groupId, stateKey, allowEmpty = true, callback = null) {
+    const group = $('#' + groupId);
+    const btns = $$('.slider-btn', group);
+    const indicator = $('.slider-indicator', group);
+    
+    if (state[stateKey] === '') {
+      btns.forEach(b => b.classList.remove('active'));
+    }
+    
+    const updateIndicator = () => {
+      const activeBtn = $('.slider-btn.active', group);
+      if (activeBtn) {
+        indicator.style.opacity = '1';
+        indicator.style.width = `${activeBtn.offsetWidth}px`;
+        indicator.style.transform = `translateX(${activeBtn.offsetLeft - 3}px)`;
+      } else {
+        indicator.style.opacity = '0';
+      }
+    };
+    
+    group.addEventListener('click', e => {
+      const btn = e.target.closest('.slider-btn'); 
+      if (!btn) return;
+      clearError();
+      
+      const wasActive = btn.classList.contains('active');
+      btns.forEach(b => b.classList.remove('active'));
+      
+      if (wasActive) {
+        if (allowEmpty) {
+          state[stateKey] = '';
+        } else {
+          btn.classList.add('active'); 
+        }
+      } else {
+        btn.classList.add('active');
+        state[stateKey] = btn.dataset.value;
+      }
+      updateIndicator();
+      if (callback) callback();
+      updatePreview();
+    });
+    
+    setTimeout(updateIndicator, 50);
+    window.addEventListener('resize', updateIndicator);
+    
+    group._updateIndicator = updateIndicator;
+  }
+  
+  function clearOvalIfActive() {
+    if (state.ovalState === 'oval') {
+      state.ovalState = '';
+      const ovalGroup = $('#oval-toggle');
+      if (ovalGroup) {
+        $$('.slider-btn', ovalGroup).forEach(b => b.classList.remove('active'));
+        if (ovalGroup._updateIndicator) ovalGroup._updateIndicator();
+      }
+    }
+  }
+
+  setupSliderGroup('chroma-grade', 'chromaGrade', true, clearOvalIfActive);
+  setupSliderGroup('size-grade', 'sizeGrade', true, clearOvalIfActive);
+  
+  setupSliderGroup('chroma-type', 'chroma', false, () => {
+    clearOvalIfActive();
+    if (state.chroma === 'normochromic') {
+      state.chromaGrade = '';
+      const chromaSlider = $('#chroma-grade');
+      $$('.slider-btn', chromaSlider).forEach(b => b.classList.remove('active'));
+      if (chromaSlider._updateIndicator) chromaSlider._updateIndicator();
+    }
+  });
+  
+  setupSliderGroup('size-type', 'size', false, () => {
+    clearOvalIfActive();
+    if (state.size === 'normocytic') {
+      state.sizeGrade = '';
+      const sizeSlider = $('#size-grade');
+      $$('.slider-btn', sizeSlider).forEach(b => b.classList.remove('active'));
+      if (sizeSlider._updateIndicator) sizeSlider._updateIndicator();
+    }
+  });
+
+  setupSliderGroup('oval-toggle', 'ovalState', true, () => {
+    if (state.ovalState === 'oval') {
+      // OVAL selected: deselect everything else in the Red Cell card
+      state.chroma = ''; state.chromaGrade = '';
+      state.size = ''; state.sizeGrade = '';
+      ['chroma-grade', 'chroma-type', 'size-grade', 'size-type'].forEach(id => {
+        const el = $('#' + id);
+        $$('.slider-btn', el).forEach(b => b.classList.remove('active'));
+        if (el._updateIndicator) el._updateIndicator();
+      });
+    } else {
+      // OVAL deselected via its own button: restore normal defaults
+      state.chroma = 'normochromic'; state.chromaGrade = '';
+      state.size = 'normocytic'; state.sizeGrade = '';
+      const chromaType = $('#chroma-type');
+      $$('.slider-btn', chromaType).forEach(b => b.classList.toggle('active', b.dataset.value === 'normochromic'));
+      if (chromaType._updateIndicator) chromaType._updateIndicator();
+      const sizeType = $('#size-type');
+      $$('.slider-btn', sizeType).forEach(b => b.classList.toggle('active', b.dataset.value === 'normocytic'));
+      if (sizeType._updateIndicator) sizeType._updateIndicator();
+    }
+  });
+
+  let isEditMode = false;
+  let persistentNotif = null;
+
+  $('#edit-mode-checkbox').addEventListener('change', (e) => {
+    const output = $('#output');
+    const btn = $('#edit-toggle-btn');
+    isEditMode = e.target.checked;
+    output.readOnly = !isEditMode;
+    
+    if (isEditMode) {
+      btn.classList.add('active');
+      const existing = $('#notification-area .notif-persistent');
+      if (existing) existing.remove();
+      
+      persistentNotif = showNotification('Manual editing enabled. Auto-copy is disabled.', 'success', 0, true);
+      autoFitOutput();
+    } else {
+      btn.classList.remove('active');
+      if (persistentNotif) {
+        persistentNotif.remove();
+        persistentNotif = null;
+      }
+      showNotification('Manual editing disabled.', 'success', 2000);
+    }
+  });
+
+  $('#output').addEventListener('input', () => {
+    if (isEditMode) autoFitOutput();
+  });
+
+  $('#copy-output-btn').addEventListener('click', () => {
+    const text = $('#output').value;
+    if (!text) {
+      showNotification('Nothing to copy.', 'error', 2000);
+      return;
+    }
+    copyToClipboard(text);
+    showNotification('Comment copied to clipboard.', 'success', 2000);
+  });
+
+  function getCommentText() {
+    let chromaStr = state.chroma;
+    if (state.chromaGrade) chromaStr = `${state.chromaGrade} ${state.chroma}`;
+    let sizeStr = state.size;
+    if (state.sizeGrade) sizeStr = `${state.sizeGrade} ${state.size}`;
+    
+    const sizeGradeAdjectives = { slightly: 'slight', moderately: 'moderate', markedly: 'marked' };
+    const isGradedAniso = state.size === 'anisocytotic' && !!state.sizeGrade;
+    const anisoPhrase = isGradedAniso ? `with ${sizeGradeAdjectives[state.sizeGrade] || state.sizeGrade} anisocytosis` : null;
+
+    let redCellComment = '';
+    if (state.ovalState === 'oval') {
+      redCellComment = 'Majority of red blood cells show ovalocytosis.';
+    } else if (state.chroma === 'normochromic' && state.size === 'normocytic') {
+      redCellComment = 'Majority of red blood cells are normochromic and normocytic.';
+    } else if (state.chroma === 'normochromic') {
+      redCellComment = isGradedAniso ? `Majority of red blood cells are normochromic but ${anisoPhrase}.` : `Majority of red blood cells are normochromic but ${sizeStr}.`;
+    } else if (state.size === 'normocytic') {
+      redCellComment = `Majority of red blood cells are ${chromaStr} but normocytic.`;
+    } else {
+      redCellComment = isGradedAniso ? `Majority of red blood cells are ${chromaStr} ${anisoPhrase}.` : `Majority of red blood cells are ${chromaStr} and ${sizeStr}.`;
+    }
+
+    let cellTypeComment = '';
+    ['occasional', 'moderate', 'marked'].forEach(severity => {
+      const selected = state.cells[severity];
+      if (selected.length > 0) {
+        let list;
+        if (selected.length === 2) list = selected[0] + ' and ' + selected[1];
+        else if (selected.length > 2) list = selected.slice(0, -1).join(', ') + ', and ' + selected[selected.length - 1];
+        else list = selected[0];
+        cellTypeComment += `${severity.charAt(0).toUpperCase() + severity.slice(1)} ${list} seen. `;
+      }
+    });
+
+    let plateletComment = [
+      ...state.plateletPrimary.map(k => appConfig.platelets.primary.codes[k] || ''),
+      ...state.plateletOptional.map(k => appConfig.platelets.optional.codes[k] || ''),
+      ...state.plateletExtra.map(k => appConfig.platelets.extra.codes[k] || ''),
+      ...state.plateletSatellitism.map(k => appConfig.platelets.satellitism.codes[k] || '')
+    ].filter(c => c).join(' ');
+    
+    let earlyCellComment = [
+      ...state.earlyCellPrimary.map(k => appConfig.earlyCells.primary.codes[k] || ''),
+      ...state.earlyCellOptional.map(k => appConfig.earlyCells.optional.codes[k] || '')
+    ].filter(c => c).join(' ');
+
+    let abnormalComment = [
+      ...state.abnormalFindings.map(k => appConfig.abnormalFindings.codes[k] || '')
+    ].filter(c => c).join(' ');
+
+    let final = `${redCellComment} ${cellTypeComment.trim()} ${plateletComment} ${earlyCellComment} ${abnormalComment}`.trim();
+    final = final.replace(/\s+/g, ' ');
+    return final;
+  }
+
+  function updatePreview() {
+    if (isEditMode) {
+      $('#preview-overlay').classList.remove('active');
+      $('#output').classList.remove('has-preview');
+      autoFitOutput();
+      return;
+    }
+    
+    const previewText = getCommentText();
+    const overlay = $('#preview-overlay');
+    const output = $('#output');
+    
+    if (previewText && previewText !== output.value) {
+      overlay.textContent = previewText;
+      overlay.classList.add('active');
+      output.classList.add('has-preview');
+    } else {
+      overlay.textContent = '';
+      overlay.classList.remove('active');
+      output.classList.remove('has-preview');
+    }
+    autoFitOutput();
+  }
+
+  function generateComment() {
+    clearError();
+    const chroma = state.chroma;
+    const chromaGrade = state.chromaGrade;
+    const size = state.size;
+    const sizeGrade = state.sizeGrade;
+
+    if (state.ovalState !== 'oval') {
+      if (chromaGrade && chroma === 'normochromic') {
+        showError('Chroma grade is selected, but Chroma type is Normo. Please select Hypo or deselect the grade.');
+        return;
+      }
+      if (chroma === 'hypochromic' && !chromaGrade) {
+        showError('Please select a chroma grading (Slightly/Moderately/Markedly) for Hypochromic.');
+        return;
+      }
+      if (sizeGrade && size === 'normocytic') {
+        showError('Size grade is selected, but Size type is Normo. Please select Micro/Macro/Aniso or deselect the grade.');
+        return;
+      }
+      if (size !== 'normocytic' && !sizeGrade) {
+        showError('Please select a size grading (Slightly/Moderately/Markedly) for Micro/Macro/Aniso.');
+        return;
+      }
+    }
+
+    const final = getCommentText();
+    const output = $('#output');
+
+    if (isEditMode && output.value.trim() !== '' && output.value !== final) {
+      const confirmed = confirm('You have manual edits in the comment box. Generating now will overwrite them. Continue?');
+      if (!confirmed) {
+        showNotification('Generate cancelled to preserve your manual edits.', 'success', 2500);
+        return;
+      }
+    }
+
+    output.value = final;
+    autoFitOutput();
+    updatePreview();
+    
+    if (!isEditMode) {
+      copyToClipboard(final);
+      saveHistory(final);
+      showNotification('Comment generated and copied successfully.', 'success', 3000);
+    } else {
+      showNotification('Comment generated. Edit mode is active.', 'success', 3000);
+    }
+  }
+
+  function autoFitOutput() {
+    const ta = $('#output');
+    const overlay = $('#preview-overlay');
+    const originalText = ta.value;
+    
+    ta.style.height = 'auto';
+    
+    if (overlay.classList.contains('active')) {
+      ta.value = overlay.textContent;
+    }
+    
+    ta.style.height = Math.max(52, ta.scrollHeight + 2) + 'px';
+    
+    ta.value = originalText;
+  }
+
+  function copyToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+    else fallbackCopy(text);
+  }
+  function fallbackCopy(text) {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+
+  function getHistory() {
+    try {
+      const raw = JSON.parse(localStorage.getItem('pbf_history') || '[]');
+      return raw.map(item => {
+        if (typeof item === 'string') return { text: item, time: 'Previous session' };
+        if (item && typeof item.text === 'string') return item;
+        return null;
+      }).filter(Boolean);
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveHistory(comment) {
+    if (!comment || typeof comment !== 'string') return;
+    let history = getHistory();
+    history = history.filter(c => c.text !== comment);
+    const now = new Date();
+    const timeStr = now.toLocaleDateString([], { year: 'numeric', month: 'short', day: 'numeric' }) + ' ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    history.unshift({ text: comment, time: timeStr });
+    if (history.length > 10) history.pop();
+    localStorage.setItem('pbf_history', JSON.stringify(history));
+  }
+
+  function renderHistory() {
+    const history = getHistory();
+    const content = $('#history-content');
+    const clearBtn = $('#clear-history-btn');
+    
+    if (clearBtn) {
+      clearBtn.onclick = () => {
+        if (confirm('Are you sure you want to clear all history?')) {
+          localStorage.removeItem('pbf_history');
+          renderHistory();
+          showNotification('History cleared.', 'success', 2000);
+        }
+      };
+    }
+    
+    if (history.length === 0) {
+      content.innerHTML = '<p style="text-align: center; color: var(--muted); font-family: var(--font-ui); padding: 20px;">No history yet. Generate a comment to see it here.</p>';
+      return;
+    }
+    
+    content.innerHTML = '';
+    history.forEach((entry, index) => {
+      const item = document.createElement('div');
+      item.className = 'history-item';
+      item.dataset.index = index;
+      
+      const timeDiv = document.createElement('div');
+      timeDiv.className = 'history-time';
+      timeDiv.textContent = entry.time;
+      
+      const textDiv = document.createElement('div');
+      textDiv.className = 'history-text';
+      textDiv.textContent = entry.text;
+      
+      item.appendChild(timeDiv);
+      item.appendChild(textDiv);
+      
+      item.onclick = () => {
+        const text = entry.text;
+        const originalHTML = textDiv.innerHTML;
+        
+        textDiv.innerHTML = '✓ Copied!';
+        item.classList.add('secret-copied');
+        
+        $('#output').value = text;
+        autoFitOutput();
+        updatePreview();
+        copyToClipboard(text);
+        
+        setTimeout(() => {
+          textDiv.innerHTML = originalHTML;
+          item.classList.remove('secret-copied');
+          closeModal('history-modal');
+        }, 600);
+      };
+      
+      content.appendChild(item);
+    });
+  }
+
+  function resetSection(section) {
+    clearError();
+    if (section === 'red') {
+      state.chroma = 'normochromic'; state.chromaGrade = '';
+      state.size = 'normocytic'; state.sizeGrade = '';
+      state.ovalState = '';
+      
+      const ovalGroup = $('#oval-toggle');
+      if (ovalGroup) {
+        $$('.slider-btn', ovalGroup).forEach(b => b.classList.remove('active'));
+        if (ovalGroup._updateIndicator) ovalGroup._updateIndicator();
+      }
+
+      const chromaGrade = $('#chroma-grade');
+      $$('.slider-btn', chromaGrade).forEach(b => b.classList.remove('active'));
+      if (chromaGrade._updateIndicator) chromaGrade._updateIndicator();
+
+      const chromaType = $('#chroma-type');
+      $$('.slider-btn', chromaType).forEach(b => b.classList.toggle('active', b.dataset.value === 'normochromic'));
+      if (chromaType._updateIndicator) chromaType._updateIndicator();
+
+      const sizeGrade = $('#size-grade');
+      $$('.slider-btn', sizeGrade).forEach(b => b.classList.remove('active'));
+      if (sizeGrade._updateIndicator) sizeGrade._updateIndicator();
+
+      const sizeType = $('#size-type');
+      $$('.slider-btn', sizeType).forEach(b => b.classList.toggle('active', b.dataset.value === 'normocytic'));
+      if (sizeType._updateIndicator) sizeType._updateIndicator();
+    } 
+    else if (section === 'cells') { 
+      initStateCells(); 
+      $$('#cell-matrix .check').forEach(c => c.classList.remove('active')); 
+    } 
+    else if (section === 'platelet') { 
+      const firstKey = Object.keys(appConfig.platelets.primary.codes)[0] || '';
+      state.plateletPrimary = firstKey ? [firstKey] : []; 
+      state.plateletOptional = [];
+      state.plateletExtra = [];
+      state.plateletSatellitism = [];
+      renderDynamicSections(); 
+    } 
+    else if (section === 'early') { 
+      const firstKey = Object.keys(appConfig.earlyCells.primary.codes)[0] || '';
+      state.earlyCellPrimary = firstKey ? [firstKey] : []; 
+      state.earlyCellOptional = []; 
+      renderDynamicSections(); 
+    }
+    else if (section === 'abnormal') { 
+      state.abnormalFindings = []; 
+      renderDynamicSections(); 
+    }
+    updatePreview();
+  }
+
+  let backspaceTimeout = null;
+  let isBackspaceArmed = false;
+
+  function resetAllFields() {
+    resetSection('red'); resetSection('cells'); resetSection('platelet'); resetSection('early'); resetSection('abnormal');
+    $('#output').value = ''; autoFitOutput();
+    updatePreview();
+    showNotification('All fields reset.', 'success', 3000);
+    
+    isBackspaceArmed = false;
+    clearTimeout(backspaceTimeout);
+    $('#reset-all-btn').classList.remove('armed');
+  }
+
+  function openModal(id) { $('#' + id).classList.add('active'); }
+  function closeModal(id) { $('#' + id).classList.remove('active'); }
+
+  const secretCodes = {
+    "NN": "Majority of red blood cells are normochromic and normocytic. No platelet clumps seen. No early cells seen.",
+    "MITHRO": "Mild thrombocytopenia with no platelet clumps seen.",
+    "MOTHRO": "Moderate thrombocytopenia with no platelet clumps seen.",
+    "SETHRO": "Severe thrombocytopenia with no platelet clumps seen."
+  };
+
+  const bloodCodes = {
+    "A": "4\t0\t4\t4\tNA\t0\t4\t0",
+    "B": "0\t4\t4\t4\tNA\t4\t0\t0",
+    "O": "0\t0\t0\t4\tNA\t4\t4\t0",
+    "AB": "4\t4\t4\t4\t0\t0\t0\t0"
+  };
+
+  function buildSecretMenu() {
+    const mainGrid = $('#secret-main-grid');
+    mainGrid.innerHTML = '';
+    Object.entries(secretCodes).forEach(([key, text]) => {
+      const btn = document.createElement('button');
+      btn.className = 'btn btn-secondary';
+      btn.textContent = key;
+      btn.onclick = () => {
+        copyToClipboard(text);
+        btn.classList.add('secret-copied');
+        btn.textContent = '✓';
+        setTimeout(() => {
+          btn.classList.remove('secret-copied');
+          btn.textContent = key;
+          closeModal('secret-menu');
+        }, 600);
+      };
+      mainGrid.appendChild(btn);
+    });
+
+    const bloodGrid = $('#secret-blood-grid');
+    bloodGrid.innerHTML = '';
+    Object.entries(bloodCodes).forEach(([key, text]) => {
+      const btn = document.createElement('button');
+      btn.className = 'btn btn-secondary';
+      btn.textContent = key;
+      btn.onclick = () => {
+        copyToClipboard(text);
+        btn.classList.add('secret-copied');
+        btn.textContent = '✓';
+        setTimeout(() => {
+          btn.classList.remove('secret-copied');
+          btn.textContent = key;
+          closeModal('secret-menu');
+        }, 600);
+      };
+      bloodGrid.appendChild(btn);
+    });
+  }
+
+  let cpH = 0, cpS = 0, cpB = 0, cpA = 100;
+
+  function hexToHsl(hex) {
+    let r = parseInt(hex.slice(1, 3), 16) / 255;
+    let g = parseInt(hex.slice(3, 5), 16) / 255;
+    let b = parseInt(hex.slice(5, 7), 16) / 255;
+    let max = Math.max(r, g, b), min = Math.min(r, g, b);
+    let h, s, l = (max + min) / 2;
+    if (max === min) { h = s = 0; } 
+    else {
+      let d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      switch (max) {
+        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+        case g: h = (b - r) / d + 2; break;
+        case b: h = (r - g) / d + 4; break;
+      }
+      h /= 6;
+    }
+    return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+  }
+
+  function initColorPicker() {
+    const dropdown = $('#color-dropdown');
+    const standardGrid = $('#cp-standard');
+    const gradientsContainer = $('#cp-gradients');
+
+    const standardColors = ['#d97757', '#e06c6c', '#f59e0b', '#10b981', '#0a84ff', '#a855f7', '#ffffff', '#000000', '#5a6b62', '#218c48'];
+    standardColors.forEach(color => {
+      const sw = document.createElement('div');
+      sw.className = 'cp-swatch';
+      sw.style.backgroundColor = color;
+      sw.dataset.color = color;
+      standardGrid.appendChild(sw);
+    });
+
+    const gradientHues = [
+      { h: 0, name: 'Red' }, { h: 25, name: 'Orange' }, { h: 45, name: 'Yellow' },
+      { h: 130, name: 'Green' }, { h: 210, name: 'Blue' }, { h: 280, name: 'Purple' },
+      { h: null, name: 'Gray' }
+    ];
+    
+    gradientHues.forEach(item => {
+      const row = document.createElement('div');
+      row.className = 'cp-gradient-row';
+      for (let i = 0; i < 10; i++) {
+        const l = 90 - (i * 7); 
+        const sw = document.createElement('div');
+        sw.className = 'cp-swatch';
+        if (item.h === null) {
+          sw.style.backgroundColor = `hsl(0, 0%, ${l}%)`;
+          sw.dataset.color = `hsl(0, 0%, ${l}%)`;
+        } else {
+          sw.style.backgroundColor = `hsl(${item.h}, 80%, ${l}%)`;
+          sw.dataset.color = `hsl(${item.h}, 80%, ${l}%)`;
+        }
+        row.appendChild(sw);
+      }
+      gradientsContainer.appendChild(row);
+    });
+
+    document.querySelectorAll('.cp-swatch').forEach(sw => {
+      sw.onclick = () => {
+        let color = sw.dataset.color;
+        let hsl;
+        if (color.startsWith('hsl')) {
+          let m = color.match(/hsl\((\d+),\s*(\d+)%?,\s*(\d+)%?\)/);
+          if (m) {
+            cpH = parseInt(m[1]); cpS = parseInt(m[2]); cpB = parseInt(m[3]); cpA = 100;
+          }
+        } else {
+          hsl = hexToHsl(color);
+          cpH = hsl.h; cpS = hsl.s; cpB = hsl.l; cpA = 100;
+        }
+        updatePickerSliders();
+        applyPickerColor();
+        dropdown.style.display = 'none';
+      };
+    });
+
+    $('#cp-hue').oninput = (e) => { cpH = parseInt(e.target.value); updatePickerSliders(); applyPickerColor(); };
+    $('#cp-sat').oninput = (e) => { cpS = parseInt(e.target.value); updatePickerSliders(); applyPickerColor(); };
+    $('#cp-bri').oninput = (e) => { cpB = parseInt(e.target.value); updatePickerSliders(); applyPickerColor(); };
+    $('#cp-opa').oninput = (e) => { cpA = parseInt(e.target.value); updatePickerSliders(); applyPickerColor(); };
+
+    initPickerState();
+
+    $('#theme-accent-btn').onclick = (e) => {
+      e.stopPropagation();
+      dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+      if (dropdown.style.display === 'flex') {
+        initPickerState();
+        updatePickerSliders();
+      }
+    };
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.color-picker-container')) {
+        dropdown.style.display = 'none';
+      }
+    });
+  }
+
+  function initPickerState() {
+    let currentAccent = userTheme.accent || '#d97757';
+    if (currentAccent.startsWith('hsla')) {
+      let m = currentAccent.match(/hsla\((\d+),\s*(\d+)%?,\s*(\d+)%?,\s*([\d.]+)\)/);
+      if (m) {
+        cpH = parseInt(m[1]); cpS = parseInt(m[2]); cpB = parseInt(m[3]); cpA = Math.round(parseFloat(m[4]) * 100);
+        return;
+      }
+    }
+    let h = hexToHsl(currentAccent);
+    cpH = h.h; cpS = h.s; cpB = h.l; cpA = 100;
+  }
+
+  function updatePickerSliders() {
+    $('#cp-hue').value = cpH;
+    $('#cp-sat').value = cpS;
+    $('#cp-bri').value = cpB;
+    $('#cp-opa').value = cpA;
+    $('#cp-sat').style.background = `linear-gradient(to right, hsl(${cpH}, 0%, 50%), hsl(${cpH}, 100%, 50%))`;
+    $('#cp-bri').style.background = `linear-gradient(to right, #000, hsl(${cpH}, ${cpS}%, 50%))`;
+    $('#color-dropdown').style.setProperty('--cp-current', `hsla(${cpH}, ${cpS}%, ${cpB}%, 1)`);
+  }
+
+  function applyPickerColor() {
+    let color = `hsla(${cpH}, ${cpS}%, ${cpB}%, ${cpA / 100})`;
+    userTheme.accent = color;
+    applyTheme();
+    localStorage.setItem('pbf_theme', JSON.stringify(userTheme));
+  }
+
+  $('#mode-toggle-btn').addEventListener('click', () => {
+    userTheme.mode = userTheme.mode === 'dark' ? 'light' : 'dark';
+    applyTheme();
+    localStorage.setItem('pbf_theme', JSON.stringify(userTheme));
+  });
+  
+  $('#reset-defaults-btn').addEventListener('click', () => {
+    if (confirm('Restore all default settings? This will reset your theme and layout preferences.')) {
+      localStorage.removeItem('pbf_theme');
+      userTheme = { ...defaultUserTheme };
+      applyTheme();
+      closeModal('theme-modal');
+    }
+  });
+
+  $('#glossary-btn').addEventListener('click', () => { renderGlossary(); openModal('glossary-modal'); });
+  $('#history-btn').addEventListener('click', () => { renderHistory(); openModal('history-modal'); });
+  $('#theme-btn').addEventListener('click', () => { openModal('theme-modal'); applyTheme(); });
+
+  $('#glossary-modal').addEventListener('click', e => { if (e.target.id === 'glossary-modal') closeModal('glossary-modal'); });
+  $('#theme-modal').addEventListener('click', e => { if (e.target.id === 'theme-modal') closeModal('theme-modal'); });
+  $('#admin-modal').addEventListener('click', e => { if (e.target.id === 'admin-modal') closeModal('admin-modal'); });
+  $('#export-modal').addEventListener('click', e => { if (e.target.id === 'export-modal') closeModal('export-modal'); });
+  $('#secret-menu').addEventListener('click', e => { if (e.target.id === 'secret-menu') closeModal('secret-menu'); });
+  $('#history-modal').addEventListener('click', e => { if (e.target.id === 'history-modal') closeModal('history-modal'); });
+
+  document.addEventListener('input', e => {
+    if (e.target.id.startsWith('theme-') || e.target.id.startsWith('mode-')) {
+      if (e.target.id === 'theme-palette') {
+        userTheme.palette = e.target.value;
+        const paletteObj = palettes[userTheme.palette];
+        if (paletteObj.dark && paletteObj.light) {
+          userTheme.accent = paletteObj[userTheme.mode].accent;
+        } else {
+          userTheme.accent = paletteObj.accent;
+        }
+        if ($('#theme-accent-btn')) $('#theme-accent-btn').style.backgroundColor = userTheme.accent;
+      }
+      if (e.target.id === 'theme-fontfamily') userTheme.fontFamily = e.target.value;
+      if (e.target.id === 'theme-fontsize') userTheme.fontSlider = parseInt(e.target.value);
+      if (e.target.id === 'theme-btnsize') userTheme.btnSlider = parseInt(e.target.value);
+      if (e.target.id === 'theme-padding') userTheme.padding = parseInt(e.target.value);
+      if (e.target.id === 'theme-animal') userTheme.animal = e.target.value;
+      applyTheme();
+      localStorage.setItem('pbf_theme', JSON.stringify(userTheme));
+    }
+  });
+
+  let isAdmin = false;
+
+  $('#admin-user').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); $('#admin-pass').focus(); } });
+  $('#admin-pass').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); attemptLogin(); } });
+
+  function attemptLogin() {
+    if ($('#admin-user').value === 'meow' && $('#admin-pass').value === 'meow') {
+      isAdmin = true;
+      $('#login-view').style.display = 'none';
+      $('#admin-view').style.display = 'block';
+      $('#modal-title').textContent = 'Admin Settings';
+      renderAdminView();
+    } else alert('Invalid credentials');
+  }
+  function adminLogout() {
+    isAdmin = false;
+    $('#login-view').style.display = 'block';
+    $('#admin-view').style.display = 'none';
+    $('#modal-title').textContent = 'Admin Login';
+    $('#admin-user').value = ''; $('#admin-pass').value = '';
+  }
+
+  function renderAdminView() {
+    const cellList = $('#cell-list');
+    cellList.innerHTML = '';
+    Object.entries(cellTypes).forEach(([key, label], index) => {
+      const pill = document.createElement('div');
+      pill.className = 'pill';
+      pill.innerHTML = `${label} 
+        <button onclick="moveItem('cellTypes', ${index}, 'up')" title="Move Up">↑</button>
+        <button onclick="moveItem('cellTypes', ${index}, 'down')" title="Move Down">↓</button>
+        <button class="remove-btn" onclick="removeCellType('${key}')">✕</button>`;
+      cellList.appendChild(pill);
+    });
+
+    const platPrimList = $('#plat-primary-list');
+    platPrimList.innerHTML = '';
+    Object.entries(appConfig.platelets.primary.codes).forEach(([key, text], index) => {
+      const pill = document.createElement('div');
+      pill.className = 'pill';
+      pill.innerHTML = `${key} 
+        <button onclick="moveCode('platelets', 'primary', ${index}, 'up')">↑</button>
+        <button onclick="moveCode('platelets', 'primary', ${index}, 'down')">↓</button>
+        <button class="remove-btn" onclick="removeCode('platelets', 'primary', '${key}')">✕</button>`;
+      platPrimList.appendChild(pill);
+    });
+
+    const platOptList = $('#plat-optional-list');
+    platOptList.innerHTML = '';
+    Object.entries(appConfig.platelets.optional.codes).forEach(([key, text], index) => {
+      const pill = document.createElement('div');
+      pill.className = 'pill';
+      pill.innerHTML = `${key} 
+        <button onclick="moveCode('platelets', 'optional', ${index}, 'up')">↑</button>
+        <button onclick="moveCode('platelets', 'optional', ${index}, 'down')">↓</button>
+        <button class="remove-btn" onclick="removeCode('platelets', 'optional', '${key}')">✕</button>`;
+      platOptList.appendChild(pill);
+    });
+
+    const earlyPrimList = $('#early-primary-list');
+    earlyPrimList.innerHTML = '';
+    Object.entries(appConfig.earlyCells.primary.codes).forEach(([key, text], index) => {
+      const pill = document.createElement('div');
+      pill.className = 'pill';
+      pill.innerHTML = `${key} 
+        <button onclick="moveCode('earlyCells', 'primary', ${index}, 'up')">↑</button>
+        <button onclick="moveCode('earlyCells', 'primary', ${index}, 'down')">↓</button>
+        <button class="remove-btn" onclick="removeCode('earlyCells', 'primary', '${key}')">✕</button>`;
+      earlyPrimList.appendChild(pill);
+    });
+
+    const earlyOptList = $('#early-optional-list');
+    earlyOptList.innerHTML = '';
+    Object.entries(appConfig.earlyCells.optional.codes).forEach(([key, text], index) => {
+      const pill = document.createElement('div');
+      pill.className = 'pill';
+      pill.innerHTML = `${key} 
+        <button onclick="moveCode('earlyCells', 'optional', ${index}, 'up')">↑</button>
+        <button onclick="moveCode('earlyCells', 'optional', ${index}, 'down')">↓</button>
+        <button class="remove-btn" onclick="removeCode('earlyCells', 'optional', '${key}')">✕</button>`;
+      earlyOptList.appendChild(pill);
+    });
+  }
+
+  function moveItem(category, index, direction) {
+    let arr = Object.entries(cellTypes);
+    if (direction === 'up' && index > 0) [arr[index], arr[index - 1]] = [arr[index - 1], arr[index]];
+    else if (direction === 'down' && index < arr.length - 1) [arr[index], arr[index + 1]] = [arr[index + 1], arr[index]];
+    cellTypes = Object.fromEntries(arr); renderMatrix(); renderAdminView();
+  }
+  
+  function moveCode(category, type, index, direction) {
+    let arr = Object.entries(appConfig[category][type].codes);
+    if (direction === 'up' && index > 0) [arr[index], arr[index - 1]] = [arr[index - 1], arr[index]];
+    else if (direction === 'down' && index < arr.length - 1) [arr[index], arr[index + 1]] = [arr[index + 1], arr[index]];
+    appConfig[category][type].codes = Object.fromEntries(arr); renderDynamicSections(); renderAdminView();
+  }
+  
+  function addCellType() {
+    const key = $('#new-cell-key').value.trim(); const label = $('#new-cell-label').value.trim();
+    if (key && label && !cellTypes[key]) {
+      cellTypes[key] = label; initStateCells(); renderMatrix(); renderAdminView();
+      $('#new-cell-key').value = ''; $('#new-cell-label').value = '';
+    } else alert('Invalid input or cell type already exists.');
+  }
+  
+  function removeCellType(key) {
+    if (confirm(`Remove ${cellTypes[key]}?`)) {
+      delete cellTypes[key];
+      ['occasional', 'moderate', 'marked'].forEach(sev => state.cells[sev] = state.cells[sev].filter(x => x !== key));
+      renderMatrix(); renderAdminView();
+    }
+  }
+  
+  function addCode(category, type) {
+    const prefix = category === 'platelets' ? 'plat' : 'early';
+    const keyInput = `#${prefix}-${type}-key`;
+    const textInput = `#${prefix}-${type}-text`;
+    const key = $(keyInput).value.trim(); const text = $(textInput).value.trim();
+    if (key && text && !appConfig[category][type].codes[key]) {
+      appConfig[category][type].codes[key] = text; renderDynamicSections(); renderAdminView();
+      $(keyInput).value = ''; $(textInput).value = '';
+    } else alert('Invalid input or code already exists.');
+  }
+  
+  function removeCode(category, type, key) {
+    if (confirm(`Remove code ${key}?`)) {
+      delete appConfig[category][type].codes[key];
+      if (category === 'platelets' && type === 'primary') state.plateletPrimary = state.plateletPrimary.filter(k => k !== key);
+      if (category === 'platelets' && type === 'optional') state.plateletOptional = state.plateletOptional.filter(k => k !== key);
+      if (category === 'earlyCells' && type === 'primary') state.earlyCellPrimary = state.earlyCellPrimary.filter(k => k !== key);
+      if (category === 'earlyCells' && type === 'optional') state.earlyCellOptional = state.earlyCellOptional.filter(k => k !== key);
+      renderDynamicSections(); renderAdminView();
+    }
+  }
+
+  function exportGlobalConfig() {
+    const dataStr = `{\n  appConfig: ${JSON.stringify(appConfig, null, 2)},\n  cellTypes: ${JSON.stringify(cellTypes, null, 2)}\n}`;
+    $('#export-text').value = dataStr;
+    openModal('export-modal');
+  }
+  function copyExport() {
+    const ta = $('#export-text');
+    ta.focus(); ta.select(); ta.setSelectionRange(0, 99999);
+    try {
+      document.execCommand('copy');
+      alert('Copied! Now paste it into the HTML file as instructed.');
+    } catch (err) {
+      navigator.clipboard.writeText(ta.value).then(() => {
+        alert('Copied! Now paste it into the HTML file as instructed.');
+      }).catch(() => alert('Please manually copy the text (Ctrl+C).'));
+    }
+  }
+
+  function renderGlossary() {
+    const content = $('#glossary-content');
+    let html = '';
+
+    html += '<div class="glossary-section"><h3>Red Cell Chroma & Size</h3><div class="glossary-grid">';
+    html += `<div class="glossary-item"><span class="g-code">Hypo</span><span class="g-arrow">→</span><span class="g-out">hypochromic</span></div>`;
+    html += `<div class="glossary-item"><span class="g-code">Normo</span><span class="g-arrow">→</span><span class="g-out">normochromic / normocytic</span></div>`;
+    html += `<div class="glossary-item"><span class="g-code">Micro</span><span class="g-arrow">→</span><span class="g-out">microcytic</span></div>`;
+    html += `<div class="glossary-item"><span class="g-code">Macro</span><span class="g-arrow">→</span><span class="g-out">macrocytic</span></div>`;
+    html += `<div class="glossary-item"><span class="g-code">Aniso</span><span class="g-arrow">→</span><span class="g-out">anisocytotic</span></div>`;
+    html += `<div class="glossary-item"><span class="g-code">OVAL</span><span class="g-arrow">→</span><span class="g-out">ovalocytosis (replaces chroma/size comment)</span></div>`;
+    html += '</div></div>';
+
+    html += '<div class="glossary-section"><h3>Cell Type Findings</h3><div class="glossary-grid">';
+    Object.entries(cellTypes).forEach(([key, label]) => {
+      html += `<div class="glossary-item"><span class="g-code">${label.substring(0, 3)}</span><span class="g-arrow">→</span><span class="g-out">${key}</span></div>`;
+    });
+    html += '</div></div>';
+
+    html += '<div class="glossary-section"><h3>Platelets</h3><div class="glossary-grid">';
+    [
+      ...Object.entries(appConfig.platelets.primary.codes), 
+      ...Object.entries(appConfig.platelets.optional.codes),
+      ...Object.entries(appConfig.platelets.extra.codes),
+      ...Object.entries(appConfig.platelets.satellitism.codes)
+    ].forEach(([key, text]) => {
+      html += `<div class="glossary-item"><span class="g-code">${key}</span><span class="g-arrow">→</span><span class="g-out">${text}</span></div>`;
+    });
+    html += '</div></div>';
+
+    html += '<div class="glossary-section"><h3>Early Cells & Special Findings</h3><div class="glossary-grid">';
+    [
+      ...Object.entries(appConfig.earlyCells.primary.codes), 
+      ...Object.entries(appConfig.earlyCells.optional.codes),
+      ...Object.entries(appConfig.abnormalFindings.codes)
+    ].forEach(([key, text]) => {
+      html += `<div class="glossary-item"><span class="g-code">${key}</span><span class="g-arrow">→</span><span class="g-out">${text}</span></div>`;
+    });
+    html += '</div></div>';
+
+    content.innerHTML = html;
+  }
+
+  $('#generate-btn').addEventListener('click', generateComment);
+  $('#reset-all-btn').addEventListener('click', resetAllFields);
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
+      return;
+    }
+
+    if (e.altKey && (e.key === 'a' || e.key === 'A')) {
+      e.preventDefault();
+      openModal('admin-modal');
+      return;
+    }
+
+    if (e.altKey && (e.key === 'q' || e.key === 'Q' || e.key === 's' || e.key === 'S')) {
+      e.preventDefault();
+      openModal('secret-menu');
+      return;
+    }
+    
+    if (['TEXTAREA', 'INPUT', 'SELECT'].includes(e.target.tagName)) return;
+    
+    if (e.key === 'Enter') { 
+      e.preventDefault(); 
+      if (isBackspaceArmed) { 
+        isBackspaceArmed = false;
+        clearTimeout(backspaceTimeout);
+        $('#reset-all-btn').classList.remove('armed');
+      }
+      generateComment(); 
+    }
+
+    if (e.key === 'Backspace') { 
+      e.preventDefault(); 
+      if (isBackspaceArmed) {
+        resetAllFields();
+      } else {
+        isBackspaceArmed = true;
+        $('#reset-all-btn').classList.add('armed');
+        backspaceTimeout = setTimeout(() => {
+          isBackspaceArmed = false;
+          $('#reset-all-btn').classList.remove('armed');
+        }, 1500);
+      }
+    }
+  });
+
+  function debounce(func, wait) {
+    let timeout;
+    return function() {
+      const context = this, args = arguments;
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(context, args), wait);
+    };
+  }
+
+  window.addEventListener('resize', debounce(() => {
+    autofitUI();
+    const chromaSlider = $('#chroma-grade');
+    if (chromaSlider && chromaSlider._updateIndicator) chromaSlider._updateIndicator();
+    const sizeSlider = $('#size-grade');
+    if (sizeSlider && sizeSlider._updateIndicator) sizeSlider._updateIndicator();
+    const chromaType = $('#chroma-type');
+    if (chromaType && chromaType._updateIndicator) chromaType._updateIndicator();
+    const sizeType = $('#size-type');
+    if (sizeType && sizeType._updateIndicator) sizeType._updateIndicator();
+    const ovalToggle = $('#oval-toggle');
+    if (ovalToggle && ovalToggle._updateIndicator) ovalToggle._updateIndicator();
+    
+    const noClumpsSlider = $('#platelet-no-clumps-slider');
+    if (noClumpsSlider && noClumpsSlider._updateIndicator) noClumpsSlider._updateIndicator();
+    const clumpsSlider = $('#platelet-clumps-slider');
+    if (clumpsSlider && clumpsSlider._updateIndicator) clumpsSlider._updateIndicator();
+    const satSlider = $('#platelet-satellitism-slider');
+    if (satSlider && satSlider._updateIndicator) satSlider._updateIndicator();
+    
+    const earlyPrimSlider = $('#early-primary-slider');
+    if (earlyPrimSlider && earlyPrimSlider._updateIndicator) earlyPrimSlider._updateIndicator();
+
+    PixelScene.resize();
+  }, 100));
+
+  const PixelScene = (function () {
+    const GRID_W = 26, GRID_H = 16;
+
+    function makeGrid() {
+      const g = new Array(GRID_H);
+      for (let y = 0; y < GRID_H; y++) g[y] = new Array(GRID_W).fill(null);
+      return g;
+    }
+    function setPx(g, x, y, c) {
+      x = Math.round(x); y = Math.round(y);
+      if (y >= 0 && y < GRID_H && x >= 0 && x < GRID_W) g[y][x] = c;
+    }
+    function rect(g, x, y, w, h, c) {
+      for (let j = 0; j < h; j++) for (let i = 0; i < w; i++) setPx(g, x + i, y + j, c);
+    }
+    function ellipse(g, cx, cy, rx, ry, c) {
+      const rx2 = rx * rx, ry2 = ry * ry;
+      for (let y = -Math.ceil(ry); y <= Math.ceil(ry); y++) {
+        for (let x = -Math.ceil(rx); x <= Math.ceil(rx); x++) {
+          if ((x * x) / rx2 + (y * y) / ry2 <= 1) setPx(g, cx + x, cy + y, c);
+        }
+      }
+    }
+    function circle(g, cx, cy, r, c) { ellipse(g, cx, cy, r, r, c); }
+    function dots(g, pts, c) { pts.forEach(([x, y]) => setPx(g, x, y, c)); }
+
+    function legsTwo(g, backX, frontX, topY, footY, phase, c) {
+      if (phase === 0) {
+        rect(g, backX, topY, 2, footY - topY + 1, c);
+        rect(g, frontX, topY, 2, footY - topY + 1, c);
+      } else {
+        rect(g, backX - 1, topY + 1, 2, footY - topY, c);
+        rect(g, frontX + 1, topY, 2, footY - topY + 1, c);
+      }
+    }
+
+    function buildCat(phase, blink, isEating, isDead) {
+      const g = makeGrid();
+      const tail = phase === 0
+        ? [[4,11],[3,10],[3,9],[2,8],[2,7],[3,6]]
+        : [[4,11],[3,10],[4,9],[5,8],[5,7],[6,6]];
+      dots(g, tail, 'body');
+      dots(g, tail.map(([x,y]) => [x+1,y]), 'body');
+      ellipse(g, 14, 11, 7, 3, 'body');
+      if (isEating) {
+        rect(g, 16, 10, 4, 2, 'body');
+        circle(g, 20, 11, 3, 'body');
+        dots(g, [[18,8],[18,7],[19,8]], 'body');
+        dots(g, [[21,7],[22,8],[21,8]], 'body');
+        if (isDead) {
+          setPx(g, 20, 10, 'pupil'); setPx(g, 22, 10, 'pupil');
+          setPx(g, 21, 11, 'pupil');
+          setPx(g, 20, 12, 'pupil'); setPx(g, 22, 12, 'pupil');
+        } else {
+          setPx(g, 21, 11, blink ? 'body' : 'pupil');
+        }
+        setPx(g, 23, 12, 'nose');
+      } else {
+        circle(g, 20, 8, 3, 'body');
+        dots(g, [[18,5],[18,4],[19,5]], 'body');
+        dots(g, [[21,4],[22,5],[21,5]], 'body');
+        if (isDead) {
+          setPx(g, 20, 7, 'pupil'); setPx(g, 22, 7, 'pupil');
+          setPx(g, 21, 8, 'pupil');
+          setPx(g, 20, 9, 'pupil'); setPx(g, 22, 9, 'pupil');
+        } else {
+          setPx(g, 21, 8, blink ? 'body' : 'pupil');
+        }
+        setPx(g, 23, 9, 'nose');
+      }
+      legsTwo(g, 9, 18, 13, 15, phase, 'body');
+      return g;
+    }
+
+    function buildDog(phase, blink, isEating, isDead) {
+      const g = makeGrid();
+      const tail = phase === 0 ? [[4,8],[3,7],[3,6]] : [[4,8],[3,9],[3,10]];
+      dots(g, tail, 'body');
+      dots(g, tail.map(([x,y]) => [x+1,y]), 'body');
+      ellipse(g, 14, 11, 7, 3.2, 'body');
+      if (isEating) {
+        rect(g, 16, 10, 4, 2, 'body');
+        circle(g, 20, 11, 3.3, 'body');
+        rect(g, 22, 11, 3, 2, 'body');
+        rect(g, 18, 9, 2, 4, 'shade');
+        if (isDead) {
+          setPx(g, 20, 10, 'pupil'); setPx(g, 22, 10, 'pupil');
+          setPx(g, 21, 11, 'pupil');
+          setPx(g, 20, 12, 'pupil'); setPx(g, 22, 12, 'pupil');
+        } else {
+          setPx(g, 21, 10, blink ? 'body' : 'pupil');
+        }
+        setPx(g, 24, 12, 'nose');
+      } else {
+        circle(g, 20, 8, 3.3, 'body');
+        rect(g, 22, 8, 3, 2, 'body');
+        rect(g, 18, 6, 2, 4, 'shade');
+        if (isDead) {
+          setPx(g, 20, 7, 'pupil'); setPx(g, 22, 7, 'pupil');
+          setPx(g, 21, 8, 'pupil');
+          setPx(g, 20, 9, 'pupil'); setPx(g, 22, 9, 'pupil');
+        } else {
+          setPx(g, 21, 7, blink ? 'body' : 'pupil');
+        }
+        setPx(g, 24, 9, 'nose');
+      }
+      legsTwo(g, 9, 18, 13, 15, phase, 'body');
+      return g;
+    }
+
+    function buildCapybara(phase, blink, isEating, isDead) {
+      const g = makeGrid();
+      ellipse(g, 11, 10, 8, 3.5, 'body');
+      rect(g, 4, 7, 14, 6, 'body');
+      if (isEating) {
+        rect(g, 17, 10, 6, 4, 'body');
+        rect(g, 21, 11, 3, 3, 'shade'); 
+        setPx(g, 20, 9, 'body'); setPx(g, 19, 9, 'body');
+        if (isDead) {
+          setPx(g, 19, 10, 'pupil'); setPx(g, 21, 10, 'pupil');
+          setPx(g, 20, 11, 'pupil');
+          setPx(g, 19, 12, 'pupil'); setPx(g, 21, 12, 'pupil');
+        } else {
+          setPx(g, 20, 11, blink ? 'body' : 'pupil');
+        }
+        setPx(g, 23, 12, 'nose');
+      } else {
+        rect(g, 18, 7, 6, 5, 'body');
+        rect(g, 21, 9, 3, 3, 'shade');
+        setPx(g, 19, 6, 'body'); setPx(g, 20, 6, 'body');
+        if (isDead) {
+          setPx(g, 19, 8, 'pupil'); setPx(g, 21, 8, 'pupil');
+          setPx(g, 20, 9, 'pupil');
+          setPx(g, 19, 10, 'pupil'); setPx(g, 21, 10, 'pupil');
+        } else {
+          setPx(g, 20, 9, blink ? 'body' : 'pupil');
+        }
+        setPx(g, 23, 10, 'nose');
+      }
+      const off = phase === 1 ? 1 : 0;
+      rect(g, 6 - off, 13, 2, 3, 'body');
+      rect(g, 10 + off, 13, 2, 3, 'body');
+      rect(g, 14 - off, 13, 2, 3, 'body');
+      rect(g, 18 + off, 13, 2, 3, 'body');
+      return g;
+    }
+
+    function buildRabbit(phase, blink, isEating, isDead) {
+      const g = makeGrid();
+      circle(g, 6, 11, 1.6, 'light');
+      ellipse(g, 14, 12, 6, 3, 'body');
+      if (isEating) {
+        circle(g, 19, 11, 2.6, 'body');
+        rect(g, 18, 3, 1, 8, 'body'); 
+        rect(g, 21, 3, 1, 8, 'body');
+        rect(g, 18, 4, 1, 3, 'shade');
+        rect(g, 21, 4, 1, 3, 'shade');
+        if (isDead) {
+          setPx(g, 19, 10, 'pupil'); setPx(g, 21, 10, 'pupil');
+          setPx(g, 20, 11, 'pupil');
+          setPx(g, 19, 12, 'pupil'); setPx(g, 21, 12, 'pupil');
+        } else {
+          setPx(g, 20, 11, blink ? 'body' : 'pupil');
+        }
+        setPx(g, 22, 12, 'nose');
+      } else {
+        circle(g, 19, 9, 2.6, 'body');
+        rect(g, 18, 1, 1, 7, 'body');
+        rect(g, 21, 1, 1, 7, 'body');
+        rect(g, 18, 2, 1, 3, 'shade');
+        rect(g, 21, 2, 1, 3, 'shade');
+        if (isDead) {
+          setPx(g, 19, 8, 'pupil'); setPx(g, 21, 8, 'pupil');
+          setPx(g, 20, 9, 'pupil');
+          setPx(g, 19, 10, 'pupil'); setPx(g, 21, 10, 'pupil');
+        } else {
+          setPx(g, 20, 9, blink ? 'body' : 'pupil');
+        }
+        setPx(g, 22, 10, 'nose');
+      }
+      if (phase === 0) {
+        rect(g, 10, 14, 3, 2, 'body');
+        rect(g, 17, 15, 2, 1, 'body');
+      } else {
+        rect(g, 8, 13, 4, 1, 'body');
+        rect(g, 18, 13, 2, 1, 'body');
+      }
+      return g;
+    }
+
+    function buildCow(phase, blink, isEating, isDead) {
+      const g = makeGrid();
+      ellipse(g, 13, 10, 8, 3.5, 'body');
+      rect(g, 5, 7, 16, 6, 'body');
+      rect(g, 8, 8, 3, 2, 'shade');
+      rect(g, 14, 11, 4, 2, 'shade');
+      setPx(g, 6, 9, 'shade');
+      if (isEating) {
+        rect(g, 19, 10, 4, 4, 'body');
+        rect(g, 22, 11, 2, 3, 'nose');
+        setPx(g, 20, 4, 'shade'); setPx(g, 21, 4, 'shade');
+        setPx(g, 22, 4, 'shade'); setPx(g, 23, 4, 'shade');
+        if (isDead) {
+          setPx(g, 20, 9, 'pupil'); setPx(g, 22, 9, 'pupil');
+          setPx(g, 21, 10, 'pupil');
+          setPx(g, 20, 11, 'pupil'); setPx(g, 22, 11, 'pupil');
+        } else {
+          setPx(g, 20, 10, blink ? 'body' : 'pupil');
+        }
+      } else {
+        rect(g, 20, 7, 4, 5, 'body');
+        rect(g, 23, 9, 2, 3, 'nose');
+        setPx(g, 20, 5, 'shade'); setPx(g, 21, 5, 'shade');
+        setPx(g, 22, 5, 'shade'); setPx(g, 23, 5, 'shade');
+        if (isDead) {
+          setPx(g, 20, 7, 'pupil'); setPx(g, 22, 7, 'pupil');
+          setPx(g, 21, 8, 'pupil');
+          setPx(g, 20, 9, 'pupil'); setPx(g, 22, 9, 'pupil');
+        } else {
+          setPx(g, 21, 8, blink ? 'body' : 'pupil');
+        }
+      }
+      rect(g, 12, 13, 2, 1, 'nose');
+      legsTwo(g, 8, 17, 13, 15, phase, 'body');
+      dots(g, [[4,8],[3,9],[2,10]], 'body');
+      setPx(g, 2, 11, 'shade');
+      return g;
+    }
+
+    const BUILDERS = { cat: buildCat, dog: buildDog, capybara: buildCapybara, rabbit: buildRabbit, cow: buildCow };
+
+    const PROPS = {
+      yarn:   [[0,-2,'light'],[1,-2,'light'],[-1,-1,'light'],[0,-1,'shade'],[1,-1,'light'],[2,-1,'light'],[0,0,'light'],[1,0,'light']],
+      bone:   [[0,-1,'light'],[0,0,'light'],[1,0,'light'],[2,0,'light'],[3,0,'light'],[3,-1,'light']],
+      carrot: [[0,-3,'grass'],[0,-4,'grass'],[-1,-2,'light'],[0,-2,'light'],[1,-2,'light'],[0,-1,'light']],
+      flower: [[0,-3,'light'],[-1,-2,'body'],[0,-2,'light'],[1,-2,'body'],[0,-1,'shade']],
+      lily:   [[-1,0,'shade'],[0,0,'shade'],[1,0,'shade'],[0,-1,'shade']],
+      fence:  [[0,-4,'grass'],[0,-3,'grass'],[0,-2,'grass'],[0,-1,'grass'],[-2,-3,'grass'],[-1,-3,'grass'],[1,-3,'grass'],[2,-3,'grass']]
+    };
+    const ANIMAL_PROPS = { cat: ['yarn'], dog: ['bone'], capybara: ['lily'], rabbit: ['carrot','flower'], cow: ['flower','fence'] };
+    const PROP_POSITIONS = [0.1, 0.88];
+
+    let canvas, ctx;
+    let cssW = 0, cssH = 0, scale = 3, dpr = 1;
+    let groundY = 0, groundThickness = 2;
+    let animalX = 12, dir = 1;
+    let phase = 0, blink = false;
+    let bobOffset = 0;
+    let lastStepT = 0, lastBlinkT = 0, blinkUntil = 0;
+    let clouds = [];
+    let scenery = [];
+    let treats = [];
+    let poops = [];
+    let pointerX = null;
+    let pointerActiveUntil = 0;
+    let nextWanderT = 0;
+    let wanderTarget = null;
+    let obstacleJump = 0;
+    let jumpOffset = 0;
+    let jumpStartTime = 0;
+    let deadRotation = 0;
+    let colors = {};
+    let rafId = null;
+    let lastFrameT = 0;
+    let resizeObs = null;
+    let animalState = 'wandering'; // wandering, seeking_treat, eating, button_action, post_eat_jump, shitting, dying, dead
+    let stateTimer = 0;
+    let currentSpeed = 12;
+    let isEating = false;
+    const reducedMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+    function readVar(name, fallback) {
+      const cs = getComputedStyle(document.documentElement);
+      const v = (cs.getPropertyValue(name) || '').trim();
+      return v || fallback;
+    }
+
+    function resolveColors() {
+      colors = {
+        body: readVar('--accent', '#5fc28a'),
+        shade: readVar('--accent3', '#3d7d57'),
+        light: readVar('--accent2', '#a3d9b1'),
+        grass: readVar('--border', '#36473d'),
+        cloud: readVar('--muted', '#94a89b'),
+        pupil: '#2a2320',
+        nose: '#e2998f'
+      };
+    }
+
+    function currentAnimal() {
+      const a = (typeof userTheme !== 'undefined' && userTheme.animal) || 'off';
+      return BUILDERS[a] ? a : null;
+    }
+
+    function resize() {
+      if (!canvas) return;
+      const parent = canvas.parentElement;
+      const r = parent.getBoundingClientRect();
+      cssW = Math.max(1, Math.round(r.width));
+      cssH = Math.max(1, Math.round(r.height));
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(cssW * dpr);
+      canvas.height = Math.round(cssH * dpr);
+      canvas.style.width = cssW + 'px';
+      canvas.style.height = cssH + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      scale = Math.max(2, Math.floor((cssH - 4) / GRID_H));
+      groundThickness = Math.max(2, Math.round(scale * 0.6));
+      groundY = cssH - groundThickness - 1;
+
+      const spriteW = GRID_W * scale;
+      const margin = 4;
+      if (cssW - spriteW - margin < margin) {
+        animalX = margin;
+      } else {
+        animalX = Math.max(margin, Math.min(animalX, cssW - spriteW - margin));
+      }
+      initClouds();
+      initScenery();
+    }
+
+    function initClouds() {
+      clouds = [];
+      const headroom = groundY - GRID_H * scale;
+      if (headroom < 10) return;
+      const n = Math.max(3, Math.min(6, Math.round(cssW / 175)));
+      for (let i = 0; i < n; i++) {
+        clouds.push({
+          x: Math.random() * cssW,
+          y: 2 + Math.random() * Math.max(1, headroom - 8),
+          s: 0.8 + Math.random() * 0.5,
+          speed: 3 + Math.random() * 3
+        });
+      }
+    }
+    function initScenery() {
+      scenery = [];
+      const count = Math.max(9, Math.min(18, Math.round(cssW / 82)));
+      const kinds = ['bush', 'grass', 'flower', 'tree', 'bush', 'rock', 'mushroom'];
+      for (let i = 0; i < count; i++) {
+        const edgeBias = i < 2 ? (i === 0 ? 0.035 : 0.94) : (0.08 + Math.random() * 0.84);
+        scenery.push({
+          kind: kinds[i % kinds.length],
+          x: cssW * edgeBias,
+          s: 0.72 + Math.random() * 0.58,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+    }
+
+    function step(dtMs, animal) {
+      const now = performance.now();
+      const spriteW = GRID_W * scale;
+      const margin = 4;
+      const maxX = Math.max(margin, cssW - spriteW - margin);
+
+      if (animalState === 'dead' || animalState === 'dying') {
+        if (animalState === 'dying') {
+          const totalDur = 1500;
+          const elapsed = totalDur - (stateTimer - now);
+          const progress = Math.min(1, Math.max(0, elapsed / totalDur));
+          if (progress < 0.3) {
+            bobOffset = Math.sin(elapsed / 40) * 4;
+            deadRotation = 0;
+          } else {
+            bobOffset = -scale * 2;
+            deadRotation = Math.min(90, (progress - 0.3) * (90 / 0.7));
+          }
+          if (now > stateTimer) {
+            animalState = 'dead';
+            deadRotation = 90;
+            bobOffset = -scale * 2;
+          }
+        }
+        clouds.forEach(c => {
+          c.x += c.speed * (dtMs / 1000);
+          if (c.x > cssW + 20) c.x = -20 - Math.random() * 40;
+        });
+        return;
+      }
+
+      // 1. Button Collision (Only if not eating/jumping/shitting/dead)
+      let collidingButton = null;
+      if (animalState !== 'eating' && animalState !== 'post_eat_jump' && animalState !== 'shitting' && animalState !== 'seeking_treat' && animalState !== 'dying' && animalState !== 'dead') {
+        const hostRect = canvas.parentElement.getBoundingClientRect();
+        [document.getElementById('generate-btn'), document.getElementById('reset-all-btn')].forEach(el => {
+          if (!el) return;
+          const r = el.getBoundingClientRect();
+          const btnLeft = r.left - hostRect.left;
+          const btnRight = r.right - hostRect.left;
+          const animalCenterX = animalX + spriteW / 2;
+          if (animalCenterX > btnLeft - 10 && animalCenterX < btnRight + 10) {
+            if (obstacleJump < 5) collidingButton = { left: btnLeft, right: btnRight, el: el };
+          }
+        });
+      }
+
+      if (collidingButton && animalState !== 'button_action') {
+        animalState = 'button_action';
+        stateTimer = now + 600;
+        bobOffset = 0;
+        if (animal === 'cat' || animal === 'dog' || animal === 'rabbit') {
+          currentSpeed = 40; 
+        } else {
+            currentSpeed = 0; 
+            phase = 0;
+        }
+      }
+
+      // 2. State Machine
+      if (animalState === 'button_action') {
+        if (now > stateTimer) {
+            animalState = 'wandering';
+            if (!(animal === 'cat' || animal === 'dog' || animal === 'rabbit')) {
+                dir *= -1;
+                animalX += dir * 15; 
+            }
+            obstacleJump = 0;
+            wanderTarget = null;
+        } else if (animal === 'cat' || animal === 'dog' || animal === 'rabbit') {
+            const totalDur = 600;
+            const elapsed = totalDur - (stateTimer - now);
+            const progress = Math.min(1, Math.max(0, elapsed / totalDur));
+            const maxHeight = Math.min(cssH * 0.75, 55);
+            obstacleJump = Math.sin(progress * Math.PI) * maxHeight;
+        }
+      } 
+      else if (animalState === 'eating') {
+        currentSpeed = 0;
+        isEating = true;
+        phase = Math.floor(now / 150) % 2; 
+        if (now > stateTimer) {
+          treats.shift(); 
+          isEating = false;
+          if (Math.random() < 0.10) { // 10% chance to die
+            animalState = 'dying';
+            stateTimer = now + 1500;
+          } else {
+            animalState = 'post_eat_jump';
+            stateTimer = now + 1500; 
+            jumpStartTime = now;
+          }
+          wanderTarget = null;
+        }
+      } 
+      else if (animalState === 'post_eat_jump') {
+        if (!wanderTarget) {
+            const dist = (Math.random() - 0.5) * 200;
+            wanderTarget = Math.max(margin, Math.min(maxX, animalX + dist));
+        }
+        const delta = wanderTarget - animalX;
+        if (Math.abs(delta) > 5) {
+            dir = delta > 0 ? 1 : -1;
+            currentSpeed = 30;
+            animalX += dir * currentSpeed * (dtMs / 1000);
+        } else {
+            currentSpeed = 0;
+        }
+
+        const totalDur = 1500;
+        const elapsed = now - jumpStartTime;
+        const progress = Math.min(1, elapsed / totalDur);
+        const hopCount = 3;
+        const hopProgress = (progress * hopCount) % 1;
+        jumpOffset = Math.sin(hopProgress * Math.PI) * 30;
+
+        if (now - lastStepT > 100) { phase = phase ? 0 : 1; lastStepT = now; }
+
+        if (now > stateTimer) {
+            animalState = 'shitting';
+            stateTimer = now + 1000;
+            currentSpeed = 0;
+            jumpOffset = 0;
+            bobOffset = 0;
+        }
+      } 
+      else if (animalState === 'shitting') {
+        currentSpeed = 0;
+        phase = 0;
+        bobOffset = Math.min(scale * 2, Math.abs(Math.sin(now / 100)) * scale * 2);
+        
+        if (now > stateTimer) {
+          const backX = dir === 1 ? animalX + 4 * scale : animalX + GRID_W * scale - 4 * scale;
+          poops.push({
+            x: backX,
+            y: groundY,
+            born: now,
+            flies: [
+              { angle: Math.random() * 6.28, dist: 3 + Math.random() * 3, speed: 0.15 + Math.random() * 0.1 },
+              { angle: Math.random() * 6.28, dist: 3 + Math.random() * 3, speed: 0.15 + Math.random() * 0.1 }
+            ]
+          });
+          animalState = 'wandering';
+          wanderTarget = null;
+          bobOffset = 0;
+          dir *= -1; 
+        }
+      } 
+      else {
+        let treatTarget = treats.length > 0 ? treats[0] : null;
+        
+        if (treatTarget) {
+          animalState = 'seeking_treat';
+          currentSpeed = 35;
+          const mouthX = animalX + (dir === 1 ? (GRID_W - 3) : 3) * scale;
+          const delta = treatTarget.x - mouthX;
+          if (Math.abs(delta) > 2) {
+            dir = delta > 0 ? 1 : -1;
+            animalX += dir * currentSpeed * (dtMs / 1000);
+            const stepInterval = 100;
+            if (now - lastStepT > stepInterval) { phase = phase ? 0 : 1; lastStepT = now; }
+            if (animal === 'rabbit' || animal === 'capybara') {
+              bobOffset = Math.abs(Math.sin(now / 1000 * 8)) * Math.max(2, scale * 0.6);
+            } else {
+              bobOffset = 0;
+            }
+          } else {
+            animalState = 'eating';
+            stateTimer = now + 1200;
+            currentSpeed = 0;
+            bobOffset = 0;
+          }
+        } else {
+          if (animalState === 'seeking_treat') animalState = 'wandering';
+          let target = null;
+          if (performance.now() < pointerActiveUntil && pointerX !== null) {
+            target = Math.max(margin, Math.min(maxX, pointerX - spriteW * 0.5));
+            currentSpeed = 25; 
+          } else {
+            if (!wanderTarget || now > nextWanderT || Math.abs(animalX - wanderTarget) < 8) {
+              wanderTarget = margin + Math.random() * Math.max(1, maxX - margin);
+              nextWanderT = now + 3000 + Math.random() * 4000;
+              currentSpeed = Math.random() > 0.7 ? 25 : (8 + Math.random() * 8); 
+            }
+            target = wanderTarget;
+          }
+
+          const delta = target - animalX;
+          if (Math.abs(delta) > 1) {
+            dir = delta > 0 ? 1 : -1;
+            animalX += dir * currentSpeed * (dtMs / 1000);
+            const stepInterval = Math.max(80, 300 - currentSpeed * 5);
+            if (now - lastStepT > stepInterval) { phase = phase ? 0 : 1; lastStepT = now; }
+            if (animal === 'rabbit' || animal === 'capybara') {
+              const bs = currentSpeed > 20 ? 8 : 4;
+              const bh = Math.max(2, scale * 0.6);
+              bobOffset = Math.abs(Math.sin(now / 1000 * bs)) * bh;
+              phase = Math.sin(now / 1000 * bs) > 0 ? 1 : 0;
+            } else {
+              bobOffset = 0;
+            }
+          } else {
+            animalX = target;
+            currentSpeed = 0;
+            bobOffset = 0;
+          }
+        }
+      }
+      
+      if (animalX > maxX) { animalX = maxX; dir = -1; wanderTarget = null; }
+      if (animalX < margin) { animalX = margin; dir = 1; wanderTarget = null; }
+
+      if (!blink && now - lastBlinkT > 2600 + Math.random() * 2400) {
+        blink = true; lastBlinkT = now; blinkUntil = now + 130;
+      } else if (blink && now > blinkUntil) {
+        blink = false;
+      }
+
+      clouds.forEach(c => {
+        c.x += c.speed * (dtMs / 1000);
+        if (c.x > cssW + 20) c.x = -20 - Math.random() * 40;
+      });
+    }
+
+    function drawGround() {
+      ctx.save();
+      ctx.globalAlpha = 0.38;
+      ctx.fillStyle = colors.grass;
+      ctx.fillRect(0, groundY, cssW, groundThickness);
+      ctx.restore();
+
+      ctx.save();
+      ctx.globalAlpha = 0.5;
+      ctx.fillStyle = colors.grass;
+      const spacing = Math.max(16, scale * 6);
+      const tH = Math.max(2, scale);
+      const tW = Math.max(1, Math.round(scale * 0.6));
+      for (let x = 2; x < cssW; x += spacing) {
+        ctx.fillRect(x, groundY - tH, tW, tH);
+        ctx.fillRect(x + scale, groundY - Math.floor(tH * 0.55), tW, Math.floor(tH * 0.55));
+      }
+      ctx.restore();
+    }
+
+    function drawClouds() {
+      if (!clouds.length) return;
+      ctx.save();
+      ctx.globalAlpha = 0.42;
+      ctx.fillStyle = colors.cloud;
+      clouds.forEach(c => {
+        const s = Math.max(1, scale * c.s);
+        ctx.fillRect(c.x, c.y, s * 3, s);
+        ctx.fillRect(c.x + s, c.y - s, s * 2, s);
+      });
+      ctx.restore();
+    }
+
+    function drawScenery(ts) {
+      ctx.save();
+      ctx.globalAlpha = 0.38;
+      scenery.forEach(o => {
+        const unit = Math.max(1, scale * o.s);
+        const sway = reducedMotion ? 0 : Math.sin(ts / 900 + o.phase) * Math.max(0.5, unit * 0.22);
+        const x = Math.round(o.x + sway), y = groundY;
+        if (o.kind === 'tree') {
+          ctx.fillStyle = colors.shade; // Trunk
+          ctx.fillRect(x, y - unit * 10, unit, unit * 10);
+          
+          ctx.fillStyle = colors.shade; // Dark foliage base
+          ctx.fillRect(x - unit * 4, y - unit * 13, unit * 9, unit * 4);
+          ctx.fillRect(x - unit * 3, y - unit * 16, unit * 7, unit * 4);
+          ctx.fillRect(x - unit, y - unit * 18, unit * 3, unit * 3);
+
+          ctx.fillStyle = colors.grass; // Mid foliage
+          ctx.fillRect(x - unit * 3, y - unit * 14, unit * 7, unit * 3);
+          ctx.fillRect(x - unit * 2, y - unit * 16, unit * 5, unit * 2);
+
+          ctx.fillStyle = colors.light; // Light foliage highlights
+          ctx.fillRect(x - unit * 1, y - unit * 15, unit * 2, unit);
+          ctx.fillRect(x + unit * 1, y - unit * 13, unit, unit);
+        } else if (o.kind === 'bush') {
+          ctx.fillStyle = colors.shade;
+          ctx.fillRect(x - unit * 2, y - unit * 2, unit * 5, unit * 2);
+          ctx.fillRect(x - unit, y - unit * 3, unit * 3, unit);
+        } else if (o.kind === 'flower') {
+          ctx.fillStyle = colors.grass;
+          ctx.fillRect(x, y - unit * 3, Math.max(1, unit * .45), unit * 3);
+          ctx.fillStyle = colors.light;
+          ctx.fillRect(x - unit, y - unit * 4, unit * 2, unit);
+        } else if (o.kind === 'rock') {
+          ctx.fillStyle = colors.cloud;
+          ctx.fillRect(x - unit, y - unit * 1.4, unit * 3, unit * 1.4);
+          ctx.fillRect(x, y - unit * 2.2, unit * 1.5, unit);
+        } else if (o.kind === 'mushroom') {
+          ctx.fillStyle = colors.light;
+          ctx.fillRect(x - unit, y - unit * 3, unit * 3, unit);
+          ctx.fillRect(x, y - unit * 2, unit, unit * 2);
+        } else {
+          ctx.fillStyle = colors.grass;
+          ctx.fillRect(x, y - unit * 2, Math.max(1, unit * .45), unit * 2);
+          ctx.fillRect(x + unit, y - unit, Math.max(1, unit * .4), unit);
+        }
+      });
+      ctx.restore();
+    }
+    function drawTreats(ts) {
+      treats = treats.filter(t => ts - t.born < 15000);
+      ctx.save();
+      treats.forEach(t => {
+        const age = ts - t.born;
+        const bounce = reducedMotion ? 0 : Math.abs(Math.sin(age / 180)) * Math.max(1, scale);
+        let sizeMultiplier = 1;
+        let drawX = t.x;
+        if (animalState === 'eating' && treats[0] === t) {
+            const eatProgress = Math.max(0, (stateTimer - ts) / 1200);
+            sizeMultiplier = eatProgress;
+            drawX = animalX + (dir === 1 ? (GRID_W - 3) * scale : 3 * scale);
+        }
+        ctx.globalAlpha = Math.min(.9, Math.max(0, (15000 - age) / 4000)) * (sizeMultiplier > 0 ? 1 : 0);
+        ctx.fillStyle = colors.light;
+        const u = Math.max(3, scale * 1.35) * sizeMultiplier;
+        ctx.fillRect(drawX - u, groundY - u * 2 - bounce, u * 2, u);
+        ctx.fillStyle = colors.shade;
+        ctx.fillRect(drawX, groundY - u - bounce, u, u);
+      });
+      ctx.restore();
+    }
+    function drawPoops(ts) {
+      poops = poops.filter(p => ts - p.born < 15000);
+      ctx.save();
+      poops.forEach(p => {
+        const age = ts - p.born;
+        ctx.globalAlpha = age > 12000 ? Math.max(0, (15000 - age) / 3000) : 1;
+        ctx.fillStyle = '#3b2f2f'; // Darker brown
+        const u = Math.max(3, scale * 1.2);
+        // Poop shape (pile)
+        ctx.fillRect(p.x - u, p.y - u, u * 2, u);
+        ctx.fillRect(p.x - u/2, p.y - u*1.5, u, u/2);
+        ctx.fillRect(p.x + u/3, p.y - u*1.8, u*0.6, u*0.6);
+        ctx.fillRect(p.x - u*1.2, p.y - u*0.5, u*0.5, u*0.5);
+
+        // Flies
+        ctx.globalAlpha = 1;
+        p.flies.forEach(fly => {
+          fly.angle += fly.speed;
+          const fx = p.x + Math.cos(fly.angle) * fly.dist * scale * 0.5;
+          const fy = p.y - u * 1.5 + Math.sin(fly.angle * 1.3) * fly.dist * scale * 0.3;
+          
+          // Fly body
+          ctx.fillStyle = colors.cloud;
+          ctx.fillRect(fx, fy, 2, 2);
+          // Fly wings (blinking)
+          if (Math.floor(ts / 50) % 2 === 0) {
+            ctx.globalAlpha = 0.4;
+            ctx.fillStyle = colors.light;
+            ctx.fillRect(fx - 1, fy - 1, 4, 2);
+            ctx.globalAlpha = 1;
+          }
+        });
+      });
+      ctx.restore();
+    }
+    function drawProps(animal) {
+      const list = ANIMAL_PROPS[animal] || [];
+      if (!list.length) return;
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      list.forEach((propName, i) => {
+        const px = cssW * (PROP_POSITIONS[i % PROP_POSITIONS.length] || 0.5);
+        const py = groundY;
+        const pts = PROPS[propName] || [];
+        pts.forEach(([dx, dy, key]) => {
+          if (!key) return;
+          ctx.fillStyle = colors[key] || colors.body;
+          ctx.fillRect(Math.round(px + dx * scale), Math.round(py + dy * scale), scale, scale);
+        });
+      });
+      ctx.restore();
+    }
+
+    function drawAnimal(animal) {
+      const builder = BUILDERS[animal];
+      if (!builder) return;
+      const isDead = animalState === 'dying' || animalState === 'dead';
+      const grid = builder(phase, blink, isEating, isDead);
+      const originY = groundY - GRID_H * scale - bobOffset - obstacleJump - jumpOffset;
+      ctx.save();
+      ctx.globalAlpha = 0.94;
+      if (isDead) {
+        const rotDir = dir === 1 ? -1 : 1;
+        const rotX = animalX + (dir === 1 ? (GRID_W - 4) : 4) * scale;
+        const rotY = originY + (GRID_H - 2) * scale;
+        ctx.translate(rotX, rotY);
+        ctx.rotate(deadRotation * Math.PI / 180 * rotDir);
+        ctx.translate(-rotX, -rotY);
+      }
+      for (let y = 0; y < GRID_H; y++) {
+        for (let x = 0; x < GRID_W; x++) {
+          const key = grid[y][x];
+          if (!key) continue;
+          ctx.fillStyle = colors[key] || colors.body;
+          const gx = dir === 1 ? x : (GRID_W - 1 - x);
+          ctx.fillRect(Math.round(animalX + gx * scale), Math.round(originY + y * scale), scale, scale);
+        }
+      }
+      ctx.restore();
+    }
+
+    function tick(ts) {
+      rafId = requestAnimationFrame(tick);
+      if (!lastFrameT) lastFrameT = ts;
+      const dt = ts - lastFrameT;
+      if (dt < 80) return;
+      lastFrameT = ts;
+
+      const animal = currentAnimal();
+      ctx.clearRect(0, 0, cssW, cssH);
+      if (!animal) return;
+
+      step(dt, animal);
+      drawGround();
+      drawClouds();
+      drawScenery(ts);
+      drawProps(animal);
+      drawPoops(ts);
+      drawTreats(ts);
+      drawAnimal(animal);
+    }
+
+    function start() {
+      if (rafId) return;
+      lastFrameT = 0;
+      rafId = requestAnimationFrame(tick);
+    }
+    function stop() {
+      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+      if (ctx) ctx.clearRect(0, 0, cssW, cssH);
+    }
+
+    function onThemeChange() {
+      if (!canvas) return;
+      resolveColors();
+      resize();
+      const animal = currentAnimal();
+      if (animal) start(); else stop();
+    }
+
+    function init() {
+      canvas = document.getElementById('pixel-scene-canvas');
+      if (!canvas) return;
+      ctx = canvas.getContext('2d');
+      resolveColors();
+      resize();
+
+      if (window.ResizeObserver) {
+        resizeObs = new ResizeObserver(() => resize());
+        resizeObs.observe(canvas.parentElement);
+      }
+      const sceneHost = canvas.parentElement;
+      sceneHost.addEventListener('pointermove', e => {
+        const r = sceneHost.getBoundingClientRect();
+        pointerX = Math.max(4, Math.min(cssW - 4, e.clientX - r.left));
+        pointerActiveUntil = performance.now() + 1400;
+      }, { passive: true });
+      sceneHost.addEventListener('pointerleave', () => { pointerActiveUntil = 0; });
+      const placeTreat = e => {
+        if (!currentAnimal()) return;
+        if (e.target.closest('button, select, input, label, textarea, .modal, .card-content')) return;
+        const r = sceneHost.getBoundingClientRect();
+        const x = Math.max(8, Math.min(cssW - 8, e.clientX - r.left));
+        treats.push({ x, born: performance.now() });
+        pointerX = x;
+        pointerActiveUntil = performance.now() + 15000;
+      };
+      sceneHost.addEventListener('pointerdown', placeTreat, true);
+      document.addEventListener('pointerdown', e => {
+        if (sceneHost.contains(e.target)) return;
+        if (e.target !== document.body && !e.target.classList.contains('app') && !e.target.classList.contains('main-layout') && !e.target.classList.contains('main-content')) return;
+        placeTreat(e);
+      }, true);
+
+      const animal = currentAnimal();
+      if (animal) start();
+    }
+
+    return { init, resize, onThemeChange };
+  })();
+
+  PixelScene.init();
+  applyTheme();
+  initColorPicker();
+  buildSecretMenu();
+  renderMatrix();
+  renderDynamicSections();
+  autoFitOutput();
+  updatePreview();
+</script>
+</body>
+</html>
