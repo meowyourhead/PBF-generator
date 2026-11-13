@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>PBF Comment Generator v3.6</title>
+<title>PBF Comment Generator v3.7</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@1,600;1,700;1,800&family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -848,6 +848,91 @@
   :root[data-palette="zenless"] .settings-slider { background: #1c1c1c; border-color: #000; }
   :root[data-palette="zenless"] .settings-slider::-webkit-slider-thumb { background: #ffea00; border-color: #000; }
 
+  /* ---------------------------------------------------------------------
+     Zenless light: the daylight, comic-panel side of New Eridu. Paper-white
+     panels inked with the same 2px black outline and square corner, grey
+     halftone hatching on the page, black ink for text. The black parts that
+     are the game's signature stay black: side tabs, action pills, toasts.
+     Yellow keeps its pulse and still marks whatever is selected.
+     --------------------------------------------------------------------- */
+  :root[data-palette="zenless"][data-theme="light"] {
+    --zz-tex: linear-gradient(45deg, rgba(0,0,0,.055) 25%, transparent 0 75%, rgba(0,0,0,.055) 0),
+              linear-gradient(45deg, rgba(0,0,0,.055) 25%, transparent 0 75%, rgba(0,0,0,.055) 0);
+    --zz-tex-ink: linear-gradient(45deg, rgba(255,255,255,.06) 25%, transparent 0 75%, rgba(255,255,255,.06) 0),
+                  linear-gradient(45deg, rgba(255,255,255,.06) 25%, transparent 0 75%, rgba(255,255,255,.06) 0);
+    --zz-ring-paper: inset 0 -1px 0 #0000001f, inset 0 0 0 3px #e2e2dc, inset 0 0 0 4px #000;
+    color-scheme: light;
+  }
+  :root[data-palette="zenless"][data-theme="light"] body,
+  :root[data-palette="zenless"][data-theme="light"] .dock { background-color: #e4e4df; color: #000; }
+  :root[data-palette="zenless"][data-theme="light"] .card { background: #fbfbf8; outline-color: rgba(0,0,0,.12); }
+  /* Side tabs stay black ink, so each panel still reads as a labelled comic frame */
+  :root[data-palette="zenless"][data-theme="light"] .card-rail { background-image: var(--zz-tex-ink); }
+  :root[data-palette="zenless"][data-theme="light"] .group-icon { color: #000; }
+  :root[data-palette="zenless"][data-theme="light"] .card-content .group-icon { filter: drop-shadow(1px 1px 0 #ffea00); }
+
+  /* Single-choice track: a sunken grey pill with the ink ring */
+  :root[data-palette="zenless"][data-theme="light"] .slider-group { background-color: #e9e9e4; box-shadow: var(--zz-ring-paper); }
+  :root[data-palette="zenless"][data-theme="light"] .chip-segmented .chip { color: #55554f; }
+  :root[data-palette="zenless"][data-theme="light"] .chip-segmented .chip:hover { color: #000; }
+  :root[data-palette="zenless"][data-theme="light"] .slider-indicator { box-shadow: inset 0 1px 2px #fff8, inset 0 0 0 2px #000; }
+
+  /* Multi-select chips: paper buttons with the ink ring; on, the yellow pulse */
+  :root[data-palette="zenless"][data-theme="light"] .chip-multi,
+  :root[data-palette="zenless"][data-theme="light"] .chip-more,
+  :root[data-palette="zenless"][data-theme="light"] .chip.chip-cell {
+    color: #000; background-color: #fff; background-image: none; box-shadow: var(--zz-ring-paper);
+  }
+  :root[data-palette="zenless"][data-theme="light"] .chip.chip-cell { box-shadow: inset 0 -1px 0 #0000001f, inset 0 0 0 2px #e2e2dc; }
+  :root[data-palette="zenless"][data-theme="light"] .chip-multi:hover,
+  :root[data-palette="zenless"][data-theme="light"] .chip-more:hover,
+  :root[data-palette="zenless"][data-theme="light"] .chip.chip-cell:hover {
+    background-color: #fff; box-shadow: inset 0 -1px 0 #0000001f, inset 0 0 0 3px #ffea00, inset 0 0 0 4px #000;
+  }
+  :root[data-palette="zenless"][data-theme="light"] .chip-multi.active,
+  :root[data-palette="zenless"][data-theme="light"] .special-selected .chip-tag,
+  :root[data-palette="zenless"][data-theme="light"] .chip.chip-cell.active {
+    color: #000; background-color: #ffea00; background-image: none; box-shadow: inset 0 1px 2px #fff8, inset 0 0 0 2px #000;
+  }
+
+  /* Cell type rows: paper strips; moderate gets a yellow marker band, marked an orange-red one */
+  :root[data-palette="zenless"][data-theme="light"] .cell-row { background: #f1f1ec; box-shadow: inset 0 0 0 2px #000; }
+  :root[data-palette="zenless"][data-theme="light"] .cell-row[data-severity="moderate"] { background: #fff7b0; box-shadow: inset 0 0 0 2px #000, inset 5px 0 0 #ffea00; }
+  :root[data-palette="zenless"][data-theme="light"] .cell-row[data-severity="marked"] { background: #ffe1d6; box-shadow: inset 0 0 0 2px #000, inset 5px 0 0 #ff5522; }
+  :root[data-palette="zenless"][data-theme="light"] .severity-label { color: #55554f; }
+  :root[data-palette="zenless"][data-theme="light"] .cell-row[data-severity="moderate"] .severity-label { color: #000; }
+  :root[data-palette="zenless"][data-theme="light"] .cell-row[data-severity="marked"] .severity-label { color: #c01c00; }
+  :root[data-palette="zenless"][data-theme="light"] .special-bar:hover { background: #efefea; color: #000; }
+
+  /* Action row: Generate keeps the pulse; the rest stay black ink pills, as on every New Eridu screen */
+  :root[data-palette="zenless"][data-theme="light"] .btn-secondary,
+  :root[data-palette="zenless"][data-theme="light"] .icon-btn { background-image: var(--zz-tex-ink); }
+  :root[data-palette="zenless"][data-theme="light"] .btn-primary:hover { box-shadow: inset 0 1px 2px #fff6, inset 0 0 0 4px #000, 0 0 0 3px rgba(0,0,0,.18); }
+  :root[data-palette="zenless"][data-theme="light"] .dock-hint { color: #55554f; }
+  :root[data-palette="zenless"][data-theme="light"] kbd { background: #fff; color: #000; border-color: #000; box-shadow: inset 0 -2px 0 #e2e2dc; }
+  :root[data-palette="zenless"][data-theme="light"] .mode-toggle { background: #e9e9e4; box-shadow: inset 0 2px 3px #0003, inset 0 0 0 3px #e9e9e4, inset 0 0 0 4px #000; }
+  :root[data-palette="zenless"][data-theme="light"] .mode-slider { background: #ffea00; box-shadow: inset 0 0 0 1.5px #000; }
+  :root[data-palette="zenless"][data-theme="light"] .mode-icon { color: #000; }
+
+  /* Comment box: a paper sheet in the ink frame */
+  :root[data-palette="zenless"][data-theme="light"] .output { background: #fff; color: #000; box-shadow: inset 0 0 0 3px #ecece6; }
+  :root[data-palette="zenless"][data-theme="light"] .preview-overlay { color: #000; opacity: 0.32; }
+
+  /* Dialogs: paper card, 4px ink border; the section heads get a yellow marker underline */
+  :root[data-palette="zenless"][data-theme="light"] .modal-overlay { background: rgba(228,228,223,.7); }
+  :root[data-palette="zenless"][data-theme="light"] .modal { background: #fbfbf8; color: #000; outline-color: rgba(0,0,0,.14); }
+  :root[data-palette="zenless"][data-theme="light"] .modal h3 { color: #000; box-shadow: inset 0 -0.45em 0 #ffea00; display: inline-block; padding: 0 2px; }
+  :root[data-palette="zenless"][data-theme="light"] .modal-desc { color: #55554f; }
+  :root[data-palette="zenless"][data-theme="light"] .modal input,
+  :root[data-palette="zenless"][data-theme="light"] .modal select,
+  :root[data-palette="zenless"][data-theme="light"] .modal textarea { background: #fff; color: #000; box-shadow: inset 0 0 0 3px #ecece6; }
+  :root[data-palette="zenless"][data-theme="light"] .modal input:focus,
+  :root[data-palette="zenless"][data-theme="light"] .modal select:focus { outline: 2px solid #000; box-shadow: inset 0 0 0 3px #ffea00; }
+  :root[data-palette="zenless"][data-theme="light"] .preview-box,
+  :root[data-palette="zenless"][data-theme="light"] .glossary-item,
+  :root[data-palette="zenless"][data-theme="light"] .history-item { background: #fff; border-color: #000; color: #000; }
+  :root[data-palette="zenless"][data-theme="light"] .settings-slider { background: #e9e9e4; }
+
   @media (prefers-reduced-motion: reduce) {
     :root[data-palette="zenless"] * { animation: none !important; }
   }
@@ -1405,13 +1490,123 @@
   :root[data-palette="genshin"] .g-code { color: var(--gi-gold-text); }
   :root[data-palette="genshin"] .inline-code { background: rgba(73, 83, 102, 0.1); color: var(--gi-ink); }
   :root[data-palette="genshin"] .secret-divider { border-top-color: rgba(201, 174, 120, 0.6); }
-  :root[data-palette="genshin"] .btn.qc-btn { border-radius: 999px; }
+  /* Quick codes: keep the shared two-face grid (the theme's .btn turns buttons into flex rows with
+     a glyph badge, which pushed the code out of its pill). Codes read like the game's item names. */
+  :root[data-palette="genshin"] .modal .btn.qc-btn {
+    display: grid; place-items: center; gap: 0; height: 34px; padding: 0 10px;
+    border-radius: 999px; font-size: 13px; font-weight: 400; letter-spacing: 0.02em;
+    background: #e0d6c3; color: var(--gi-ink); box-shadow: inset 0 0 0 1px #cdbf9f;
+  }
+  /* HYWenHei runs wider than the default face: give the four columns room to breathe */
+  :root[data-palette="genshin"] #secret-menu .modal { max-width: 460px; }
+  :root[data-palette="genshin"] .modal .btn.qc-btn:hover { background: var(--gi-cream-hi); box-shadow: inset 0 0 0 1px var(--gi-gold-line), 0 0 0 2px #fff; }
+  :root[data-palette="genshin"] .qc-face { gap: 6px; }
+  :root[data-palette="genshin"] .qc-face svg { width: 11px; height: 11px; stroke-width: 2; }
+  :root[data-palette="genshin"] .qc-face-label .qc-copy-ico { color: var(--gi-gold-text); opacity: 0.8; }
+  :root[data-palette="genshin"] .qc-face-done svg { color: var(--gi-star); }
   :root[data-palette="genshin"] .secret-copied { background: var(--gi-ink) !important; color: var(--gi-cream) !important; border-color: var(--gi-ink) !important; }
   :root[data-palette="genshin"] .settings-slider { background: rgba(73, 83, 102, 0.14); border-color: #d6c9ad; }
   :root[data-palette="genshin"] .settings-slider::-webkit-slider-thumb { background: var(--gi-cream-hi); border: 2px solid var(--gi-ink); }
   :root[data-palette="genshin"] .settings-slider::-moz-range-thumb { background: var(--gi-cream-hi); border: 2px solid var(--gi-ink); }
+  /* ---------------------------------------------------------------------
+     Genshin dark: the Archive and Tutorials screens. A deeper indigo sky
+     with a violet nebula, slate list rows edged by a faint cream line, and
+     the game's tell for "this one": the chosen row turns to cream with
+     slate text. Gold stays on frames and headings. Dialogs and the cream
+     action pills stay as they are, as they do over the game's dark menus.
+     --------------------------------------------------------------------- */
+  :root[data-palette="genshin"][data-theme="dark"] {
+    --gi-panel: #232a3d;
+    --gi-row: rgba(73, 83, 102, 0.42);
+    --gi-row-line: rgba(236, 229, 216, 0.14);
+    --gi-sky:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cg fill='%23fff'%3E%3Ccircle cx='14' cy='22' r='.9' opacity='.7'/%3E%3Ccircle cx='96' cy='12' r='.6' opacity='.5'/%3E%3Ccircle cx='170' cy='48' r='1.1' opacity='.8'/%3E%3Ccircle cx='232' cy='18' r='.7' opacity='.55'/%3E%3Ccircle cx='58' cy='92' r='.7' opacity='.45'/%3E%3Ccircle cx='128' cy='118' r='.5' opacity='.6'/%3E%3Ccircle cx='214' cy='132' r='.9' opacity='.6'/%3E%3Ccircle cx='30' cy='170' r='1' opacity='.65'/%3E%3Ccircle cx='110' cy='204' r='.7' opacity='.5'/%3E%3Ccircle cx='190' cy='224' r='.6' opacity='.7'/%3E%3Ccircle cx='246' cy='190' r='.8' opacity='.4'/%3E%3Ccircle cx='76' cy='246' r='.5' opacity='.55'/%3E%3Cpath d='M150 82q0 6 6 6q-6 0-6 6q0-6-6-6q6 0 6-6z' opacity='.8'/%3E%3Cpath d='M44 130q0 4 4 4q-4 0-4 4q0-4-4-4q4 0 4-4z' opacity='.6'/%3E%3C/g%3E%3Cg fill='%23c9b8ff'%3E%3Ccircle cx='200' cy='96' r='1' opacity='.6'/%3E%3Ccircle cx='70' cy='54' r='.8' opacity='.5'/%3E%3Ccircle cx='140' cy='168' r='1.1' opacity='.55'/%3E%3Cpath d='M236 238q0 3.5 3.5 3.5q-3.5 0-3.5 3.5q0-3.5-3.5-3.5q3.5 0 3.5-3.5z' opacity='.7'/%3E%3C/g%3E%3Cg fill='%23ffd98a'%3E%3Ccircle cx='22' cy='214' r='.8' opacity='.6'/%3E%3Ccircle cx='182' cy='6' r='.7' opacity='.5'/%3E%3C/g%3E%3C/svg%3E"),
+      radial-gradient(ellipse 55% 50% at 82% 6%, rgba(132, 104, 214, 0.30), transparent 70%),
+      radial-gradient(ellipse 60% 55% at 6% 98%, rgba(64, 104, 190, 0.28), transparent 70%),
+      radial-gradient(ellipse 45% 30% at 48% 52%, rgba(170, 120, 210, 0.10), transparent 70%),
+      linear-gradient(170deg, #161a30 0%, #141829 50%, #191a33 100%);
+    --shadow: 0 8px 24px rgba(4, 6, 14, 0.5);
+    color-scheme: dark;
+  }
+  :root[data-palette="genshin"][data-theme="dark"] body,
+  :root[data-palette="genshin"][data-theme="dark"] .dock { background-color: #141829; }
+  :root[data-palette="genshin"][data-theme="dark"] body { color: var(--gi-cream); }
+  :root[data-palette="genshin"][data-theme="dark"] ::selection { background: rgba(211, 188, 142, 0.5); color: #fff; }
+
+  /* Panels: dark slate, gold hairline and corner pieces as in light */
+  :root[data-palette="genshin"][data-theme="dark"] .card {
+    background: var(--gi-panel);
+    box-shadow: inset 0 0 0 4px var(--gi-panel), inset 0 0 0 5px rgba(211, 188, 142, 0.34), var(--shadow);
+  }
+  :root[data-palette="genshin"][data-theme="dark"] .card-rail {
+    background: linear-gradient(180deg, #1c2134, #171b2b); border-right-color: rgba(201, 174, 120, 0.5); box-shadow: none;
+  }
+  :root[data-palette="genshin"][data-theme="dark"] .card-title { color: var(--gi-gold); }
+  :root[data-palette="genshin"][data-theme="dark"] .group-icon { color: var(--gi-gold); }
+
+  /* Single-choice groups: a dark well; the choice is the cream "selected row" pill */
+  :root[data-palette="genshin"][data-theme="dark"] .slider-group { background: rgba(10, 13, 24, 0.45); border-color: var(--gi-row-line); }
+  :root[data-palette="genshin"][data-theme="dark"] .chip-segmented .chip { color: rgba(236, 229, 216, 0.72); }
+  :root[data-palette="genshin"][data-theme="dark"] .chip-segmented .chip:hover { color: var(--gi-cream-hi); }
+  :root[data-palette="genshin"][data-theme="dark"] .chip-segmented .chip.active { color: var(--gi-slate-deep); }
+  :root[data-palette="genshin"][data-theme="dark"] .slider-indicator {
+    background: linear-gradient(180deg, var(--gi-cream-hi), #e3d9c6);
+    box-shadow: inset 0 0 0 1px rgba(201, 174, 120, 0.85), 0 0 10px rgba(255, 240, 200, 0.18);
+  }
+
+  /* Multi-select and cell chips: slate rows with a cream edge; on, cream with a gold star */
+  :root[data-palette="genshin"][data-theme="dark"] .chip-multi,
+  :root[data-palette="genshin"][data-theme="dark"] .chip.chip-cell {
+    color: var(--gi-cream); background: var(--gi-row); border: 1px solid var(--gi-row-line); box-shadow: none;
+  }
+  :root[data-palette="genshin"][data-theme="dark"] .chip-multi:hover,
+  :root[data-palette="genshin"][data-theme="dark"] .chip.chip-cell:hover {
+    color: #fff; background: rgba(96, 108, 134, 0.5); border-color: rgba(236, 229, 216, 0.5); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35), 0 0 10px rgba(255, 240, 200, 0.18);
+  }
+  :root[data-palette="genshin"][data-theme="dark"] .chip-multi.active,
+  :root[data-palette="genshin"][data-theme="dark"] .chip.chip-cell.active {
+    color: var(--gi-slate-deep); background: linear-gradient(180deg, var(--gi-cream-hi), #e3d9c6); border-color: var(--gi-gold-line);
+    box-shadow: 0 0 10px rgba(255, 240, 200, 0.18);
+  }
+  :root[data-palette="genshin"][data-theme="dark"] .chip-multi.active::before { color: #c79a3e; }
+  :root[data-palette="genshin"][data-theme="dark"] .chip-more,
+  :root[data-palette="genshin"][data-theme="dark"] .chip.chip-cell-more { color: var(--gi-gold); border-color: rgba(211, 188, 142, 0.55); }
+  :root[data-palette="genshin"][data-theme="dark"] .chip-more:hover,
+  :root[data-palette="genshin"][data-theme="dark"] .chip.chip-cell-more:hover { color: var(--gi-cream-hi); border-color: var(--gi-cream); }
+
+  /* Cell type matrix: dark list entries; severity tints toward gold, then ember red */
+  :root[data-palette="genshin"][data-theme="dark"] .cell-row { background: rgba(10, 13, 24, 0.32); box-shadow: inset 0 0 0 1px rgba(236, 229, 216, 0.09); }
+  :root[data-palette="genshin"][data-theme="dark"] .cell-row[data-severity="moderate"] {
+    background: rgba(211, 188, 142, 0.12); box-shadow: inset 0 0 0 1px rgba(211, 188, 142, 0.42), inset 3px 0 0 var(--gi-gold);
+  }
+  :root[data-palette="genshin"][data-theme="dark"] .cell-row[data-severity="marked"] {
+    background: rgba(196, 90, 76, 0.17); box-shadow: inset 0 0 0 1px rgba(224, 122, 106, 0.45), inset 3px 0 0 #e07a6a;
+  }
+  :root[data-palette="genshin"][data-theme="dark"] .severity-label { color: rgba(236, 229, 216, 0.7); }
+  :root[data-palette="genshin"][data-theme="dark"] .cell-row[data-severity="moderate"] .severity-label,
+  :root[data-palette="genshin"][data-theme="dark"] .cell-row[data-severity="moderate"] .chip.chip-cell-more { color: var(--gi-gold); }
+  :root[data-palette="genshin"][data-theme="dark"] .cell-row[data-severity="marked"] .severity-label,
+  :root[data-palette="genshin"][data-theme="dark"] .cell-row[data-severity="marked"] .chip.chip-cell-more { color: #ff9c8c; }
+  :root[data-palette="genshin"][data-theme="dark"] .cell-row[data-severity="marked"] .chip.chip-cell.active { color: #fff; }
+
+  :root[data-palette="genshin"][data-theme="dark"] .special-bar { color: rgba(236, 229, 216, 0.72); }
+  :root[data-palette="genshin"][data-theme="dark"] .special-bar:hover { background: rgba(236, 229, 216, 0.06); color: var(--gi-cream-hi); }
+  :root[data-palette="genshin"][data-theme="dark"] .special-selected .chip-tag { background: var(--gi-cream); color: var(--gi-slate-deep); box-shadow: inset 0 0 0 1px var(--gi-gold-line); }
+
+  /* Comment box: a dark sheet; text in cream like the Archive's entry body */
+  :root[data-palette="genshin"][data-theme="dark"] .output { background: rgba(12, 16, 28, 0.5); border-color: rgba(211, 188, 142, 0.3); color: var(--gi-cream); }
+  :root[data-palette="genshin"][data-theme="dark"] .output:focus { border-color: var(--gi-gold); box-shadow: 0 0 0 2px rgba(211, 188, 142, 0.25); }
+  :root[data-palette="genshin"][data-theme="dark"] .preview-overlay { color: var(--gi-cream); opacity: 0.38; }
+
+  /* Dialogs stay cream parchment, so give them back the light theme's colours */
+  :root[data-palette="genshin"][data-theme="dark"] .modal {
+    --bg: #1b2536; --bg-2: #f6f2ea; --card: #ece5d8; --card-2: #e2d9c8; --border: #d8ccb4; --fg: #495366; --muted: #7d8596;
+    color-scheme: light;
+  }
+
   /* Phones: the side tab becomes a top strip, so the frame corners sit below it */
   @media (max-width: 600px) {
+    :root[data-palette="genshin"][data-theme="dark"] .card-rail { background: linear-gradient(90deg, #1c2134, #171b2b); }
     :root[data-palette="genshin"] .card-rail {
       background: linear-gradient(90deg, #454e63, var(--gi-slate)); border-right: 0; border-bottom: 1px solid rgba(201, 174, 120, 0.7);
     }
@@ -4061,18 +4256,22 @@ const PetEngine = (function () {
       const c = { bg: '#0e1217', bg2: '#0b0f13', card: '#11171d', card2: '#161e25', border: '#6b2b2b', fg: '#e4ecef', muted: '#b06a64', accent: '#5ef6ff', accent2: '#ff5f57', accent3: '#fcee0a' };
       return { name: 'Cyberpunk', dark: c, light: c, darkOnly: true };
     })(),
-    // Genshin: after the Genshin Impact menus. Cream parchment panels on a starlit night, so it's always light.
-    genshin: (() => {
-      const g = { bg: '#1b2536', bg2: '#f6f2ea', card: '#ece5d8', card2: '#e2d9c8', border: '#d8ccb4', fg: '#495366', muted: '#7d8596', accent: '#d3bc8e', accent2: '#9a7a45', accent3: '#495366' };
-      return { name: 'Genshin', dark: g, light: g, forceMode: 'light' };
-    })(),
+    // Genshin: after the Genshin Impact menus. Light is the cream parchment of the Paimon menu
+    // and dialogs; dark is the Archive / Tutorials screens: slate rows on an indigo starfield.
+    genshin: {
+      name: 'Genshin',
+      light: { bg: '#1b2536', bg2: '#f6f2ea', card: '#ece5d8', card2: '#e2d9c8', border: '#d8ccb4', fg: '#495366', muted: '#7d8596', accent: '#d3bc8e', accent2: '#9a7a45', accent3: '#495366' },
+      dark: { bg: '#141829', bg2: '#22283a', card: '#262c40', card2: '#30374d', border: '#4a5370', fg: '#ece5d8', muted: '#a4a8b5', accent: '#d3bc8e', accent2: '#ffcc32', accent3: '#ece5d8' }
+    },
     fantasy: { name: 'Fantasy', bg: '#1a1418', bg2: '#241b22', card: '#2e232b', card2: '#3a2c35', border: '#4d3a47', fg: '#f4e8e8', muted: '#a89090', accent: '#d4af37', accent2: '#c792ea', accent3: '#ff5874' },
     aurora: { name: 'Aurora', bg: '#0d1b2a', bg2: '#1b263b', card: '#243447', card2: '#2e435b', border: '#415a77', fg: '#e0e1dd', muted: '#778da9', accent: '#00f5d4', accent2: '#9b5de5', accent3: '#f15bb5' },
-    // Zenless: after the zenless-ui kit (MIT). Always the black, textured look; light mode keeps it.
-    zenless: (() => {
-      const z = { bg: '#000000', bg2: '#1c1c1c', card: '#222222', card2: '#2e2e2e', border: '#000000', fg: '#ffffff', muted: '#c2c2c2', accent: '#ffea00', accent2: '#ffea00', accent3: '#91bc00' };
-      return { name: 'Zenless', dark: z, light: z };
-    })(),
+    // Zenless: after the zenless-ui kit (MIT). Dark is the kit's black, textured look; light is
+    // the comic-panel daylight side of New Eridu: white panels, black ink outlines, same yellow.
+    zenless: {
+      name: 'Zenless',
+      dark: { bg: '#000000', bg2: '#1c1c1c', card: '#222222', card2: '#2e2e2e', border: '#000000', fg: '#ffffff', muted: '#c2c2c2', accent: '#ffea00', accent2: '#ffea00', accent3: '#91bc00' },
+      light: { bg: '#e4e4df', bg2: '#ffffff', card: '#fbfbf8', card2: '#efefea', border: '#000000', fg: '#000000', muted: '#55554f', accent: '#ffea00', accent2: '#ffea00', accent3: '#91bc00' }
+    },
     claude: {
       name: 'Claude',
       dark: { bg: '#262624', bg2: '#30302e', card: '#30302e', card2: '#3a3a37', border: '#454542', fg: '#f4f4ef', muted: '#a0a09a', accent: '#d97757', accent2: '#e89b7b', accent3: '#c26347' },
@@ -4259,7 +4458,7 @@ const PetEngine = (function () {
     return luminance > 0.6 ? '#1a1a1a' : '#ffffff';
   }
 
-  // Fixed-mode themes (Cyberpunk always dark, Genshin always light) ignore the switch; the
+  // Fixed-mode themes (Cyberpunk is always dark) ignore the switch; the
   // saved light/dark choice is kept untouched so switching back to another theme restores it.
   function fixedMode(p) {
     return p ? (p.forceMode || (p.darkOnly ? 'dark' : null)) : null;

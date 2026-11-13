@@ -494,8 +494,27 @@
         const seg = getComputedStyle(document.getElementById('chroma-type'));
         expect(seg.borderTopLeftRadius === '9999px' || parseFloat(seg.borderTopLeftRadius) > 100, 'segmented track not a pill');
         expect(/linear-gradient\(45deg/.test(getComputedStyle(document.body).backgroundImage), 'body lacks the diagonal texture');
+        // v3.7: light mode is the paper-and-ink variant, keeping the ink frame and black side tabs.
         userTheme.mode = 'light'; applyTheme();
-        expect(getComputedStyle(document.body).backgroundColor === 'rgb(0, 0, 0)', 'zenless light mode lost the black base');
+        expect(getComputedStyle(document.body).backgroundColor === 'rgb(228, 228, 223)', 'zenless light mode lacks the paper base');
+        const lcard = getComputedStyle(document.querySelector('.main-content .card'));
+        expect(lcard.backgroundColor === 'rgb(251, 251, 248)' && lcard.borderTopColor === 'rgb(0, 0, 0)', 'zenless light card not paper with ink border');
+        expect(getComputedStyle(document.querySelector('.main-content .card-rail')).backgroundColor === 'rgb(0, 0, 0)', 'zenless light side tab not black');
+        // Genshin: both modes now, switch unlocked; dark turns the panels to slate, dialogs stay cream.
+        userTheme.palette = 'genshin'; userTheme.mode = 'dark'; applyTheme();
+        expect(document.documentElement.dataset.theme === 'dark', 'genshin ignored dark mode');
+        expect(!document.getElementById('mode-toggle-btn').classList.contains('is-locked'), 'genshin mode switch still locked');
+        expect(getComputedStyle(document.querySelector('.main-content .card')).backgroundColor === 'rgb(35, 42, 61)', 'genshin dark card not slate');
+        expect(getComputedStyle(document.querySelector('#secret-menu .modal')).color === 'rgb(73, 83, 102)', 'genshin dark dialog lost its ink text');
+        userTheme.mode = 'light'; applyTheme();
+        expect(getComputedStyle(document.querySelector('.main-content .card')).backgroundColor === 'rgb(236, 229, 216)', 'genshin light card not parchment');
+        // Quick codes: the code label must sit inside its pill under Genshin.
+        buildSecretMenu(); openModal('secret-menu');
+        document.querySelectorAll('#secret-menu .qc-btn').forEach(b => {
+          const o = b.getBoundingClientRect(), k = b.querySelector('.qc-face-label').getBoundingClientRect();
+          expect(k.left >= o.left - 0.5 && k.right <= o.right + 0.5, 'genshin quick code spills out of its button: ' + b.textContent.trim());
+        });
+        closeModal('secret-menu');
       } finally {
         Object.assign(userTheme, JSON.parse(saved));
         applyTheme();
