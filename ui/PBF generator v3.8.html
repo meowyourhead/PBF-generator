@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>PBF Comment Generator v3.7</title>
+<title>PBF Comment Generator v3.8</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@1,600;1,700;1,800&family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -453,7 +453,8 @@
   }
   .output:focus { border-color: var(--accent-dim); }
   .output.blurred { filter: blur(5px); pointer-events: none; user-select: none; }
-  .output.has-preview { color: transparent; }
+  /* !important: themed .output rules (Cyberpunk, Zenless, Genshin) set a more specific color that would otherwise show the old comment under the preview */
+  .output.has-preview { color: transparent !important; }
   
   .preview-overlay {
     position: absolute;
