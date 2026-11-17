@@ -277,3 +277,33 @@ fn describe(e: ureq::Error) -> String {
         ureq::Error::Transport(_) => "Couldn't reach GitHub. Check your internet connection.".into(),
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    // Live tests against the published release (need internet).
+    #[test]
+    #[ignore]
+    fn live_release_verifies() {
+        let u = Arc::new(Updater::default());
+        let reply = u.check_inner().expect("check failed");
+        // This build is 1.0.0, the same as the latest release.
+        assert!(reply.contains("latest"), "{reply}");
+
+        let agent = agent().unwrap();
+        let base = format!("https://github.com/{REPO}/releases/download/v1.0/");
+        let exe = fetch(&agent, &format!("{base}{ASSET_EXE}"), MAX_EXE).unwrap();
+        let sig = fetch(&agent, &format!("{base}{ASSET_SIG}"), 4096).unwrap();
+        assert!(exe.starts_with(b"MZ"));
+        verify([1, 0, 0], &exe, &sig).expect("good release must verify");
+
+        // Tampered exe, wrong version label, or garbage signature: all rejected.
+        let mut bad = exe.clone();
+        let n = bad.len() / 2;
+        bad[n] ^= 1;
+        assert!(verify([1, 0, 0], &bad, &sig).is_err());
+        assert!(verify([1, 0, 1], &exe, &sig).is_err());
+        assert!(verify([1, 0, 0], &exe, b"00").is_err());
+    }
+}
