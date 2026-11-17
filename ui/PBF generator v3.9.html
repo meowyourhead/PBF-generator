@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>PBF Comment Generator v3.8</title>
+<title>PBF Comment Generator v3.9</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@1,600;1,700;1,800&family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -271,7 +271,7 @@
   }
   @media (prefers-reduced-motion: reduce) { .slider-indicator { transition: opacity 0.15s linear; } }
 
-  /* Multi-select groups: standalone chips with a check mark when on */
+  /* Multi-select groups: standalone chips that fill in when on */
   .chip-multi {
     border: 1px solid var(--border); background: var(--bg-2); color: var(--fg);
   }
@@ -280,7 +280,6 @@
     background: var(--accent); border-color: var(--accent); color: var(--accent-text);
     box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 35%, transparent);
   }
-  .chip-multi.active::before { content: '✓'; font-size: 0.9em; font-weight: 700; }
 
   /* ---------- Special: a card like the others; collapsed, it shows the code names greyed out ---------- */
   .special .special-content { flex-direction: row; align-items: center; justify-content: flex-start; gap: var(--space-2); }
@@ -608,6 +607,12 @@
   .ts-pet-portrait { width: 108px; height: 66px; flex: none; image-rendering: pixelated; }
   .ts-pet:disabled .ts-pet-portrait { opacity: 0.35; }
   .ts-species { flex: none; }
+  .ts-row[hidden] { display: none; }
+  .ts-update { justify-content: space-between; }
+  .ts-update-status { font-size: 13px; color: var(--fg); min-width: 0; overflow-wrap: anywhere; }
+  .ts-update-status.is-error { color: var(--danger); }
+  .ts-update .btn { flex: none; }
+  .ts-update .btn:disabled { opacity: 0.6; cursor: default; transform: none; }
 
   @media (max-width: 600px) {
     .ts-row { grid-template-columns: 1fr; row-gap: 8px; }
@@ -1340,7 +1345,6 @@
     color: var(--gi-cream); background: linear-gradient(180deg, #535d73, var(--gi-ink)); border-color: var(--gi-ink);
     box-shadow: inset 0 0 0 1px rgba(211, 188, 142, 0.55);
   }
-  :root[data-palette="genshin"] .chip-multi.active::before { color: var(--gi-star); }
   :root[data-palette="genshin"] .chip-more,
   :root[data-palette="genshin"] .chip.chip-cell-more { color: var(--gi-gold-text); border: 1px dashed var(--gi-gold-line); background: transparent; }
   :root[data-palette="genshin"] .chip-more:hover,
@@ -1569,7 +1573,6 @@
     color: var(--gi-slate-deep); background: linear-gradient(180deg, var(--gi-cream-hi), #e3d9c6); border-color: var(--gi-gold-line);
     box-shadow: 0 0 10px rgba(255, 240, 200, 0.18);
   }
-  :root[data-palette="genshin"][data-theme="dark"] .chip-multi.active::before { color: #c79a3e; }
   :root[data-palette="genshin"][data-theme="dark"] .chip-more,
   :root[data-palette="genshin"][data-theme="dark"] .chip.chip-cell-more { color: var(--gi-gold); border-color: rgba(211, 188, 142, 0.55); }
   :root[data-palette="genshin"][data-theme="dark"] .chip-more:hover,
@@ -1966,6 +1969,15 @@
           <option value="shiba">Shiba</option>
           <option value="capybara">Capybara</option>
         </select>
+      </div>
+
+      <!-- Updates: only in the desktop app; the shell talks to GitHub, never the page. -->
+      <div class="ts-row" id="ts-update-row" hidden>
+        <span class="ts-label">Updates</span>
+        <div class="ts-control ts-update">
+          <span class="ts-update-status" id="update-status" aria-live="polite"></span>
+          <button type="button" class="btn btn-secondary btn-small" id="update-btn">Check for updates</button>
+        </div>
       </div>
     </div>
   </div>
@@ -5587,6 +5599,52 @@ const PetEngine = (function () {
       else if (!e.shiftKey && document.activeElement === ok) { e.preventDefault(); cancel.focus(); }
     }
   });
+
+  // ---- Updates (desktop app only) ------------------------------------------
+  // The shell checks GitHub and installs signed releases; the page only asks and
+  // shows the answer. It never sees the access token or any download URL.
+  (function setupUpdates() {
+    const shell = window.__pbfApp;
+    if (!shell || !window.ipc) return;
+    const row = $('#ts-update-row'), status = $('#update-status'), btn = $('#update-btn');
+    row.hidden = false;
+    let available = null;   // version string once a newer release is found
+    let busy = false;
+    const setStatus = (text, isError) => { status.textContent = text; status.classList.toggle('is-error', !!isError); };
+    const idle = () => {
+      busy = false; btn.disabled = false;
+      btn.textContent = available ? `Install v${available}` : 'Check for updates';
+    };
+    setStatus(shell.updates ? `Version ${shell.version}` : `Version ${shell.version} · updates not set up in this build`);
+    btn.hidden = !shell.updates;
+
+    window.__pbfUpdate = (r) => {
+      if (!r || typeof r !== 'object') return;
+      if (r.state === 'latest') { available = null; setStatus(`Version ${shell.version} · up to date`); idle(); }
+      else if (r.state === 'available') { available = String(r.version); setStatus(`Version ${available} is available`); idle(); }
+      else if (r.state === 'installing') { setStatus(String(r.message || 'Installing…')); }
+      else if (r.state === 'error') { setStatus(String(r.message || 'Update check failed'), true); idle(); }
+    };
+
+    btn.addEventListener('click', async () => {
+      if (busy) return;
+      if (available) {
+        const ok = await confirmDialog({
+          title: `Install version ${available}?`,
+          message: 'The app downloads the update, checks its signature, then restarts. Your settings and history are kept.',
+          confirmLabel: 'Install and restart'
+        });
+        if (!ok) return;
+        busy = true; btn.disabled = true; btn.textContent = 'Installing…';
+        setStatus('Downloading…');
+        window.ipc.postMessage('update:install');
+      } else {
+        busy = true; btn.disabled = true; btn.textContent = 'Checking…';
+        setStatus('Checking GitHub…');
+        window.ipc.postMessage('update:check');
+      }
+    });
+  })();
 
   $('#reset-defaults-btn').addEventListener('click', async () => {
     const ok = await confirmDialog({

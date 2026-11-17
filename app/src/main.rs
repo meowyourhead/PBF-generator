@@ -1,6 +1,10 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod signing;
+mod updater;
+
 use std::borrow::Cow;
+use std::sync::Arc;
 use std::time::{Duration, Instant};
 use tao::{
     dpi::{LogicalSize, PhysicalPosition, PhysicalSize},
@@ -51,6 +55,13 @@ enum UserEvent {
     /// Fit the window to the page content. All values in physical pixels:
     /// inner width/height and the screen's available width/height.
     Fit { w: u32, h: u32, avail_w: i32, avail_h: i32, place: Placement },
+    /// Settings > Updates buttons.
+    UpdateCheck,
+    UpdateInstall,
+    /// A status for the page (JSON for window.__pbfUpdate), from the updater thread.
+    UpdateReply(String),
+    /// The new version is installed and running; quit this one.
+    UpdateRestart,
 }
 
 fn parse_message(msg: &str) -> Option<UserEvent> {
@@ -124,8 +135,11 @@ fn data_dir() -> std::path::PathBuf {
 }
 
 fn main() -> wry::Result<()> {
+    updater::clean_up_old();
     let event_loop = EventLoopBuilder::<UserEvent>::with_user_event().build();
     let proxy = event_loop.create_proxy();
+    let update_proxy = event_loop.create_proxy();
+    let updates = Arc::new(updater::Updater::default());
 
     let window = WindowBuilder::new()
         .with_title("PBF Generator")
@@ -161,6 +175,11 @@ fn main() -> wry::Result<()> {
             url.starts_with("pbf://localhost") || url.starts_with("https://pbf.localhost")
         })
         .with_new_window_req_handler(|_, _| wry::NewWindowResponse::Deny)
+        // Ctrl+R / F5 reload, Ctrl+F find, Ctrl+P print, Ctrl+wheel/± zoom and the
+        // like would all fight the shell (a reload re-runs the fit against an
+        // already-zoomed window). Editing keys such as Ctrl+C/V are unaffected.
+        .with_browser_accelerator_keys(false)
+        .with_initialization_script(&updater::page_info_script())
         .with_initialization_script(TITLEBAR_JS)
         // Generate copies the comment; allow it without WebView2's clipboard prompt.
         .with_clipboard(true)
@@ -178,6 +197,8 @@ fn main() -> wry::Result<()> {
                 "resize-nw" => UserEvent::Resize(ResizeDirection::NorthWest),
                 "resize-se" => UserEvent::Resize(ResizeDirection::SouthEast),
                 "resize-sw" => UserEvent::Resize(ResizeDirection::SouthWest),
+                "update:check" => UserEvent::UpdateCheck,
+                "update:install" => UserEvent::UpdateInstall,
                 other => match parse_message(other) {
                     Some(ev) => ev,
                     None => return,
@@ -223,6 +244,33 @@ fn main() -> wry::Result<()> {
                     }
                 }
             }
+            Event::UserEvent(UserEvent::UpdateCheck) => {
+                let (u, p) = (updates.clone(), update_proxy.clone());
+                std::thread::spawn(move || {
+                    let ev = match u.check() {
+                        updater::Outcome::Reply(j) => UserEvent::UpdateReply(j),
+                        updater::Outcome::Restart => UserEvent::UpdateRestart,
+                    };
+                    let _ = p.send_event(ev);
+                });
+            }
+            Event::UserEvent(UserEvent::UpdateInstall) => {
+                let (u, p) = (updates.clone(), update_proxy.clone());
+                std::thread::spawn(move || {
+                    let ev = match u.install(|j| { let _ = p.send_event(UserEvent::UpdateReply(j)); }) {
+                        updater::Outcome::Reply(j) => UserEvent::UpdateReply(j),
+                        updater::Outcome::Restart => UserEvent::UpdateRestart,
+                    };
+                    let _ = p.send_event(ev);
+                });
+            }
+            Event::UserEvent(UserEvent::UpdateReply(json)) => {
+                // `json` is serde_json output, so it is a safe JS object literal.
+                let _ = webview.evaluate_script(&format!(
+                    "window.__pbfUpdate && window.__pbfUpdate({json})"
+                ));
+            }
+            Event::UserEvent(UserEvent::UpdateRestart) => *control_flow = ControlFlow::Exit,
             Event::UserEvent(UserEvent::Zoom(z)) => {
                 let _ = webview.zoom(z);
             }

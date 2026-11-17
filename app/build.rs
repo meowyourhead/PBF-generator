@@ -90,11 +90,63 @@ fn main() {
     let file = fs::File::create(&ico_path).unwrap();
     image::codecs::ico::IcoEncoder::new(file).encode_images(&frames).unwrap();
 
+    // ---- 4. updater secrets ----------------------------------------------
+    write_update_secrets(&manifest, &out);
+
     if env::var("CARGO_CFG_TARGET_OS").as_deref() == Ok("windows") {
         let mut res = winresource::WindowsResource::new();
         res.set_icon(ico_path.to_str().unwrap());
         res.compile().expect("failed to compile Windows resources");
     }
+}
+
+/// The GitHub token comes only from the PBF_UPDATE_TOKEN environment variable at
+/// build time (tools/release.ps1 supplies it); it is never in the source tree.
+/// It is sealed with ChaCha20-Poly1305 under a fresh random key per build, and
+/// the key is stored as two XOR shares, so the token never sits in the exe as
+/// plain text. Without a token or public key the updater is compiled in but off.
+fn write_update_secrets(manifest: &std::path::Path, out: &std::path::Path) {
+    use chacha20poly1305::{ChaCha20Poly1305, KeyInit, Nonce, aead::Aead};
+    println!("cargo:rerun-if-env-changed=PBF_UPDATE_TOKEN");
+    let pub_path = manifest.join("update_pubkey.txt");
+    println!("cargo:rerun-if-changed={}", pub_path.display());
+
+    let pubkey: Vec<u8> = fs::read_to_string(&pub_path)
+        .ok()
+        .map(|s| s.trim().to_owned())
+        .filter(|s| s.len() == 64)
+        .map(|s| (0..32).map(|i| u8::from_str_radix(&s[2 * i..2 * i + 2], 16).expect("bad update_pubkey.txt")).collect())
+        .unwrap_or_default();
+    fs::write(out.join("update_pubkey.bin"), &pubkey).unwrap();
+
+    let token = env::var("PBF_UPDATE_TOKEN").unwrap_or_default();
+    let token = token.trim();
+    let (mut sealed, mut share_a, mut share_b) = (Vec::new(), Vec::new(), Vec::new());
+    if !token.is_empty() {
+        if pubkey.is_empty() {
+            panic!("PBF_UPDATE_TOKEN is set but app/update_pubkey.txt is missing");
+        }
+        let mut key = [0u8; 32];
+        let mut nonce = [0u8; 12];
+        let mut mask = [0u8; 32];
+        getrandom::getrandom(&mut key).unwrap();
+        getrandom::getrandom(&mut nonce).unwrap();
+        getrandom::getrandom(&mut mask).unwrap();
+        let cipher = ChaCha20Poly1305::new(&key.into());
+        let ct = cipher
+            .encrypt(Nonce::from_slice(&nonce), token.as_bytes())
+            .expect("token encryption failed");
+        sealed.extend_from_slice(&nonce);
+        sealed.extend_from_slice(&ct);
+        share_a.extend_from_slice(&mask);
+        share_b.extend(key.iter().zip(mask.iter()).map(|(k, m)| k ^ m));
+        println!("cargo:warning=Updater enabled (token sealed into this build)");
+    } else {
+        println!("cargo:warning=PBF_UPDATE_TOKEN not set: updater disabled in this build");
+    }
+    fs::write(out.join("update_token.bin"), &sealed).unwrap();
+    fs::write(out.join("update_ka.bin"), &share_a).unwrap();
+    fs::write(out.join("update_kb.bin"), &share_b).unwrap();
 }
 
 /// Google's CSS repeats one @font-face per weight even when every weight points at

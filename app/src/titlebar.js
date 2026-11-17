@@ -293,6 +293,14 @@
       bar.querySelector('.pbf-max').title = m ? 'Restore' : 'Maximize';
     };
 
+    // Reloading would re-run this script against a window that is already fitted and
+    // zoomed, scrambling the layout. The shell turns off WebView2's browser keys;
+    // this catches the reload keys too in case a runtime still delivers them.
+    document.addEventListener('keydown', (e) => {
+      const k = e.key.toLowerCase();
+      if (k === 'f5' || ((e.ctrlKey || e.metaKey) && k === 'r')) { e.preventDefault(); e.stopPropagation(); }
+    }, true);
+
     const cursors = { n: 'ns-resize', s: 'ns-resize', e: 'ew-resize', w: 'ew-resize',
       ne: 'nesw-resize', sw: 'nesw-resize', nw: 'nwse-resize', se: 'nwse-resize' };
     let cursorSet = false;

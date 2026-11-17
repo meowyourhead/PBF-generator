@@ -6,6 +6,7 @@
 !/ui/
 !/app/
 !/tests/
+!/tools/
 
 # Build output
 /app/target/
