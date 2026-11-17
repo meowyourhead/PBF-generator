@@ -225,6 +225,17 @@
       expect(Math.abs(ot.left - or.left) < 60 && ot.top >= or.bottom - 2 && ot.top - or.bottom < 40, 'focus tooltip not beside the focused code');
       ols.dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
       expect(!shown(), 'tooltip not hidden on focusout');
+
+      // Clicking focuses the code: the tip must stay beside the cursor, not jump under the code.
+      const pr = mogps.getBoundingClientRect();
+      const px = Math.round(pr.left + 5), py = Math.round(pr.top + 5);
+      move(mogps, px, py);
+      const before = tip().getBoundingClientRect();
+      mogps.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, clientX: px, clientY: py }));
+      mogps.dispatchEvent(new FocusEvent('focusin', { bubbles: true }));
+      const after = tip().getBoundingClientRect();
+      expect(shown() && after.left === before.left && after.top === before.top, 'tooltip moved on click: ' + Math.round(before.left) + ',' + Math.round(before.top) + ' -> ' + Math.round(after.left) + ',' + Math.round(after.top));
+      mogps.dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
     }));
   }
 
