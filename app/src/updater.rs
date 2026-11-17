@@ -1,21 +1,18 @@
-//! Update channel: GitHub Releases of the private repo.
+//! Update channel: GitHub Releases of the public repo.
 //!
 //! Security model
 //!  - Only this (Rust) side talks to GitHub. The page sends "update:check" /
-//!    "update:install" and gets back a status; it never sees the token or a URL,
-//!    and it can't point a download anywhere.
-//!  - The token is a fine-grained PAT limited to this one repo, Contents: read.
-//!    It is sealed into the exe at build time (see build.rs) and only decrypted
-//!    in memory for a request, then wiped.
-//!  - HTTPS only, TLS 1.2+, via Windows' own TLS stack. Redirects are followed by
-//!    hand so the token is never sent to the download host.
+//!    "update:install" and gets back a status; it can't point a download anywhere.
+//!  - No credentials: the repo is public, so the app holds no token to leak.
+//!  - HTTPS only (redirects included), TLS 1.2+, via Windows' own TLS stack.
+//!    Download links must be this repo's own release-download URLs.
 //!  - Every release exe must carry an Ed25519 signature (made with a private key
 //!    that never leaves the developer's machine) over its version and SHA-256.
-//!    A leaked token therefore can't be used to push an update: it is read-only,
-//!    and an unsigned or re-labelled exe is rejected. Only newer versions install.
+//!    Anyone can see the releases, but nobody without that key can make the app
+//!    install anything: an unsigned, altered or re-labelled exe is rejected.
+//!    Only newer versions install.
 
 use crate::signing;
-use chacha20poly1305::{ChaCha20Poly1305, KeyInit, Nonce, aead::Aead};
 use ed25519_dalek::{Signature, VerifyingKey};
 use serde_json::{Value, json};
 use std::{
@@ -24,7 +21,6 @@ use std::{
     sync::{Arc, Mutex},
     time::Duration,
 };
-use zeroize::Zeroizing;
 
 const REPO: &str = "meowyourhead/PBF-generator";
 const ASSET_EXE: &str = "PBF-Generator.exe";
@@ -32,9 +28,6 @@ const ASSET_SIG: &str = "PBF-Generator.exe.sig";
 const MAX_EXE: u64 = 64 * 1024 * 1024;
 const MAX_SMALL: u64 = 2 * 1024 * 1024;
 
-static SEALED: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/update_token.bin"));
-static KA: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/update_ka.bin"));
-static KB: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/update_kb.bin"));
 static PUBKEY: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/update_pubkey.bin"));
 
 pub fn current_version() -> [u32; 3] {
@@ -42,7 +35,7 @@ pub fn current_version() -> [u32; 3] {
 }
 
 pub fn configured() -> bool {
-    SEALED.len() > 12 + 16 && KA.len() == 32 && KB.len() == 32 && PUBKEY.len() == 32
+    PUBKEY.len() == 32
 }
 
 /// Init script giving the page the version and whether updates are available.
@@ -99,11 +92,9 @@ impl Updater {
 
     fn check_inner(&self) -> Result<String, String> {
         let agent = agent()?;
-        let auth = auth_header()?;
         let url = format!("https://api.github.com/repos/{REPO}/releases/latest");
         let resp = agent
             .get(&url)
-            .set("Authorization", &auth)
             .set("Accept", "application/vnd.github+json")
             .set("X-GitHub-Api-Version", "2022-11-28")
             .call()
@@ -123,11 +114,10 @@ impl Updater {
                 .iter()
                 .find(|a| a["name"].as_str() == Some(name))
                 .ok_or_else(|| format!("The latest release is missing {name}"))?;
-            let url = a["url"].as_str().unwrap_or_default();
-            // Only GitHub's own API URL for an asset of this repo is ever fetched.
-            let prefix = format!("https://api.github.com/repos/{REPO}/releases/assets/");
-            let id = url.strip_prefix(&prefix).unwrap_or_default();
-            if id.is_empty() || !id.bytes().all(|b| b.is_ascii_digit()) {
+            let url = a["browser_download_url"].as_str().unwrap_or_default();
+            // Only this repo's own release downloads are ever fetched.
+            let prefix = format!("https://github.com/{REPO}/releases/download/");
+            if !url.starts_with(&prefix) || !url.ends_with(&format!("/{name}")) {
                 return Err("The latest release has an unexpected download link".into());
             }
             Ok((url.to_owned(), a["size"].as_u64().unwrap_or(0)))
@@ -162,11 +152,9 @@ impl Updater {
             .clone()
             .ok_or("Check for updates first")?;
         let agent = agent()?;
-        let auth = auth_header()?;
 
-        let sig = fetch_asset(&agent, &rel.sig_url, &auth, 4096)?;
-        let exe = fetch_asset(&agent, &rel.exe_url, &auth, rel.exe_size)?;
-        drop(auth);
+        let sig = fetch(&agent, &rel.sig_url, 4096)?;
+        let exe = fetch(&agent, &rel.exe_url, rel.exe_size)?;
         if exe.len() as u64 != rel.exe_size {
             return Err("The download was incomplete. Try again.".into());
         }
@@ -188,7 +176,7 @@ fn verify(version: [u32; 3], exe: &[u8], sig_file: &[u8]) -> Result<(), String> 
     let key: [u8; 32] = PUBKEY.try_into().map_err(|_| BAD.to_string())?;
     let key = VerifyingKey::from_bytes(&key).map_err(|_| BAD.to_string())?;
     let sig_hex = std::str::from_utf8(sig_file).map_err(|_| BAD.to_string())?;
-    let sig: [u8; 64] = signing::from_hex(sig_hex)
+    let sig: [u8; 64] = signing::from_hex(sig_hex.trim_start_matches('\u{feff}'))
         .and_then(|v| v.try_into().ok())
         .ok_or_else(|| BAD.to_string())?;
     key.verify_strict(&signing::message(version, exe), &Signature::from_bytes(&sig))
@@ -238,27 +226,6 @@ pub fn clean_up_old() {
     });
 }
 
-fn token() -> Result<Zeroizing<String>, String> {
-    const BAD: &str = "This build's update key is damaged";
-    let mut key = Zeroizing::new([0u8; 32]);
-    for i in 0..32 {
-        key[i] = KA[i] ^ KB[i];
-    }
-    let cipher = ChaCha20Poly1305::new((&*key).into());
-    let mut pt = Zeroizing::new(
-        cipher
-            .decrypt(Nonce::from_slice(&SEALED[..12]), &SEALED[12..])
-            .map_err(|_| BAD.to_string())?,
-    );
-    let s = String::from_utf8(std::mem::take(&mut *pt)).map_err(|_| BAD.to_string())?;
-    Ok(Zeroizing::new(s))
-}
-
-fn auth_header() -> Result<Zeroizing<String>, String> {
-    let t = token()?;
-    Ok(Zeroizing::new(format!("Bearer {}", t.as_str())))
-}
-
 fn agent() -> Result<ureq::Agent, String> {
     let tls = native_tls::TlsConnector::builder()
         .min_protocol_version(Some(native_tls::Protocol::Tlsv12))
@@ -267,32 +234,21 @@ fn agent() -> Result<ureq::Agent, String> {
     Ok(ureq::AgentBuilder::new()
         .tls_connector(Arc::new(tls))
         .https_only(true)
-        .redirects(0)
+        .redirects(5)
         .timeout_connect(Duration::from_secs(10))
         .timeout(Duration::from_secs(180))
         .user_agent(concat!("PBF-Generator-Updater/", env!("CARGO_PKG_VERSION")))
         .build())
 }
 
-/// Downloads a release asset. GitHub answers with a redirect to a short-lived
-/// signed URL on its download host; that second request carries no token.
-fn fetch_asset(agent: &ureq::Agent, api_url: &str, auth: &str, limit: u64) -> Result<Vec<u8>, String> {
+/// Downloads a release file. GitHub redirects to its download host; the agent
+/// only follows HTTPS redirects, and the signature check decides what is trusted.
+fn fetch(agent: &ureq::Agent, url: &str, limit: u64) -> Result<Vec<u8>, String> {
     let resp = agent
-        .get(api_url)
-        .set("Authorization", auth)
+        .get(url)
         .set("Accept", "application/octet-stream")
-        .set("X-GitHub-Api-Version", "2022-11-28")
         .call()
         .map_err(describe)?;
-    let resp = if (300..400).contains(&resp.status()) {
-        let loc = resp.header("Location").unwrap_or_default().to_owned();
-        if !loc.starts_with("https://") {
-            return Err("GitHub sent an unexpected download link".into());
-        }
-        agent.get(&loc).call().map_err(describe)?
-    } else {
-        resp
-    };
     if resp.status() != 200 {
         return Err("The download failed. Try again.".into());
     }
@@ -313,9 +269,8 @@ fn read_limited(resp: ureq::Response, limit: u64) -> Result<Vec<u8>, String> {
 
 fn describe(e: ureq::Error) -> String {
     match e {
-        ureq::Error::Status(401, _) => "The update token was rejected or has expired".into(),
         ureq::Error::Status(403, _) | ureq::Error::Status(429, _) => {
-            "GitHub refused the request (rate limit or permissions). Try again later.".into()
+            "GitHub is limiting requests right now. Try again later.".into()
         }
         ureq::Error::Status(404, _) => "No release found on GitHub".into(),
         ureq::Error::Status(code, _) => format!("GitHub returned an error ({code})"),

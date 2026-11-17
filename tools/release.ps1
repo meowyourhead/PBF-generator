@@ -1,15 +1,12 @@
-# Builds the app with the update token sealed in, signs it, and (with -Publish)
-# uploads it as a GitHub release of the private repo.
+# Builds the app, signs it, and (with -Publish) uploads it as a GitHub release.
 #
 #   powershell -ExecutionPolicy Bypass -File tools\release.ps1             # build + sign only
 #   powershell -ExecutionPolicy Bypass -File tools\release.ps1 -Publish    # ...and create the release
 #
-# Secrets live outside the repo in %APPDATA%\PBF Generator release\, encrypted
-# with Windows DPAPI:
-#   update-token.dat  the read-only GitHub token  (tools\set-update-token.ps1)
-#   signing-key.dat   the Ed25519 release-signing key (made on the first run)
-# Back up signing-key.dat somewhere safe: without it, installed copies will not
-# accept new updates (they would need a manual reinstall with a new key).
+# The Ed25519 release-signing key lives outside the repo, DPAPI-encrypted, in
+# %APPDATA%\PBF Generator release\signing-key.dat (made on the first run).
+# Back it up somewhere safe: without it, installed copies will not accept new
+# updates (they would need a manual reinstall with a new key).
 
 param(
     [switch]$Publish,
@@ -21,7 +18,6 @@ $repo = 'meowyourhead/PBF-generator'
 $root = Split-Path -Parent $PSScriptRoot
 $app = Join-Path $root 'app'
 $secrets = Join-Path $env:APPDATA 'PBF Generator release'
-$tokenFile = Join-Path $secrets 'update-token.dat'
 $keyFile = Join-Path $secrets 'signing-key.dat'
 $pubFile = Join-Path $app 'update_pubkey.txt'
 New-Item -ItemType Directory -Force $secrets | Out-Null
@@ -60,16 +56,10 @@ try {
     }
 
     if ($KeyOnly) { return }
-    if (-not (Test-Path $tokenFile)) { throw "No update token yet. Run tools\set-update-token.ps1 first." }
 
-    # ---- build with the token sealed in --------------------------------------
-    $env:PBF_UPDATE_TOKEN = Read-Dpapi $tokenFile
-    try {
-        cargo build --release
-        if ($LASTEXITCODE) { throw 'cargo build failed' }
-    } finally {
-        Remove-Item Env:\PBF_UPDATE_TOKEN -ErrorAction SilentlyContinue
-    }
+    # ---- build ------------------------------------------------------------------
+    cargo build --release
+    if ($LASTEXITCODE) { throw 'cargo build failed' }
 
     # ---- stage, sign ----------------------------------------------------------
     $dist = Join-Path $app 'target\dist'

@@ -17,13 +17,12 @@ cd app
 cargo build --release
 ```
 
-A plain build has the updater switched off. Release builds come from `tools/release.ps1`.
+Release builds come from `tools/release.ps1`, which also signs the exe.
 
 ## Releases and updates
 
-The repo is private, so the app reads releases with a fine-grained token that can only read this repo's contents. Updates must be signed with the release key, so the token alone cannot push an update.
+Settings > Updates reads this repo's latest GitHub release (no credentials needed). It installs only newer versions, and only when the exe's Ed25519 signature checks out against the public key in `app/update_pubkey.txt`.
 
-1. Once: create a fine-grained token (only this repo, Contents: Read-only), then run `tools/set-update-token.ps1` in a terminal and paste it at the hidden prompt. It is stored DPAPI-encrypted in `%APPDATA%\PBF Generator release\`.
-2. Bump `version` in `app/Cargo.toml`, then run `tools/release.ps1 -Publish`.
+To release: bump `version` in `app/Cargo.toml`, then run `tools/release.ps1 -Publish`.
 
-The first release run creates the signing key in `%APPDATA%\PBF Generator release\signing-key.dat` and writes the public half to `app/update_pubkey.txt`. Back up the key file: installed copies only accept updates signed with it.
+The signing key is kept DPAPI-encrypted in `%APPDATA%\PBF Generator release\signing-key.dat`, outside the repo. Back it up: installed copies only accept updates signed with it.
