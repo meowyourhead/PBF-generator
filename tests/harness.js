@@ -515,6 +515,34 @@
           expect(k.left >= o.left - 0.5 && k.right <= o.right + 0.5, 'genshin quick code spills out of its button: ' + b.textContent.trim());
         });
         closeModal('secret-menu');
+        // v3.11: Aurora is gone; AC Odyssey and Valorant replace it, each with both modes.
+        expect(!palettes.aurora && !document.querySelector('#theme-palette option[value="aurora"]'), 'aurora theme still present');
+        userTheme.palette = 'aurora'; applyTheme();
+        expect(userTheme.palette === 'claude', 'saved aurora theme does not fall back to claude');
+        const qcFits = name => document.querySelectorAll('#secret-menu .qc-btn').forEach(b => {
+          const o = b.getBoundingClientRect(), k = b.querySelector('.qc-face-label').getBoundingClientRect();
+          expect(k.left >= o.left - 0.5 && k.right <= o.right + 0.5, name + ' quick code spills out of its button: ' + b.textContent.trim());
+        });
+        userTheme.palette = 'odyssey'; userTheme.mode = 'dark'; applyTheme();
+        expect(!document.getElementById('mode-toggle-btn').classList.contains('is-locked'), 'odyssey mode switch locked');
+        const ocard = getComputedStyle(document.querySelector('.main-content .card'));
+        expect(ocard.borderTopLeftRadius === '0px', 'odyssey card not square');
+        expect(/ACO Fira/.test(getComputedStyle(document.querySelector('.chip')).fontFamily), 'odyssey chips not in the menu sans');
+        expect(/ACO Cinzel/.test(getComputedStyle(document.querySelector('.card-title')).fontFamily), 'odyssey side tab not in the Trajan-style capitals');
+        expect(/polygon/.test(getComputedStyle(document.querySelector('.main-content .card-rail')).clipPath), 'odyssey side tab lacks the banner notch');
+        expect(/svg/.test(getComputedStyle(document.body).cursor), 'odyssey lacks the ring cursor');
+        buildSecretMenu(); openModal('secret-menu'); qcFits('odyssey'); closeModal('secret-menu');
+        userTheme.mode = 'light'; applyTheme();
+        expect(getComputedStyle(document.querySelector('.main-content .card')).backgroundColor === 'rgb(235, 226, 205)', 'odyssey light card not papyrus');
+        userTheme.palette = 'valorant'; userTheme.mode = 'dark'; applyTheme();
+        expect(getComputedStyle(document.body).backgroundColor === 'rgb(15, 25, 35)', 'valorant dark base not navy #0f1923');
+        expect(/VAL Anton/.test(getComputedStyle(document.querySelector('.card-title')).fontFamily), 'valorant side tab not in the display face');
+        freshStart(); click('platelet-optional-group:OLPS');
+        expect(getComputedStyle(resolve('platelet-optional-group:OLPS')).borderTopColor === 'rgb(237, 232, 176)', 'valorant pick lacks the pale-gold frame');
+        buildSecretMenu(); openModal('secret-menu'); qcFits('valorant'); closeModal('secret-menu');
+        userTheme.mode = 'light'; applyTheme();
+        expect(getComputedStyle(document.body).backgroundColor === 'rgb(236, 232, 225)', 'valorant light base not off-white #ece8e1');
+        expect(getComputedStyle(document.querySelector('.dock .btn-primary')).backgroundColor === 'rgb(255, 70, 85)', 'valorant light Generate not brand red');
       } finally {
         Object.assign(userTheme, JSON.parse(saved));
         applyTheme();
