@@ -295,10 +295,12 @@
 
     // Reloading would re-run this script against a window that is already fitted and
     // zoomed, scrambling the layout. The shell turns off WebView2's browser keys;
-    // this catches the reload keys too in case a runtime still delivers them.
+    // this cancels the reload keys too in case a runtime still delivers them.
+    // Ctrl+R still reaches the page (it is the Reset all shortcut).
     document.addEventListener('keydown', (e) => {
       const k = e.key.toLowerCase();
-      if (k === 'f5' || ((e.ctrlKey || e.metaKey) && k === 'r')) { e.preventDefault(); e.stopPropagation(); }
+      if (k === 'f5') { e.preventDefault(); e.stopPropagation(); }
+      else if ((e.ctrlKey || e.metaKey) && k === 'r') e.preventDefault();
     }, true);
 
     const cursors = { n: 'ns-resize', s: 'ns-resize', e: 'ew-resize', w: 'ew-resize',

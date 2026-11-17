@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>PBF Comment Generator v3.9</title>
+<title>PBF Comment Generator v3.10</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@1,600;1,700;1,800&family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -5748,6 +5748,14 @@ const PetEngine = (function () {
     if (e.altKey && (e.key === 'q' || e.key === 'Q')) {
       e.preventDefault();
       openModal('secret-menu');
+      return;
+    }
+
+    // Ctrl+R: Reset all (unlabelled shortcut). Works from text fields too, since
+    // Ctrl+R does nothing there; never reloads the page.
+    if ((e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey && (e.key === 'r' || e.key === 'R')) {
+      e.preventDefault();
+      if (!e.repeat && !document.querySelector('.modal-overlay.active')) resetAllFields();
       return;
     }
 
