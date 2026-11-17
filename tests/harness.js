@@ -554,6 +554,32 @@
         userTheme.mode = 'light'; applyTheme();
         expect(getComputedStyle(document.body).backgroundColor === 'rgb(236, 232, 225)', 'valorant light base not off-white #ece8e1');
         expect(getComputedStyle(document.querySelector('.dock .btn-primary')).backgroundColor === 'rgb(255, 70, 85)', 'valorant light Generate not brand red');
+        // v3.13: Fallout (Pip-Boy green, Vault-Tec light) opens in dark like the other game themes.
+        expect(palettes.fallout && palettes.fallout.defaultMode === 'dark', 'fallout missing or not dark by default');
+        userTheme.palette = 'fallout'; userTheme.mode = 'dark'; applyTheme();
+        expect(/FO Roboto/.test(getComputedStyle(document.querySelector('.chip')).fontFamily), 'fallout chips not in Roboto Condensed');
+        freshStart(); click('platelet-optional-group:OLPS');
+        const fpick = getComputedStyle(resolve('platelet-optional-group:OLPS'));
+        expect(fpick.backgroundColor === 'rgb(27, 253, 30)' && fpick.color === 'rgb(0, 57, 0)', 'fallout pick not the green bar with dark text: ' + fpick.backgroundColor + ' / ' + fpick.color);
+        expect(/svg/.test(getComputedStyle(document.body).cursor), 'fallout lacks the green arrow cursor');
+        buildSecretMenu(); openModal('secret-menu'); qcFits('fallout'); closeModal('secret-menu');
+        userTheme.mode = 'light'; applyTheme();
+        expect(getComputedStyle(document.querySelector('.main-content .card-rail')).backgroundColor === 'rgb(29, 63, 123)', 'fallout light side tab not vault blue');
+        expect(getComputedStyle(document.querySelector('.dock .btn-primary')).backgroundColor === 'rgb(255, 205, 47)', 'fallout light Generate not Vault-Tec yellow');
+        // v3.14: each game theme has its own quiet animation layer, which never takes the pointer.
+        if (matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+          const motion = { fallout: [document.documentElement, '::before', 'fo-roll'], cyberpunk: [document.documentElement, '::before', 'cp-slice'],
+            genshin: [document.documentElement, '::after', 'gi-meteor'], odyssey: [document.body, '::before', 'ac-pan'],
+            valorant: [document.documentElement, '::after', 'va-drift'], zenless: [document.documentElement, '::before', 'zz-channel'] };
+          for (const [p, [el, ps, name]] of Object.entries(motion)) {
+            userTheme.palette = p; userTheme.mode = 'dark'; applyTheme();
+            const cs = getComputedStyle(el, ps);
+            expect(cs.animationName.includes(name), p + ' lacks its ' + name + ' animation: ' + cs.animationName);
+            expect(cs.pointerEvents === 'none', p + ' animation layer takes the pointer');
+          }
+          userTheme.palette = 'claude'; applyTheme();
+          expect(getComputedStyle(document.documentElement, '::before').animationName === 'none', 'claude picked up a game animation');
+        }
       } finally {
         Object.assign(userTheme, JSON.parse(saved));
         applyTheme();
