@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>PBF Comment Generator v3.14</title>
+<title>PBF Comment Generator v3.15</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@1,600;1,700;1,800&family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -2619,8 +2619,8 @@
 
     /* ---- AC Odyssey: the Animus backdrop — a panning grid whose lines fade in and out ---- */
     /* The grid stays behind the glass; the fading lines run over it (z-index 5), hairline-thin. */
-    :root[data-palette="odyssey"] { --ac-anim-line: rgba(205, 230, 240, 0.36); --ac-grid-line: rgba(200, 216, 224, 0.085); }
-    :root[data-palette="odyssey"][data-theme="light"] { --ac-anim-line: rgba(29, 44, 51, 0.26); --ac-grid-line: rgba(29, 44, 51, 0.085); }
+    :root[data-palette="odyssey"] { --ac-anim-line: rgba(205, 230, 240, 0.2); --ac-grid-line: rgba(200, 216, 224, 0.17); }
+    :root[data-palette="odyssey"][data-theme="light"] { --ac-anim-line: rgba(29, 44, 51, 0.14); --ac-grid-line: rgba(29, 44, 51, 0.15); }
     /* The Animus sync sweep: a soft column of light crosses the screen left to right every 13s */
     :root[data-palette="odyssey"]::before {
       content: ""; position: fixed; top: 0; bottom: 0; left: 0; width: 34vw; z-index: 5; pointer-events: none;
@@ -2642,8 +2642,8 @@
       background:
         linear-gradient(var(--ac-grid-line) 1px, transparent 1px) 0 0 / 72px 72px,
         linear-gradient(90deg, var(--ac-grid-line) 1px, transparent 1px) 0 0 / 72px 72px;
-      -webkit-mask-image: radial-gradient(ellipse 65% 60% at 50% 45%, #000 25%, transparent 78%);
-      mask-image: radial-gradient(ellipse 65% 60% at 50% 45%, #000 25%, transparent 78%);
+      -webkit-mask-image: radial-gradient(ellipse 85% 80% at 50% 45%, #000 45%, transparent 100%);
+      mask-image: radial-gradient(ellipse 85% 80% at 50% 45%, #000 45%, transparent 100%);
       will-change: transform; animation: ac-pan 48s linear infinite;
     }
     @keyframes ac-pan { from { transform: translate(0, 0); } to { transform: translate(72px, 72px); } }
@@ -2684,12 +2684,19 @@
     :root[data-palette="valorant"][data-theme="light"] {
       --va-motes: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cg fill='%230f1923'%3E%3Cpath d='M30 40l3 3-3 3-3-3z' opacity='.45'/%3E%3Cpath d='M190 20l2 2-2 2-2-2z' opacity='.35'/%3E%3Cpath d='M120 130l2.5 2.5-2.5 2.5-2.5-2.5z' opacity='.4'/%3E%3Cpath d='M230 200l2 2-2 2-2-2z' opacity='.3'/%3E%3C/g%3E%3Cg fill='%23ff4655'%3E%3Cpath d='M80 210l3 3-3 3-3-3z' opacity='.6'/%3E%3Cpath d='M210 110l2 2-2 2-2-2z' opacity='.5'/%3E%3Cpath d='M20 150l1.5 1.5-1.5 1.5-1.5-1.5z' opacity='.5'/%3E%3C/g%3E%3C/svg%3E");
     }
-    :root[data-palette="valorant"]::before {
-      content: ""; position: fixed; left: 0; right: 0; top: 0; bottom: -260px; z-index: 5; pointer-events: none;
-      background: var(--va-motes) 0 0 / 260px 260px; opacity: 0.55;
-      will-change: transform; animation: va-motes 38s linear infinite;
+    /* Two layers for depth. The theme-motion script scatters fresh motes at random over a
+       1600x1000 tile on every load (the --va-near-d/l and --va-far-d/l variables), so no pattern repeats;
+       the small fixed tile above is only the fallback. Near motes are bigger and rise faster. */
+    :root[data-palette="valorant"] { --va-near: var(--va-near-d, var(--va-motes)); --va-far: var(--va-far-d, none); }
+    :root[data-palette="valorant"][data-theme="light"] { --va-near: var(--va-near-l, var(--va-motes)); --va-far: var(--va-far-l, none); }
+    :root[data-palette="valorant"]::before,
+    :root[data-palette="valorant"] body::before {
+      content: ""; position: fixed; left: 0; right: 0; top: 0; bottom: -1000px; z-index: 5; pointer-events: none;
+      will-change: transform;
     }
-    @keyframes va-motes { from { transform: translateY(0); } to { transform: translateY(-260px); } }
+    :root[data-palette="valorant"]::before { background: var(--va-near) 0 0 / 1600px 1000px; opacity: 0.6; animation: va-motes 46s linear infinite; }
+    :root[data-palette="valorant"] body::before { background: var(--va-far) 0 0 / 1600px 1000px; opacity: 0.45; animation: va-motes 78s linear -20s infinite; }
+    @keyframes va-motes { from { transform: translateY(0); } to { transform: translateY(-1000px); } }
     /* Generate: a light sweep runs across it only while the pointer is over it */
     :root[data-palette="valorant"] .dock-actions .btn-primary { position: relative; overflow: hidden; }
     :root[data-palette="valorant"] .dock-actions .btn-primary::after {
@@ -6993,6 +7000,28 @@ const PetEngine = (function () {
         set('--zz-s' + i, rnd(0.45, 1.7).toFixed(2));
       });
     }
+    // Valorant motes: scatter diamonds and dots at random over a 1600x1000 tile, once per load,
+    // for a near layer (fewer, bigger) and a far layer (more, smaller). Kept clear of the tile
+    // edges so nothing is cut at the seams. Each layer gets a dark and a light colourway.
+    function scatterMotes() {
+      const W = 1600, H = 1000;
+      const layer = (count, minS, maxS) => Array.from({ length: count }, () => {
+        const s = rnd(minS, maxS);
+        return { x: rnd(s + 1, W - s - 1), y: rnd(s + 1, H - s - 1), s, o: rnd(0.3, 0.85), dot: Math.random() < 0.3, c: Math.random() };
+      });
+      const svg = (motes, pick) => 'url("data:image/svg+xml,' + encodeURIComponent(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">` + motes.map(m => {
+          const f = pick(m.c), x = m.x.toFixed(1), y = m.y.toFixed(1), s = m.s.toFixed(2), o = m.o.toFixed(2);
+          return m.dot ? `<circle cx="${x}" cy="${y}" r="${(m.s * 0.55).toFixed(2)}" fill="${f}" opacity="${o}"/>`
+            : `<path d="M${x} ${(m.y - m.s).toFixed(1)}L${(m.x + m.s).toFixed(1)} ${y}L${x} ${(m.y + m.s).toFixed(1)}L${(m.x - m.s).toFixed(1)} ${y}Z" fill="${f}" opacity="${o}"/>`;
+        }).join('') + '</svg>') + '")';
+      const dark = c => c < 0.68 ? '#ece8e1' : c < 0.94 ? '#5fcfb5' : '#ff4655';
+      const light = c => c < 0.7 ? '#0f1923' : '#ff4655';
+      const near = layer(30, 1.8, 3.6), far = layer(55, 0.8, 1.8);
+      set('--va-near-d', svg(near, dark)); set('--va-near-l', svg(near, light));
+      set('--va-far-d', svg(far, dark)); set('--va-far-l', svg(far, light));
+    }
+    scatterMotes();
     rollWish(); rollChannel();
     const rolls = { 'gi-meteor': rollWish, 'zz-channel': rollChannel }, lastIteration = {};
     setInterval(() => {
