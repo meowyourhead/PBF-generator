@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>PBF Comment Generator v3.15</title>
+<title>PBF Comment Generator v3.16</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Barlow+Condensed:ital,wght@1,600;1,700;1,800&family=JetBrains+Mono:wght@400;500&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -303,6 +303,11 @@
   .special-body { display: flex; align-items: center; flex: 1 1 auto; min-width: 0; }
   .special-body[hidden] { display: none; }
   .is-rare-hidden { display: none !important; }
+  /* Satellitism: same bar, but it sits inline in the platelet row and keeps its graphic */
+  .sat-fold { display: inline-flex; align-items: center; gap: var(--space-2); flex: 0 0 auto; }
+  .sat-fold[hidden] { display: none; }
+  .sat-fold .special-bar { flex: 0 0 auto; padding: 2px 6px 2px 2px; }
+  .sat-fold .special-body { flex: 0 0 auto; }
   .chip-more { border: 1px dashed var(--border); background: transparent; color: var(--muted); }
   .chip-more:hover { color: var(--fg); border-color: var(--accent3); }
 
@@ -2822,13 +2827,23 @@
               <div class="slider-indicator"></div>
             </div>
             <div class="divider"></div>
-            <svg class="group-icon" viewBox="0 0 28 28" fill="currentColor" aria-hidden="true">
-              <circle cx="14" cy="14" r="5" opacity="0.5" />
-              <circle cx="6" cy="6" r="2" /><circle cx="22" cy="6" r="2" /><circle cx="6" cy="22" r="2" /><circle cx="22" cy="22" r="2" />
-              <circle cx="3" cy="14" r="1.5" /><circle cx="25" cy="14" r="1.5" /><circle cx="14" cy="3" r="1.5" /><circle cx="14" cy="25" r="1.5" />
-            </svg>
-            <div class="slider-group chip-segmented" id="platelet-satellitism-slider">
-              <div class="slider-indicator"></div>
+            <!-- Satellitism hides like Special; the graphic stays visible as part of the bar. -->
+            <div class="sat-fold" id="sat-fold">
+              <div class="special-bar sat-bar" id="sat-bar" role="button" tabindex="0" aria-expanded="false" aria-controls="sat-body" aria-label="Show or hide platelet satellitism codes" title="Show or hide satellitism codes (SATD, SATN, SATI)">
+                <svg class="group-icon" viewBox="0 0 28 28" fill="currentColor" aria-hidden="true">
+                  <circle cx="14" cy="14" r="5" opacity="0.5" />
+                  <circle cx="6" cy="6" r="2" /><circle cx="22" cy="6" r="2" /><circle cx="6" cy="22" r="2" /><circle cx="22" cy="22" r="2" />
+                  <circle cx="3" cy="14" r="1.5" /><circle cx="25" cy="14" r="1.5" /><circle cx="14" cy="3" r="1.5" /><circle cx="14" cy="25" r="1.5" />
+                </svg>
+                <svg class="special-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg>
+                <span class="special-show">Show</span>
+                <span class="special-selected"></span>
+              </div>
+              <div class="special-body" id="sat-body" hidden>
+                <div class="slider-group chip-segmented" id="platelet-satellitism-slider">
+                  <div class="slider-indicator"></div>
+                </div>
+              </div>
             </div>
             <div class="divider"></div>
             <div class="seg-group" id="platelet-extra-group"></div>
@@ -5897,6 +5912,7 @@ const PetEngine = (function () {
       updateIndicator(container);
     });
     renderSpecialBar();
+    renderSatBar();
   }
 
   // Renders one control per code into `container` and wires its clicks.
@@ -5972,7 +5988,7 @@ const PetEngine = (function () {
   }
 
   // ---------- UI preferences (per browser) ----------
-  const UI_DEFAULTS = { collapsed: { abnormalFindings: true, cellTypes: true } };
+  const UI_DEFAULTS = { collapsed: { abnormalFindings: true, cellTypes: true, plateletSatellitism: true } };
   // Kept in memory; storage is only a best-effort copy, so a blocked or full store never locks the UI.
   const uiPrefs = {
     _mem: null,
@@ -6053,6 +6069,49 @@ const PetEngine = (function () {
     prefs.collapsed.abnormalFindings = expand === undefined ? !collapsed : !expand;
     uiPrefs.set(prefs);
     renderSpecialBar();
+  }
+
+  // ---------- Collapsible satellitism (SATD / SATN / SATI): same bar as Special, graphic kept ----------
+  function isSatCollapsed() { return uiPrefs.get().collapsed.plateletSatellitism !== false; }
+
+  var lastSatCollapsed = null;   // var: renderSatBar may run before this line during start-up
+  function renderSatBar() {
+    const bar = $('#sat-bar');
+    if (!bar) return;
+    const keys = Object.keys(appConfig.platelets.satellitism.codes);
+    $('#sat-fold').hidden = keys.length === 0;
+
+    const collapsed = isSatCollapsed();
+    bar.setAttribute('aria-expanded', String(!collapsed));
+    $('#sat-body').hidden = collapsed;
+    $('.special-show', bar).hidden = !collapsed;
+
+    const selected = state.plateletSatellitism.filter(k => keys.includes(k));
+    const selBox = $('.special-selected', bar);
+    selBox.innerHTML = '';
+    selected.forEach(k => {
+      const tag = document.createElement('span');
+      tag.className = 'chip-tag';
+      tag.textContent = k;
+      selBox.appendChild(tag);
+    });
+    selBox.hidden = !collapsed || selected.length === 0;
+
+    // The row changes width, so the indicator is re-measured and the desktop window refits.
+    if (!collapsed) updateIndicator($('#platelet-satellitism-slider'));
+    if (lastSatCollapsed !== null && collapsed !== lastSatCollapsed &&
+        window.__pbfShell && typeof window.__pbfShell.refit === 'function') {
+      window.__pbfShell.refit();
+    }
+    lastSatCollapsed = collapsed;
+  }
+
+  function toggleSat(expand) {
+    const prefs = uiPrefs.get();
+    const collapsed = prefs.collapsed.plateletSatellitism !== false;
+    prefs.collapsed.plateletSatellitism = expand === undefined ? !collapsed : !expand;
+    uiPrefs.set(prefs);
+    renderSatBar();
   }
 
   // ---------- Code tooltip: full text beside the cursor (or the focused code) ----------
@@ -6141,6 +6200,14 @@ const PetEngine = (function () {
       e.preventDefault();
       e.stopPropagation();
       toggleSpecial();
+    }
+  });
+  $('#sat-bar').addEventListener('click', () => toggleSat());
+  $('#sat-bar').addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleSat();
     }
   });
 
